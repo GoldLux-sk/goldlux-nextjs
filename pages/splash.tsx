@@ -20,7 +20,7 @@ export default function About() {
                 src="/logo.svg"
                 alt="GoldLux Logo"
                 width={180}
-                height={45}
+                height={87}
                 priority
             />
         </main>
