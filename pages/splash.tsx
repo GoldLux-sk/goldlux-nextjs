@@ -6,7 +6,7 @@ import styles from "@/styles/Splash.module.css";
 
 export default function About() {
     const router = useRouter();
-    useEffect(() => { setTimeout( () => router.push('/'), 2300) });
+    useEffect(() => { setTimeout( () => router.push('/login'), 2300) });
     return (
     <>
         <Head>

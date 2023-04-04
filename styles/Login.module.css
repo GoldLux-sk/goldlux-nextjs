@@ -1,0 +1,50 @@
+.center {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffffff;
+}
+
+.title {
+    position: absolute;
+    left: 26.4vw;
+    top: 7.2vh;
+
+    font-family: 'Noto Sans', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: rgba(0, 0, 0, 0.77);
+}
+
+.lineTop {
+    margin-top: 10.6vh;
+    border: 1px solid #BCBCC0;
+}
+
+.text {
+    position: absolute;
+    left: 17vw;
+    top: 18vh;
+
+    font-family: 'SF Pro Display', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 22px;
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: -0.408px;
+
+    color: #000000;
+}
