@@ -1,10 +1,16 @@
 import Head from "next/head";
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { Password } from 'primereact/password';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 import styles from "@/styles/Login.module.css";
 
 export default function About() {
     const router = useRouter();
+    const [password,setPassword] = useState("");
+    const [email,setEmail] = useState("");
     return (
         <>
             <Head>
@@ -13,18 +19,23 @@ export default function About() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <p className={styles.title}>Prihlásenie ako zákazník</p>
-            <hr className={styles.lineTop}/>
-            <p className={styles.text}>Vitajte v appke GoldLux!</p>
-            <main className={styles.center}>
-                <Image
-                    src="/login_img.png"
-                    alt="GoldLux Logo"
-                    width={238}
-                    height={238}
-                    priority
-                />
-            </main>
+            <p className="text-center mt-10 font-medium text-gray-500">Prihlasovanie</p>
+            <p className="text-center mt-24 text-xl font-bold tracking-tighter">Vitajte v appke GoldLux!</p>
+            <span className="p-float-label mt-16">
+                <InputText id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <label htmlFor="email">Email</label>
+            </span>
+            {/*<div className="grid grid-cols-3 gap-4">
+                <div className="col-start-2 col-span-1">*/}
+                    <span className="p-float-label mt-5">
+                        <Password inputId="password" value={password} onChange={(e) => setPassword(e.target.value)} toggleMask
+                                  promptLabel="Zadajte heslo" weakLabel="Slabé" mediumLabel="Priemerné" strongLabel="Silné"/>
+                        <label htmlFor="password">Heslo</label>
+                    </span>
+            {/*</div>
+            </div>*/}
+            <Button className={styles.loginButton} label="Prihlásiť sa" severity="secondary" outlined />
+            <p className="mt-20 text-center underline text-gray-600">Alebo, ak ste nový užívateľ, zaregistrujte sa </p>
         </>
     )
 }

@@ -9,31 +9,28 @@
 }
 
 .title {
-    position: absolute;
-    left: 26.4vw;
-    top: 7.2vh;
+    position: relative;
+    top: 5vh;
 
     font-family: 'Noto Sans', sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
     line-height: 22px;
-    display: flex;
-    align-items: center;
     text-align: center;
 
     color: rgba(0, 0, 0, 0.77);
 }
 
 .lineTop {
-    margin-top: 10.6vh;
+    position: relative;
+    top: 4vh;
     border: 1px solid #BCBCC0;
 }
 
 .text {
-    position: absolute;
-    left: 17vw;
-    top: 18vh;
+    position: relative;
+    top: 10vh;
 
     font-family: 'SF Pro Display', sans-serif;
     font-style: normal;
@@ -41,10 +38,65 @@
     font-size: 24px;
     line-height: 22px;
 
-    display: flex;
-    align-items: center;
+    /*display: flex;
+    align-items: center;*/
     text-align: center;
     letter-spacing: -0.408px;
 
     color: #000000;
+}
+
+.button {
+    position: relative;
+    top: 10vh;
+}
+
+.buttonDiv {
+    box-sizing: border-box;
+
+    position: relative;
+    width: 57vw;
+    height: 6vh;
+    left: 21.5vw;
+    top: 10vh;
+
+    display: flex;
+    flex-direction: row;
+
+    background: #FFFFFF;
+    border: 0.455466px solid #262B2C;
+    border-radius: 11.1364px;
+}
+
+.textBottom {
+    position: relative;
+    top: 76vh;
+
+    font-family: 'Noto Sans', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+
+    text-align: center;
+    letter-spacing: -0.408px;
+
+    color: #989AA2;
+}
+
+.lineBottom {
+    position: relative;
+    top: 74vh;
+    border: 1px solid #989AA2;
+}
+
+.loginButton {
+    margin-top: 20vh;
+}
+
+.buttonDiv {
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }
