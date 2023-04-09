@@ -14,6 +14,16 @@ body {
     @apply bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow
 }
 
+.center {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffffff;
+}
+
 /*body {
   text-align: center;
   position: absolute;
