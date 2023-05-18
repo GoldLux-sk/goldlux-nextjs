@@ -6,9 +6,9 @@ export default async function LogOutButton() {
     async function logOut() {
         'use server'
         // @ts-ignore
-        cookies().set('payload-token', null)
-        console.log('logged out')
-        redirect('/')
+        cookies().set("payload-token", null)
+
+        redirect("/")
     }
 
     return (

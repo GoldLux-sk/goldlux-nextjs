@@ -1,17 +1,17 @@
-import Link from "next/link"
-import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-import LogOutButton from "@/components/common/LogOutButton"
+import { cookies } from "next/headers"
+import Link from "next/link"
+
+
 export default function Home() {
 
-  async function handleSubmit(data: FormData) {
+  const onSubmit = async (data: FormData) => {
     "use server"
 
-    const email = data.get("email")
     const password = data.get("password")
+    const email = data.get("email")
 
-
-    const res = await fetch("https://adamdemian1-gmailcom-goldlux-payloadcms.payloadcms.app/api/users/login", {
+    const res = await fetch("http://localhost:3000/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -21,20 +21,16 @@ export default function Home() {
         password
       })
     })
-      .then(res => res.json())
 
-    console.log(res)
+    const resData = await res.json()
 
-    if (res.errors) {
-      return console.log(res.errors[0].message)
-    }
+    // @ts-ignore
+    cookies().set("payload-token", resData.token, { secure: true, httpOnly: true, expires: new Date(Date.now() + 1000 * 60 * 24 * 7) })
+    console.log(resData)
+    redirect("/orders")
 
-    if (res.token) {
-      // @ts-ignore
-      cookies().set("payload-token", res.token, { httpOnly: true })
-      redirect("/orders")
-    }
   }
+
 
   return (
     <div className="h-screen w-full flex flex-col items-center">
@@ -47,10 +43,10 @@ export default function Home() {
       </div>
 
       <div className="mt-20 flex flex-col gap-5 w-2/3">
-        <form action={handleSubmit}>
+        <form action={onSubmit}>
           <div className="flex flex-col">
             <label htmlFor="name" className="font-light">Email</label>
-            <input type="email" name="email" required placeholder="email@text.com" className="border-2 border-black rounded-2xl h-12 px-3" />
+            <input type="email" name="email" placeholder="email@text.com" className="border-2 border-black rounded-2xl h-12 px-3" />
           </div>
           <div className="flex flex-col">
             <label htmlFor="password" className="font-light">Heslo</label>
