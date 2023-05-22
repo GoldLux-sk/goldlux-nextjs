@@ -40,7 +40,7 @@ export default function Home() {
         <h1 className="text-2xl font-semibold">Vitajte v appke GoldLux!</h1>
       </div>
 
-      <div className="mt-20 flex flex-col gap-5 w-3/4">
+      <div className="mt-20 flex flex-col gap-5 w-3/4 max-w-2xl">
         <form action={onSubmit}>
           <div className="flex flex-col">
             <label htmlFor="name" className="font-light">Email</label>

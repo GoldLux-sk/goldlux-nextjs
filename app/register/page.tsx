@@ -40,7 +40,7 @@ export default function Inputs() {
                 <h1 className="text-2xl font-semibold">Vitajte v appke GoldLux!</h1>
             </div>
 
-            <div className="mt-20 flex flex-col gap-5 w-3/4">
+            <div className="mt-20 flex flex-col gap-5 w-3/4 max-w-2xl">
                 <form action={Register}>
                     <div className="flex flex-col">
                         <label htmlFor="name" className="font-light">Email</label>
@@ -51,7 +51,7 @@ export default function Inputs() {
                         <input type="password" name="password" placeholder="Heslo" className="border-2 border-black rounded-2xl h-12 px-3" />
                     </div>
                     <div className="flex flex-col">
-                        <label htmlFor="passwordRetry" className="font-light">Zopakujte Vase Heslo</label>
+                        <label htmlFor="passwordRetry" className="font-light">Zopakujte Vaše Heslo</label>
                         <input type="password" name="passwordRetry" placeholder="Znova heslo" className="border-2 border-black rounded-2xl h-12 px-3" />
                     </div>
                     <div className="mt-12 flex justify-center">
