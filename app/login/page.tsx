@@ -10,7 +10,7 @@ export default function Home() {
     const password = data.get("password")
     const email = data.get("email")
 
-    const res = await fetch("http://localhost:3000/api/users/login", {
+    const res = await fetch("https://adamdemian1-gmailcom-goldlux-payloadcms.payloadcms.app/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

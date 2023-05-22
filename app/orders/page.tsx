@@ -5,7 +5,7 @@ async function getOrders() {
     const token = cookies().get("payload-token")?.value
     console.log(token)
 
-    const res = await fetch("http://localhost:3000/api/orders", {
+    const res = await fetch("https://adamdemian1-gmailcom-goldlux-payloadcms.payloadcms.app/api/orders", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
