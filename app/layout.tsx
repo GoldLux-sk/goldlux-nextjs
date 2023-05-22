@@ -1,22 +1,24 @@
-import '@/styles/globals.css'
-import React from "react";
-
-export default function RootLayout({
-   // Layouts must accept a children prop.
-   // This will be populated with nested layouts or pages
-   children,
-}: {
-    children: React.ReactNode;
-}) {
-    return (
-        <html lang="en">
-            <body>{children}</body>
-        </html>
-    );
-}
+import './globals.css'
+import { Roboto } from 'next/font/google'
 
 export const metadata = {
-    title: 'GoldLux App',
-    description: '',
-};
+  title: 'Goldlux',
+  description: 'Goldlux, the new way of cleaning',
+}
 
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: ['100', '300', '400', '500', '700', '900']
+})
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en" className={roboto.className}>
+      <body >{children}</body>
+    </html>
+  )
+}
