@@ -23,15 +23,47 @@ export default async function Orders() {
 
     const orders = await getOrders()
 
-    console.log(orders);
+    // console.log(orders.docs);
+
+    function formatDate(dateString: string) {
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Months are zero-based
+        const year = date.getFullYear();
+        return `${day}. ${month}. ${year}`;
+    }
+
+    function formatHour(dateString: string) {
+        const date = new Date(dateString);
+        const hour = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${hour}:${minutes}`;
+    }
 
 
     return (
-        <div>
-            {/* @ts-expect-error Server Component */}
-            <LogOutButton />
+        <div className="px-3">
 
-            {JSON.stringify(orders)}
+            <h1 className="text-2xl font-bold">Od 17.6 do 26.6</h1>
+
+            <div className="mt-5">
+                {orders.docs.map((order: any, index: number) => (
+                    <div key={order.id}>
+                        <div>
+                            <h3 className="text-xl mt-1 pl-3">{formatHour(order.estimated_start)}</h3>
+                        </div>
+                        <div className="border rounded-xl w-full px-3 my-5">
+                            <h3 className="text-lg font-bold mt-1">Objednávka {index + 1}</h3>
+                            <p className="text-lg font-bold">{formatDate(order.estimated_start)}</p>
+                            <p className="text-lg font-bold mb-1">Stav: {order.status}</p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="absolute bottom-16">
+                {/* @ts-expect-error Server Component */}
+                <LogOutButton />
+            </div>
         </div>
     )
 }
