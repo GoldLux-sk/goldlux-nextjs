@@ -23,7 +23,7 @@ export default async function Orders() {
 
     const orders = await getOrders()
 
-    console.log(orders)
+    console.log(orders);
 
 
     return (

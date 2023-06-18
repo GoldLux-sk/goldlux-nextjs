@@ -41,18 +41,12 @@ export default function Home() {
       </div>
 
       <div className="mt-20 flex flex-col gap-5 w-3/4 max-w-2xl">
-        <form action={onSubmit}>
-          <div className="flex flex-col">
-            <label htmlFor="name" className="font-light">Email</label>
-            <input type="email" name="email" placeholder="email@text.com" className="border-2 border-black rounded-2xl h-12 px-3" />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="password" className="font-light">Heslo</label>
-            <input type="password" name="password" placeholder="Heslo" className="border-2 border-black rounded-2xl h-12 px-3"/>
-          </div>
-          <div className="mt-28 flex justify-center">
-            <input type="submit" value="Prihlásiť sa" className="px-5 h-11 w-44 border-2 transition-colors duration-300 hover:border-black cursor-pointer font-medium rounded-2xl" />
-          </div>
+        <form action={onSubmit} className="flex flex-col gap-2">
+          <label htmlFor="name" className="font-light">Email</label>
+          <input type="email" name="email" placeholder="email@text.com" className="border-2 border-black rounded-2xl h-12 px-3" />
+          <label htmlFor="password" className="font-light">Heslo</label>
+          <input type="password" name="password" placeholder="Heslo" className="border-2 border-black rounded-2xl h-12 px-3" />
+          <input type="submit" value="Prihlásiť sa" className="px-5 h-11 w-44 border-2 transition-colors duration-300 hover:border-black cursor-pointer font-medium rounded-2xl" />
         </form>
       </div>
 
