@@ -13,6 +13,10 @@ async function getOrders() {
             Authorization: `JWT ${token}`
         },
         credentials: "include",
+        next: {
+            revalidate: 0,
+        },
+        cache: "no-cache",
     }).then(res => res.json())
 
     console.log(res)
@@ -70,7 +74,7 @@ export default async function Orders() {
             <h1 className="mt-5 text-2xl font-bold">Od 17.6 do 26.6</h1>
 
             <div className="mt-5">
-                {orders.docs.map((order: any, index: number) => (
+                {orders.docs && orders.docs.map((order: any, index: number) => (
                     <div key={order.id}>
                         <div>
                             <h3 className="text-xl mt-1 pl-3">{formatHour(order.estimated_start)}</h3>
