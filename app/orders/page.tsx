@@ -1,10 +1,15 @@
 import LogOutButton from "@/components/common/LogOutButton";
 import { cookies } from "next/headers";
 import Image from 'next/image';
+import { redirect } from "next/navigation";
 
 async function getOrders() {
     const token = cookies().get("payload-token")?.value
     console.log(token)
+
+    if (!token) {
+        redirect("/login")
+    }
 
     const res = await fetch("https://adamdemian1-gmailcom-goldlux-payloadcms.payloadcms.app/api/orders", {
         method: "GET",
@@ -13,13 +18,7 @@ async function getOrders() {
             Authorization: `JWT ${token}`
         },
         credentials: "include",
-        next: {
-            revalidate: 0,
-        },
-        cache: "no-cache",
     }).then(res => res.json())
-
-    console.log(res)
 
     return res
 }
@@ -36,7 +35,7 @@ export default async function Orders() {
         { id: 3, name: "Zakaznik 4", select: false },
     ]
 
-    // console.log(orders.docs);
+    console.log(orders);
 
     function formatDate(dateString: string) {
         const date = new Date(dateString);
@@ -74,6 +73,11 @@ export default async function Orders() {
             <h1 className="mt-5 text-2xl font-bold">Od 17.6 do 26.6</h1>
 
             <div className="mt-5">
+                {orders.errors && orders.errors.map((error: any, index: number) => (
+                    <p key={index}>{error.message}</p>
+                ))}
+
+
                 {orders.docs && orders.docs.map((order: any, index: number) => (
                     <div key={order.id}>
                         <div>

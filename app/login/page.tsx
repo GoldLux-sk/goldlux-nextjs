@@ -22,9 +22,17 @@ export default function Home() {
     })
 
     const resData = await res.json()
+    console.log(resData)
 
     // @ts-ignore
-    cookies().set("payload-token", resData.token, { secure: true, httpOnly: true, expires: new Date(Date.now() + 1000 * 60 * 24 * 7) })
+    cookies().set({
+      name: "payload-token",
+      value: resData.token,
+      expires: new Date(resData.expiresAt),
+      path: "/",
+      httpOnly: true,
+      secure: true,
+    })
     console.log(resData)
     redirect("/orders")
 
