@@ -1,6 +1,9 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@amir04lm26/react-modern-calendar-date-picker':
+    specifier: ^1.0.1
+    version: 1.0.1(react-dom@18.2.0)(react@18.2.0)
   '@types/node':
     specifier: 20.1.2
     version: 20.1.2
@@ -37,9 +40,6 @@ dependencies:
   react-hook-form:
     specifier: ^7.43.9
     version: 7.43.9(react@18.2.0)
-  react-modern-calendar-datepicker:
-    specifier: ^3.1.6
-    version: 3.1.6(react-dom@18.2.0)(react@18.2.0)
   tailwindcss:
     specifier: 3.3.2
     version: 3.3.2
@@ -52,6 +52,17 @@ packages:
   /@alloc/quick-lru@5.2.0:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
+    dev: false
+
+  /@amir04lm26/react-modern-calendar-date-picker@1.0.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-P/jDZkpfJA+Lde7OAbKb0JNHWcfbg+XKdVqWcucAYoAeMhPlex9jmlIxBB3zCPuAeUqdUVDWfEhAQ/Evsi1ClQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      jalaali-js: 1.2.6
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /@babel/runtime@7.21.5:
@@ -2256,17 +2267,6 @@ packages:
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
-    dev: false
-
-  /react-modern-calendar-datepicker@3.1.6(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-lnMqEMj9Wn32/sm119tjCl5lOkq4u9vJE7wggi7hdXV4s8rPdKlH56FVVehlBi0dfYeWQVZ9npY384Zprjn4WA==}
-    peerDependencies:
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
-    dependencies:
-      jalaali-js: 1.2.6
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react@18.2.0:

@@ -1,9 +1,9 @@
 'use client'
 
 import React, { useState } from "react";
-import 'react-modern-calendar-datepicker/lib/DatePicker.css';
-import { Calendar, DayValue, DayRange } from 'react-modern-calendar-datepicker';
-import { useRouter } from 'next/navigation'
+import '@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css';
+import { Calendar, DayValue, DayRange } from '@amir04lm26/react-modern-calendar-date-picker';
+import { useRouter, redirect } from 'next/navigation'
 import Image from "next/image";
 
 export default function Filters() {
@@ -14,10 +14,14 @@ export default function Filters() {
     to: null
   });
 
+  function getHref(r: number) {
+    return r === 1 ? "/orders/history" : "/orders"
+  }
+
   return (
     <div className="mt-10 mx-5 h-[90vh] border border-black rounded-2xl relative">
       <div className="flex flex-row justify-between p-3">
-        <button type="button" onClick={() => router.back()} >
+        <button type="button" onClick={() => router.push(getHref(0))} >
           <Image src="/close.svg" alt="Close" width="24" height="24"/>
         </button>
         <h1 className="text-black text-md font-bold">Filtre</h1>

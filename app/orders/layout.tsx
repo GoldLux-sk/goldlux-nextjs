@@ -2,6 +2,7 @@ import getSession from "@/utils/session"
 import { LayoutGrid, ListChecks, SlidersHorizontal } from "lucide-react"
 import Link from "next/link"
 import { redirect } from "next/navigation"
+import OpenFilter from "@/components/orders/OpenFilter";
 
 export default function OrderLayout({
     children,
@@ -18,7 +19,7 @@ export default function OrderLayout({
 
         <div>
             <div className="my-10 w-full relative">
-                <SlidersHorizontal className="w-6 h-6 text-black absolute left-4" />
+                <OpenFilter current={0}/>
                 <div className="flex justify-center items-center w-full">
                     <h1 className="text-black/50 text-md font-bold">Aktuálne</h1>
                 </div>
