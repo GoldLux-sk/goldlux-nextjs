@@ -58,7 +58,7 @@ export default async function Orders() {
       <div className="my-10 w-full relative">
         <OpenFilter current={0}/>
         <div className="flex justify-center items-center w-full">
-          <h1 className="text-black/50 text-md font-bold">Aktuálne</h1>
+          <h1 className="text-black/50 text-md font-bold">História</h1>
         </div>
       </div>
       <div className="px-3">
@@ -78,7 +78,7 @@ export default async function Orders() {
           ))}
         </div>
 
-        <h1 className="mt-5 text-2xl font-bold">Od 17.6 do 26.6</h1>
+        <h1 className="mt-5 text-2xl font-bold">Od 8.6 do 16.6</h1>
 
         <div className="mt-5">
           {orders.errors && orders.errors.map((error: any, index: number) => (
