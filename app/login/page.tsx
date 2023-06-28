@@ -10,7 +10,7 @@ export default function Home() {
     const password = data.get("password")
     const email = data.get("email")
 
-    const res = await fetch("https://adamdemian1-gmailcom-goldlux-payloadcms.payloadcms.app/api/users/login", {
+    const res = await fetch("http://localhost:3000/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -18,24 +18,27 @@ export default function Home() {
       body: JSON.stringify({
         email,
         password
-      })
+      }),
+      credentials: "include"
     })
 
     const resData = await res.json()
-    console.log(resData)
+
+    // Sets the token cookie
 
     // @ts-ignore
     cookies().set({
       name: "payload-token",
       value: resData.token,
-      expires: new Date(resData.expiresAt),
+      expires: new Date(`${resData.exp * 1000}`),
       path: "/",
       httpOnly: true,
       secure: true,
+      sameSite: "lax"
     })
-    console.log(resData)
-    redirect("/orders")
 
+    // Redirect to orders page
+    redirect("/orders")
   }
 
   return (

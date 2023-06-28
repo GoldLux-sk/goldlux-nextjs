@@ -11,7 +11,7 @@ async function getOrders() {
         redirect("/login")
     }
 
-    const res = await fetch("https://adamdemian1-gmailcom-goldlux-payloadcms.payloadcms.app/api/orders", {
+    const res = await fetch("http://localhost:3000/api/orders", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

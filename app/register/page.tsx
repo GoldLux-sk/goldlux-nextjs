@@ -14,7 +14,7 @@ export default function Inputs() {
       return console.log("Passwords do not match")
     }
 
-    const res = await fetch("https://adamdemian1-gmailcom-goldlux-payloadcms.payloadcms.app/api/users", {
+    const res = await fetch("http://localhost:3000/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
