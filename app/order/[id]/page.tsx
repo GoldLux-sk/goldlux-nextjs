@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import '@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css';
 import { Calendar, DayValue } from '@amir04lm26/react-modern-calendar-date-picker';
 import { useRouter, redirect } from 'next/navigation'
@@ -55,59 +55,89 @@ export default function Order({ params }: {
 
   const [selectedDay, setSelectedDay] = useState<DayValue>(dateToObj(order.start_end_date));
 
-  let timerRef = React.createRef()
+  const [startTime, setStartTime] = useState<number>(0);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [pausedOnTime, setPausedOnTime] = useState<number>(0);
+  const [diffTime, setDiffTime] = useState<number>(0);
+  const [pauseTime, setPauseTime] = useState<number>(0);
+  const [totalPauseTime, setTotalPauseTime] = useState<number>(0);
+  const [totalTime, setTotalTime] = useState<number>(0);
+  const [timer, setTimer] = useState<boolean>(false);
+  const [running, setRunning] = useState<boolean>(false);
+  const [reset, setReset] = useState<boolean>(true);
+  const [resetPause, setResetPause] = useState<boolean>(false);
+  const [r2, setR2] = useState<boolean>(false);
 
-  let startTime: number = 0;
-  let currentTime: number = 0;
-  let pausedOnTime: number = 0;
-  let diffTime: number = 0;
-  let pauseTime: number = 0;
-  let totalPauseTime: number = 0;
-  let totalTime: number = 0;
-  let timer: boolean = false;
-  let running: boolean = true;
+  useEffect(() => {
+    let interval: NodeJS.Timer;
+    if(timer) {
+      if(reset) {
+        setReset(false);
+        setR2(false);
+        setStartTime(new Date().getTime());
+        setCurrentTime(new Date().getTime());
+        setPausedOnTime(0);
+        setDiffTime(0);
+        setPauseTime(0);
+        setTotalPauseTime(0);
+        setTotalTime(0);
+        setRunning(true);
+      }
+      interval = setInterval(function() {
+        setCurrentTime(new Date().getTime());
+        setDiffTime(currentTime - startTime);
+
+        if(!running) {
+          if(!r2) setR2(true);
+          if(resetPause) {
+            setPausedOnTime(new Date().getTime());
+            setPauseTime(0);
+            setResetPause(false);
+          }
+          else setPauseTime(currentTime - pausedOnTime);
+        }
+        else {
+          if(r2) setR2(false);
+          if(pauseTime != 0) {
+            if(pauseTime > 0) setTotalPauseTime(totalPauseTime + pauseTime);
+            setPauseTime(0);
+          }
+          if(!resetPause) setResetPause(true);
+          setTotalTime(diffTime - totalPauseTime);
+        }
+      }, 100);
+    } else {
+      if(!reset || r2){
+        if(pauseTime != 0) {
+          if(pauseTime > 0) setTotalPauseTime(totalPauseTime + pauseTime);
+          setPauseTime(0);
+        }
+        if(!resetPause) setResetPause(true);
+        setTotalTime(diffTime - totalPauseTime);
+        if(reset) setR2(false);
+        setReset(true);
+      }
+      if(!running) setRunning(true);
+      // @ts-ignore
+      clearInterval(interval);
+    }
+    /*
+    console.log("TT:  " + totalTime);
+    console.log("PT:  " + pauseTime);
+    console.log("TPT: " + totalPauseTime);
+    console.log(" ");
+    */
+    return () => clearInterval(interval);
+  }, [startTime, currentTime, pausedOnTime, diffTime, pauseTime, totalPauseTime, totalTime, timer, running, reset, resetPause, r2]);
 
   function startTimer() {
-    if(!timer) {
-      startTime = new Date().getTime();
-      currentTime = new Date().getTime();
-      timer = true;
-      running = true;
-    }
-    else if(!running) running = true;
-
-    console.log("TOTAL: " + totalTime)
-    console.log("TOTAL Hours: " + formatHMS(new Date(totalTime).toISOString(), true))
+    if(!timer) setTimer(true);
+    if(!running) setRunning(true);
   }
+  function pauseTimer() { setRunning(false) }
+  function endTimer() { setTimer(false) }
 
-  function pauseTimer() {
-    running = false;
-    pausedOnTime = new Date().getTime()
-  }
-
-  function endTimer() {
-    timer = false;
-  }
-
-  let t = setInterval(function() {
-    if(!timer) return;
-
-    currentTime = new Date().getTime();
-    diffTime = currentTime - startTime;
-
-    if(!running) pauseTime = currentTime - pausedOnTime;
-    else {
-      if(pauseTime != 0) {
-        totalPauseTime += pauseTime;
-        pauseTime = 0;
-      }
-      totalTime = diffTime - totalPauseTime;
-    }
-
-    console.log("TT: " + totalTime);
-    console.log("PT: " + pauseTime);
-    console.log(" ");
-  }, 1000);
+  const bgColors: string[] = ['', '', ''];
 
   return (
     <div className="mx-3 mt-6">
@@ -123,7 +153,7 @@ export default function Order({ params }: {
         <Calendar
           calendarClassName="responsive-calendar"
           value={selectedDay}
-          onChange={setSelectedDay}
+          onChange={() => null}
           colorPrimary="#FF3B30"
           colorPrimaryLight="#F4CFCD"
         />
@@ -151,7 +181,7 @@ export default function Order({ params }: {
       </div>
 
       <div className="mt-3 flex flex-col justify-center items-center">
-        <div className="flex flex-col items-center w-[90vw] h-14 bg-gray-100 rounded-2xl border border-neutral-700">
+        <div className={`flex flex-col items-center w-[90vw] h-14 bg-${!running ? 'amber' : timer ? 'green' : 'gray'}-100 rounded-2xl border border-neutral-700`}>
           <p className="w-[166px] h-7 text-black text-[40px] font-normal">{formatHMS(new Date(totalTime).toISOString(), true)}</p>
         </div>
         <button type="button" onClick={() => startTimer()} >
