@@ -5,6 +5,7 @@ import '@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css';
 import { Calendar, DayValue } from '@amir04lm26/react-modern-calendar-date-picker';
 import { useRouter, redirect } from 'next/navigation'
 import Image from "next/image";
+import Modal from 'react-modal';
 import {cookies} from "next/headers";
 
 export default function Order({ params }: {
@@ -55,6 +56,10 @@ export default function Order({ params }: {
 
   const [selectedDay, setSelectedDay] = useState<DayValue>(dateToObj(order.start_end_date));
 
+  const [addIsOpen, setAddOpen] = useState<boolean>(false);
+  const [cancelIsOpen, setCancelOpen] = useState<boolean>(false);
+  Modal.setAppElement('#root');
+
   const [startTime, setStartTime] = useState<number>(0);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [pausedOnTime, setPausedOnTime] = useState<number>(0);
@@ -101,13 +106,12 @@ export default function Order({ params }: {
           if(pauseTime != 0) {
             if(pauseTime > 0) setTotalPauseTime(totalPauseTime + pauseTime);
             setPauseTime(0);
-          }
+          } else setTotalTime(diffTime - totalPauseTime);
           if(!resetPause) setResetPause(true);
-          setTotalTime(diffTime - totalPauseTime);
         }
       }, 100);
     } else {
-      if(!reset || r2){
+      if(!reset || r2) {
         if(pauseTime != 0) {
           if(pauseTime > 0) setTotalPauseTime(totalPauseTime + pauseTime);
           setPauseTime(0);
@@ -137,7 +141,18 @@ export default function Order({ params }: {
   function pauseTimer() { setRunning(false) }
   function endTimer() { setTimer(false) }
 
-  const bgColors: string[] = ['', '', ''];
+  /** 0: paused, 1: running, 2: stopped */
+  const bgCol: string[] = ['gray-100', 'green-100', 'amber-100'];
+
+  //TODO
+  function submitOrder() {
+    router.push("/orders");
+  }
+
+  // TODO
+  function cancelOrder() {
+    router.push("/orders/");
+  }
 
   return (
     <div className="mx-3 mt-6">
@@ -149,15 +164,19 @@ export default function Order({ params }: {
         <div className="w-6 h-6"/>
       </div>
 
-      <div className="mt-3 px-3 flex flex-col items-center">
-        <Calendar
-          calendarClassName="responsive-calendar"
-          value={selectedDay}
-          onChange={() => null}
-          colorPrimary="#FF3B30"
-          colorPrimaryLight="#F4CFCD"
-        />
-      </div>
+      {!addIsOpen && !cancelIsOpen ?
+        <div className="mt-3 px-3 flex flex-col items-center">
+          <Calendar
+            calendarClassName="responsive-calendar"
+            value={selectedDay}
+            onChange={() => null}
+            colorPrimary="#FF3B30"
+            colorPrimaryLight="#F4CFCD"
+          />
+        </div>
+        : null
+      }
+
 
       <div className="mt-5 mx-5 grid grid-cols-4 gap-4">
         <p className="col-span-2 font-semibold">Odhadovaný čas:</p>
@@ -181,7 +200,7 @@ export default function Order({ params }: {
       </div>
 
       <div className="mt-3 flex flex-col justify-center items-center">
-        <div className={`flex flex-col items-center w-[90vw] h-14 bg-${!running ? 'amber' : timer ? 'green' : 'gray'}-100 rounded-2xl border border-neutral-700`}>
+        <div className={`flex flex-col items-center w-[90vw] h-14 bg-${bgCol[!running ? 2 : timer ? 1 : 0]} rounded-2xl border border-neutral-700`}>
           <p className="w-[166px] h-7 text-black text-[40px] font-normal">{formatHMS(new Date(totalTime).toISOString(), true)}</p>
         </div>
         <button type="button" onClick={() => startTimer()} >
@@ -199,7 +218,61 @@ export default function Order({ params }: {
             </div>
           </button>
         </div>
+
+        <button className="mt-8" type="button" /*onClick={() => setAddOpen(true)}*/>
+          <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-2xl border border border border border-neutral-800">
+            <Image src="/plus.svg" alt="Add" width="28" height="28"/>
+            <div className="text-black font-normal">PRIDAŤ HODINY</div>
+          </div>
+        </button>
+        <button className="mt-8" type="button" onClick={() => setCancelOpen(true)}>
+          <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-2xl border border border border border-neutral-800">
+            <Image src="/close.svg" alt="Add" width="28" height="28"/>
+            <div className=" text-black font-normal">Zrušiť Objednávku</div>
+          </div>
+        </button>
+        <button className="mt-5 mb-10" type="button" onClick={() => submitOrder()}>
+          <div className="flex flex-col justify-center items-center w-[132px] h-[63px] bg-white rounded-2xl border border-neutral-800">
+            <p className="text-center text-black text-[24px] font-normal">HOTOVO</p>
+          </div>
+        </button>
       </div>
+
+      <Modal
+        isOpen={cancelIsOpen}
+        onRequestClose={() => setCancelOpen(false)}
+        contentLabel="Cancel Order"
+        className="custom-modal"
+      >
+        <div className="bg-white w-screen">
+          <h1 className="text-center mt-8 text-black/50 text-md font-bold">{`Objednávka ${params.id}`}</h1>
+          <div className="mx-5 h-[90vh] border border-black rounded-2xl relative">
+            <div className="flex flex-row justify-between p-3">
+              <button type="button" onClick={() => setCancelOpen(false)}>
+                <Image src="/close.svg" alt="Close" width="24" height="24"/>
+              </button>
+              <h1 className="text-black text-md font-bold">Pridať hodiny</h1>
+              <div className="w-6 h-6"/>
+            </div>
+            <hr className="w-full h-px bg-black border-0"/>
+
+            <div className="mt-10 flex flex-col items-center">
+              <div className="grid grid-cols-2 gap-5">
+                <button type="button" onClick={() => setCancelOpen(false)}>
+                  <div className="w-[40vw] h-12 px-5 py-[13px] bg-rose-500 rounded-2xl border border-zinc-800 justify-center items-center gap-2.5">
+                    <div className="text-center text-white text-[17px] font-semibold leading-snug">Naspäť</div>
+                  </div>
+                </button>
+                <button type="button" onClick={() => cancelOrder()}>
+                  <div className="w-full h-12 px-5 py-[13px] bg-rose-500 rounded-2xl border border-zinc-800 justify-center items-center gap-2.5">
+                    <div className="text-center text-white text-[17px] font-semibold leading-snug">Zrušiť</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
 
     </div>
   )
