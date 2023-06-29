@@ -1,5 +1,5 @@
 import LogOutButton from "@/components/common/LogOutButton";
-import OrderCard from "@/components/common/OrderCard";
+import OrderCard from "@/components/orders/OrderCard";
 
 export default  function Home() {
 

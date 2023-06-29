@@ -13,7 +13,7 @@ export default async function LogOutButton() {
 
     return (
         <form action={logOut}>
-            <button type="submit" className="text-lg border-2 rounded-xl px-5 h-10">Log out</button>
+            <button type="submit" className="text-lg bg-white border-2 rounded-xl px-5 h-10">Log out</button>
         </form>
     )
 }
