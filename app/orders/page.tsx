@@ -6,7 +6,7 @@ import OpenFilter from "@/components/orders/OpenFilter";
 import OrderCard from "@/components/orders/OrderCard";
 
 async function getOrders() {
-    const token = cookies().get("payload-token")?.value
+    const token = cookies().get("payload-token")
     console.log(token)
 
     if (!token) {
@@ -15,11 +15,12 @@ async function getOrders() {
 
     const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders`, {
         method: "GET",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `JWT ${token}`
+            Authorization: `JWT ${token.value}`,
         },
-        credentials: "include",
+        cache: "no-store",
     }).then(res => res.json())
 
     return res
@@ -92,7 +93,7 @@ export default async function Orders() {
                             <div>
                                 <h3 className="text-xl mt-1 pl-3">{formatHour(order.estimated_start)}</h3>
                             </div>
-                            <OrderCard id={order.id} title={`Objednávka ${index + 1}`} date={formatDate(order.estimated_start)} status={`Stav: ${order.status}`}/>
+                            <OrderCard id={order.id} title={`Objednávka ${index + 1}`} date={formatDate(order.estimated_start)} status={`Stav: ${order.status}`} />
                         </div>
                     ))}
                 </div>
