@@ -18,11 +18,11 @@ export default function OrdersLayout({
 
         <div>
             {children}
-            <nav className="flex fixed bottom-3 w-full">
-                <Link href="/orders" className="w-1/2 border border-b-0 border-r-0 pb-3 pt-2 flex justify-center">
+            <nav className="flex bg-white fixed bottom-0 w-full">
+                <Link href="/orders" className="pb-6 w-1/2 border border-b-0 border-r-0 pb-3 pt-2 flex justify-center">
                     <LayoutGrid className="w-7 h-7 text-black" />
                 </Link>
-                <Link href="/orders/history" className="w-1/2 border border-b-0 pb-3 pt-2 flex justify-center">
+                <Link href="/orders/history" className="pb-6 w-1/2 border border-b-0 pb-3 pt-2 flex justify-center">
                     <ListChecks className="w-7 h-7 text-black" />
                 </Link>
             </nav>

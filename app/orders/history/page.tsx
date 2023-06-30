@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import Image from 'next/image';
 import { redirect } from "next/navigation";
 import OpenFilter from "@/components/orders/OpenFilter";
+import OrderCard from "@/components/orders/OrderCard";
 
 async function getOrders() {
   const token = cookies().get("payload-token")?.value
@@ -80,7 +81,7 @@ export default async function Orders() {
 
         <h1 className="mt-5 text-2xl font-bold">Od 8.6 do 16.6</h1>
 
-        <div className="mt-5">
+        <div className="mt-5 mb-11">
           {orders.errors && orders.errors.map((error: any, index: number) => (
             <p key={index}>{error.message}</p>
           ))}
@@ -91,15 +92,11 @@ export default async function Orders() {
               <div>
                 <h3 className="text-xl mt-1 pl-3">{formatHour(order.estimated_start)}</h3>
               </div>
-              <div className="border rounded-xl w-full px-3 my-5">
-                <h3 className="text-lg font-bold mt-1">Objednávka {index + 1}</h3>
-                <p className="text-lg font-bold">{formatDate(order.estimated_start)}</p>
-                <p className="text-lg font-bold mb-1">Stav: {order.status}</p>
-              </div>
+              <OrderCard id={order.id} title={`Objednávka ${index + 1}`} date={formatDate(order.estimated_start)} status={`Stav: ${order.status}`}/>
             </div>
           ))}
         </div>
-        <div className="absolute bottom-16">
+        <div className="fixed bottom-16">
           {/* @ts-expect-error Server Component */}
           <LogOutButton />
         </div>
