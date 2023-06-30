@@ -2,7 +2,6 @@
 
 import React, {FunctionComponent} from "react";
 import Image from "next/image";
-// @ts-ignore
 import Modal from 'react-modal';
 
 type CancelOrderProps = {
@@ -41,7 +40,7 @@ const CancelOrder: FunctionComponent<CancelOrderProps> = ({
                   <div className="text-center text-white text-[17px] font-semibold leading-snug">Naspäť</div>
                 </div>
               </button>
-              <button type="button" onClick={() => cancelOrder()}>
+              <button type="button" onClick={() => {setOpen(false); cancelOrder();}}>
                 <div className="w-full h-12 px-5 py-[13px] bg-rose-500 rounded-2xl border border-zinc-800 justify-center items-center gap-2.5">
                   <div className="text-center text-white text-[17px] font-semibold leading-snug">Zrušiť</div>
                 </div>

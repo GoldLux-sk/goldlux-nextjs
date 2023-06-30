@@ -2,7 +2,6 @@
 
 import React, { FunctionComponent, useState } from "react";
 import Image from "next/image";
-// @ts-ignore
 import Modal from 'react-modal';
 
 type CancelOrderProps = {
@@ -118,7 +117,7 @@ const CancelOrder: FunctionComponent<CancelOrderProps> = ({
               <Image src="/confirm.svg" alt="Close" width="86" height="86"/>
             </button>
             <button className="mt-8" type="button" onClick={() => reset()}>
-              <div className="px-2 flex flex-row justify-center items-center gap-2 h-12 bg-white rounded-2xl border border border border border-neutral-800">
+              <div className="px-2 flex flex-row justify-center items-center gap-2 h-12 bg-white rounded-2xl border border-neutral-800">
                 <Image src="/close.svg" alt="Add" width="28" height="28"/>
                 <div className="mr-3 text-black font-normal">Vynulovať</div>
               </div>

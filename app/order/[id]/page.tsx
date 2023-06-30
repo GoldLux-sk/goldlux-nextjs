@@ -236,13 +236,13 @@ export default function Order({ params }: {
         </div>
 
         <button className="mt-8" type="button" onClick={() => setAddOpen(true)}>
-          <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-2xl border border border border border-neutral-800">
+          <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-2xl border border-neutral-800">
             <Image src="/plus.svg" alt="Add" width="28" height="28"/>
             <div className="text-black font-normal">PRIDAŤ HODINY</div>
           </div>
         </button>
         <button className="mt-8" type="button" onClick={() => setCancelOpen(true)}>
-          <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-2xl border border border border border-neutral-800">
+          <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-2xl border border-neutral-800">
             <Image src="/close.svg" alt="Add" width="28" height="28"/>
             <div className=" text-black font-normal">Zrušiť Objednávku</div>
           </div>
