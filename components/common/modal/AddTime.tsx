@@ -4,7 +4,7 @@ import React, { FunctionComponent, useState } from "react";
 import Image from "next/image";
 import Modal from 'react-modal';
 
-type CancelOrderProps = {
+type AddTimeProps = {
   isOpen: boolean,
   setOpen: (_: boolean) => void,
   id: string,
@@ -12,7 +12,7 @@ type CancelOrderProps = {
   addTime: (time: number) => void,
 }
 
-const CancelOrder: FunctionComponent<CancelOrderProps> = ({
+const AddTime: FunctionComponent<AddTimeProps> = ({
   isOpen, setOpen, id, time, addTime
 }) => {
 
@@ -89,7 +89,7 @@ const CancelOrder: FunctionComponent<CancelOrderProps> = ({
     <Modal
       isOpen={isOpen}
       onRequestClose={() => setOpen(false)}
-      contentLabel="Cancel Order"
+      contentLabel="Add Time"
       className="custom-modal"
     >
       <div className="bg-white w-screen">
@@ -128,4 +128,4 @@ const CancelOrder: FunctionComponent<CancelOrderProps> = ({
   )
 }
 
-export default CancelOrder;
+export default AddTime;

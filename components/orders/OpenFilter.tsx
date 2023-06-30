@@ -2,17 +2,19 @@
 
 import { redirect } from "next/navigation"
 import {SlidersHorizontal} from "lucide-react";
-import React, {FunctionComponent} from "react";
+import React, {FunctionComponent, useState} from "react";
+import FilterModal from "@/components/common/modal/FilterModal";
 
-const OpenFilter: FunctionComponent<{current: number}> = ({
-  current
-}) => {
+const OpenFilter: FunctionComponent = () => {
+
+  const [isFilterOpen, setFilterOpen] = useState<boolean>(false);
 
   return (
-    <form action={() => redirect("/filters?r=" + current)}>
+    <form action={() => setFilterOpen(true)}>
       <button type="submit">
         <SlidersHorizontal className="w-6 h-6 text-black absolute left-4" />
       </button>
+      <FilterModal isOpen={isFilterOpen} setOpen={setFilterOpen}/>
     </form>
   )
 }

@@ -57,7 +57,7 @@ export default async function Orders() {
     return (
         <div>
             <div className="my-10 w-full relative">
-                <OpenFilter current={0} />
+                <OpenFilter />
                 <div className="flex justify-center items-center w-full">
                     <h1 className="text-black/50 text-md font-bold">Aktuálne</h1>
                 </div>
