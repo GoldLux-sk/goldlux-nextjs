@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import OpenFilter from "@/components/orders/OpenFilter";
 
 async function getOrders() {
-    const token = cookies().get("payload-token")?.value
+    const token = cookies().get("payload-token")
     console.log(token)
 
     if (!token) {
@@ -14,11 +14,13 @@ async function getOrders() {
 
     const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders`, {
         method: "GET",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `JWT ${token}`
+            // Cookie: `${token.name}=${token.value}`,
+            Authorization: `JWT ${token.value}`,
         },
-        credentials: "include",
+        cache: "no-store",
     }).then(res => res.json())
 
     return res
