@@ -17,7 +17,7 @@ export default function Order({ params }: {
   const router = useRouter()
 
   // temp
-  const order =  {
+  const order: any =  {
     id: params.id,
     status: "planned",
     start_end_date: "2023-06-16T22:00:00.000Z",
@@ -25,7 +25,7 @@ export default function Order({ params }: {
     estimated_end: "2023-06-23T21:00:00.871Z",
     estimated_duration_h: 0.5,
     real_start: "2023-06-23T20:00:00.331Z",
-    real_end: "2023-06-23T21:00:00.726Z",
+    //real_end: "2023-06-23T21:00:00.726Z",
     real_duration_h: 1,
     manual_price: 15,
     createdAt: "2023-06-23T20:13:09.845Z",
@@ -44,7 +44,7 @@ export default function Order({ params }: {
     const date = new Date(dateString);
     const hour = utc ? date.getUTCHours() : date.getHours();
     const minutes = utc ? date.getUTCMinutes() : date.getMinutes();
-    if(hour == null || isNaN(hour) || minutes == null || isNaN(minutes)) return '--:--';
+    if(hour == null || isNaN(hour) || minutes == null || isNaN(minutes)) return '- - : - -';
     return `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   }
 
@@ -52,8 +52,9 @@ export default function Order({ params }: {
     const date = new Date(dateString);
     const HM = formatHM(dateString, utc);
     const seconds = utc ? date.getUTCSeconds() : date.getSeconds();
+    const days = parseInt(date.getTime() / 86400000 + ""); // ms / (1000 * 3600 * 24)
     if(HM.includes('-') || seconds == null || isNaN(seconds)) return '--:--:--';
-    return `${HM}:${seconds.toString().padStart(2, '0')}`;
+    return `${days > 0 ? days+'d ' : ''}${HM}:${seconds.toString().padStart(2, '0')}`;
   }
 
   const [selectedDay, setSelectedDay] = useState<DayValue>(dateToObj(order.start_end_date));
@@ -154,7 +155,7 @@ export default function Order({ params }: {
   }
 
   //TODO
-  function submitOrder() {
+  async function submitOrder() {
     router.push("/orders");
   }
 
@@ -163,12 +164,10 @@ export default function Order({ params }: {
     router.push("/orders");
   }
 
-  //TODO
   function addTime(time: number) {
     setUpdateAdded(true);
     setAddedTime(Math.max(0, Math.min(24*3600*1000, time)));
     setTotalTime(diffTime - totalPauseTime + addedTime);
-    console.log(addedTime);
   }
 
   return (
@@ -212,12 +211,12 @@ export default function Order({ params }: {
         </div>
 
         <p className="col-span-2 font-semibold">Hodinovka:</p>
-        <p className="col-span-2 font-semibold pl-2">{order.manual_price}$/h</p>
+        <p className="col-span-2 font-semibold pl-2">{order.manual_price || '?'}$/h</p>
       </div>
 
       <div className="mt-3 flex flex-col justify-center items-center">
         <div className={`flex flex-col items-center w-[90vw] h-14 ${bgCol()} rounded-2xl border border-neutral-700`}>
-          <p className="w-[166px] h-7 text-black text-[40px] font-normal">{formatHMS(new Date(totalTime).toISOString(), true)}</p>
+          <p className=" h-7 text-black text-[40px] font-normal">{formatHMS(new Date(totalTime).toISOString(), true)}</p>
         </div>
         <button type="button" onClick={() => startTimer()} >
           <Image src="/start.svg" alt="Start" width="113" height="113"/>

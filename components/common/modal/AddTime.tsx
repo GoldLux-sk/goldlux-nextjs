@@ -49,7 +49,7 @@ const CancelOrder: FunctionComponent<CancelOrderProps> = ({
     while(mins >= 60) {
       if(hours >= 23) {
         mins = 59;
-        return;
+        break;
       }
       hrs++;
       mins -= 60;
@@ -76,7 +76,6 @@ const CancelOrder: FunctionComponent<CancelOrderProps> = ({
 
   function finalTime() {
     const time = (hours * 3600 * 1000) + (minutes * 60 * 1000) + (seconds * 1000);
-    console.log(time);
     addTime(time);
   }
 
