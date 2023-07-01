@@ -1,5 +1,6 @@
 'use client'
 import React, { createContext, useState, useContext } from 'react';
+import Modal from 'react-modal';
 
 type ModalStateContextProps = {
     isAddOpen: boolean;
@@ -13,6 +14,8 @@ const ModalStateContext = createContext<ModalStateContextProps | undefined>(unde
 export const ModalStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
     const [isCancelOpen, setIsCancelOpen] = useState<boolean>(false);
+
+    Modal.setAppElement('#root');
 
     return (
         <ModalStateContext.Provider value={{ isAddOpen, setIsAddOpen, isCancelOpen, setIsCancelOpen }}>

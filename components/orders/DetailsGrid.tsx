@@ -32,23 +32,25 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
     }
 
+    const timeStyle = "p-1 bg-gray-100 rounded-md justify-center inline-flex";
 
     return (
-        <div className="w-full mx-10 mt-5 justify-center grid grid-cols-2 gap-4 p-2">
-            <div>Odhadovany cas:</div>
-            <div className="flex gap-5">
-                <div>{formatTime(order.estimated_start)}</div>
-                <div>{formatTime(order.estimated_end)}</div>
-            </div>
-            <div>Stav:</div>
-            <div>{order.status}</div>
-            <div>Real End Time:</div>
-            <div className="flex gap-5">
-                <div>{formatTime(order.real_start)}</div>
-                <div>{formatTime(order.real_end)}</div>
-            </div>
-            {/* Add more fields as necessary */}
-        </div>
+      <div className="mt-5 mx-8 grid grid-cols-4 gap-4">
+        <div className="col-span-2 font-semibold">Stav:</div>
+        <div className="col-span-2 pl-2">{order.status}</div>
+
+        <div className="col-span-2 font-semibold">Odhadovaný čas:</div>
+        <div className={timeStyle}>{formatTime(order.estimated_start)}</div>
+        <div className={timeStyle}>{formatTime(order.estimated_end)}</div>
+
+        <div className="col-span-2 font-semibold">Reálný čas:</div>
+        <div className={timeStyle}>{formatTime(order.real_start)}</div>
+        <div className={timeStyle}>{formatTime(order.real_end)}</div>
+
+        <div className="col-span-2 font-semibold">Hodinovka:</div>
+        <div className="col-span-2 font-semibold pl-2">{order.manual_price || '?'}$/h</div>
+        {/* Add more fields as necessary */}
+      </div>
     );
 };
 

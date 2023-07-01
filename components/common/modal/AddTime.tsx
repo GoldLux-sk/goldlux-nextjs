@@ -6,7 +6,7 @@ import Modal from 'react-modal';
 
 type AddTimeProps = {
   isOpen: boolean,
-  setOpen: (_: boolean) => void,
+  setOpen: (open: boolean) => void,
   id: string,
   time: number,
   addTime: (time: number) => void,
@@ -91,9 +91,10 @@ const AddTime: FunctionComponent<AddTimeProps> = ({
       onRequestClose={() => setOpen(false)}
       contentLabel="Add Time"
       className="custom-modal"
+      overlayClassName="modal-overlay"
     >
-      <div className="bg-white w-screen">
-        <h1 className="text-center mt-8 text-black/50 text-md font-bold">{`Objednávka ${id}`}</h1>
+      <div className="bg-white w-screen h-screen">
+        <h1 className="text-center mt-16 text-black/50 text-md font-bold">{`Objednávka ${id}`}</h1>
         <div className="mx-5 h-[90vh] border border-black rounded-2xl relative">
           <div className="flex flex-row justify-between p-3">
             <button type="button" onClick={() => setOpen(false)}>

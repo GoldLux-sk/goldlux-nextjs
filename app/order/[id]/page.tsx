@@ -4,6 +4,8 @@ import OrderNavbar from "@/components/orders/Navbar"
 import { ModalStateProvider } from "@/components/orders/context/ModalStateContext"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import Timer from "@/components/orders/Timer";
+import CancelSubmit from "@/components/orders/CancelSubmit";
 
 type Order = {
   id: string
@@ -50,6 +52,8 @@ export default async function Order({ params }: {
         <OrderNavbar orderId={order.id} />
         <CalendarDate startEndDate={order.start_end_date} />
         <DetailsGrid order={order} />
+        <Timer id={params.id} />
+        <CancelSubmit id={params.id} />
       </ModalStateProvider>
     </div>
   )
