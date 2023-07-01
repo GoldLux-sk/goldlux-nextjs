@@ -56,7 +56,7 @@ export default function Home() {
           <label htmlFor="password" className="font-light">Heslo</label>
           <input {...register("password", { required: true })} type="password" name="password" placeholder="Heslo" className="border-2 border-black rounded-2xl h-12 px-3 mb-2" />
 
-          {errors.password?.type === 'required' || errors.email?.type === 'required' && (
+          {(errors.password?.type === 'required' || errors.email?.type === 'required') && (
             <p role="alert" className="mt-10 text-center text-red-500">Najprv, vyplnte políčka, touto cestou sa budete vedieť prihlásiť do aplikácie.</p>
           )}
           {error && <p role="alert" className="mt-10 text-center text-red-500">{error}</p>}

@@ -1,37 +1,56 @@
-import { redirect } from "next/navigation"
+"use client"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Toaster, toast } from "react-hot-toast";
 
-export default function Inputs() {
+type Inputs = {
+  email: string,
+  password: string
+  passwordRetry: string
+}
 
-  async function Register(data: FormData) {
-    'use server'
+export default function Register() {
+  const [error, setError] = useState<string>("")
+  const router = useRouter();
+  const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
-    const email = data.get("email")
-    const password = data.get("password")
-    const passwordRetry = data.get("passwordRetry")
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
-    if (password !== passwordRetry) {
-      return console.log("Passwords do not match")
+    if (data.passwordRetry !== data.password) {
+      setError("Heslá sa nezhodujú.")
+      return
     }
 
-    const res = await fetch("http://localhost:3000/api/users", {
+    const res = await fetch(`http://localhost:3000/api/users`, {
       method: "POST",
+      credentials: "include",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email,
-        password
-      })
+        email: data.email,
+        password: data.password
+      }),
     }).then(res => res.json())
 
     console.log(res)
 
-    redirect("/")
+    if (res.errors) {
+      setError(res.errors[0].data[0].message)
+    }
+    if (res.doc) {
+      toast.success("Registrácia prebehla úspešne. Môžete sa prihlásiť.", {
+        duration: 1999,
+      })
+      setTimeout(() => router.push('/login'), 2000)
+    }
   }
 
   return (
     <div className="h-screen w-full flex flex-col items-center">
+      <Toaster />
       <div className="flex items-center justify-center mt-10">
         <h1 className="text-lg font-semibold opacity-50">Registrovanie</h1>
       </div>
@@ -41,15 +60,19 @@ export default function Inputs() {
       </div>
 
       <div className="mt-20 flex flex-col gap-5 w-3/4 max-w-2xl">
-        <form action={Register} className="flex flex-col">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <label htmlFor="name" className="font-light">Email</label>
-          <input type="email" name="email" required placeholder="email@text.com" className="border-2 border-black rounded-2xl h-12 px-3 mb-2" />
+          <input {...register("email", { required: true })} type="email" name="email" required placeholder="email@text.com" className="border-2 border-black rounded-2xl h-12 px-3 mb-2" />
           <label htmlFor="password" className="font-light">Heslo</label>
-          <input type="password" name="password" placeholder="Heslo" className="border-2 border-black rounded-2xl h-12 px-3 mb-2" />
+          <input {...register("password", { required: true })} type="password" name="password" placeholder="Heslo" className="border-2 border-black rounded-2xl h-12 px-3 mb-2" />
           <label htmlFor="passwordRetry" className="font-light">Zopakujte Vaše Heslo</label>
-          <input type="password" name="passwordRetry" placeholder="Znova heslo" className="border-2 border-black rounded-2xl h-12 px-3" />
-          <div className="mt-12 flex justify-center">
-            <input type="submit" value="Zaregistrovať sa" className="px-5 h-11 w-44 border-2 transition-colors duration-300 hover:border-black cursor-pointer font-medium rounded-2xl" />
+          <input {...register("passwordRetry", { required: true })} type="password" name="passwordRetry" placeholder="Znova heslo" className="border-2 border-black rounded-2xl h-12 px-3" />
+
+          {errors && <p role="alert" className="text-red-500 mt-10 text-center">{errors.password && "Heslo je povinné."}</p>}
+          {errors && <p role="alert" className="text-red-500 mt-10 text-center">{errors.passwordRetry && "Zopakujte prosim heslo."}</p>}
+          {error && <p role="alert" className="text-red-500 mt-10 text-center">{error}</p>}
+          <div className="flex mt-28 justify-center">
+            <input type="submit" value="Zaregistrovať sa" className="px-5 mt-10 h-11 w-44 border-2 transition-colors duration-300 hover:border-black cursor-pointer font-medium rounded-2xl" />
           </div>
         </form>
       </div>

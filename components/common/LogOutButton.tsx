@@ -1,8 +1,9 @@
 "use client"
 
+import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default async function LogOutButton() {
+export default function LogOutButton() {
 
     const router = useRouter();
 
@@ -26,8 +27,6 @@ export default async function LogOutButton() {
     }
 
     return (
-        <form onSubmit={onSubmit}>
-            <button type="submit" className="text-lg border-2 rounded-xl px-5 h-10">Log out</button>
-        </form>
+        <LogOut onClick={onSubmit} className="cursor-pointer absolute right-5 top-5 w-6 h-6" />
     )
 }
