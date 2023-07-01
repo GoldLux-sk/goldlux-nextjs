@@ -7,7 +7,6 @@ import OrderCard from "@/components/orders/OrderCard";
 
 async function getOrders() {
     const token = cookies().get("payload-token")
-    console.log(token)
 
     if (!token) {
         redirect("/login")
@@ -26,9 +25,30 @@ async function getOrders() {
     return res
 }
 
+async function getUser() {
+    const token = cookies().get("payload-token")
+
+    if (!token) {
+        redirect("/login")
+    }
+
+    const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/users/me`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `JWT ${token.value}`,
+        },
+        cache: "no-store",
+    }).then(res => res.json())
+
+    return res
+}
+
 export default async function Orders() {
 
     const orders = await getOrders()
+    const { user } = await getUser()
 
     // zatial placeholder
     let customers = [
@@ -38,7 +58,7 @@ export default async function Orders() {
         { id: 3, name: "Zakaznik 4", select: false },
     ]
 
-    console.log(orders);
+    console.log(user.role);
 
     function formatDate(dateString: string) {
         const date = new Date(dateString);
@@ -66,7 +86,7 @@ export default async function Orders() {
             <div className="px-3">
 
                 <div className="flex flex-row justify-around">
-                    {customers.map(customer => (
+                    {(user.role === 'admin' || user.role === 'cleaner') && customers.map(customer => (
                         <button className="mx-1 flex flex-col" key={customer.id}>
                             <Image
                                 className="self-center"

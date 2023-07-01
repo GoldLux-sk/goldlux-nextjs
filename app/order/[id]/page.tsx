@@ -6,7 +6,7 @@ import { Calendar, DayValue } from '@amir04lm26/react-modern-calendar-date-picke
 import { useRouter, redirect } from 'next/navigation'
 import Image from "next/image";
 import Modal from 'react-modal';
-import {cookies} from "next/headers";
+import { cookies } from "next/headers";
 import CancelOrder from "@/components/common/modal/CancelOrder";
 import AddTime from "@/components/common/modal/AddTime";
 
@@ -17,7 +17,7 @@ export default function Order({ params }: {
   const router = useRouter()
 
   // temp
-  const order: any =  {
+  const order: any = {
     id: params.id,
     status: "planned",
     start_end_date: "2023-06-16T22:00:00.000Z",
@@ -44,7 +44,7 @@ export default function Order({ params }: {
     const date = new Date(dateString);
     const hour = utc ? date.getUTCHours() : date.getHours();
     const minutes = utc ? date.getUTCMinutes() : date.getMinutes();
-    if(hour == null || isNaN(hour) || minutes == null || isNaN(minutes)) return '- - : - -';
+    if (hour == null || isNaN(hour) || minutes == null || isNaN(minutes)) return '- - : - -';
     return `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   }
 
@@ -53,8 +53,8 @@ export default function Order({ params }: {
     const HM = formatHM(dateString, utc);
     const seconds = utc ? date.getUTCSeconds() : date.getSeconds();
     const days = parseInt(date.getTime() / 86400000 + ""); // ms / (1000 * 3600 * 24)
-    if(HM.includes('-') || seconds == null || isNaN(seconds)) return '--:--:--';
-    return `${days > 0 ? days+'d ' : ''}${HM}:${seconds.toString().padStart(2, '0')}`;
+    if (HM.includes('-') || seconds == null || isNaN(seconds)) return '--:--:--';
+    return `${days > 0 ? days + 'd ' : ''}${HM}:${seconds.toString().padStart(2, '0')}`;
   }
 
   const [selectedDay, setSelectedDay] = useState<DayValue>(dateToObj(order.start_end_date));
@@ -80,8 +80,8 @@ export default function Order({ params }: {
 
   useEffect(() => {
     let interval: NodeJS.Timer;
-    if(timer) {
-      if(reset) {
+    if (timer) {
+      if (reset) {
         setReset(false);
         setR2(false);
         setStartTime(new Date().getTime());
@@ -93,13 +93,13 @@ export default function Order({ params }: {
         setTotalTime(addedTime);
         setRunning(true);
       }
-      interval = setInterval(function() {
+      interval = setInterval(function () {
         setCurrentTime(new Date().getTime());
         setDiffTime(currentTime - startTime);
 
-        if(!running) {
-          if(!r2) setR2(true);
-          if(resetPause) {
+        if (!running) {
+          if (!r2) setR2(true);
+          if (resetPause) {
             setPausedOnTime(new Date().getTime());
             setPauseTime(0);
             setResetPause(false);
@@ -107,27 +107,27 @@ export default function Order({ params }: {
           else setPauseTime(currentTime - pausedOnTime);
         }
         else {
-          if(r2) setR2(false);
-          if(pauseTime != 0) {
-            if(pauseTime > 0) setTotalPauseTime(totalPauseTime + pauseTime);
+          if (r2) setR2(false);
+          if (pauseTime != 0) {
+            if (pauseTime > 0) setTotalPauseTime(totalPauseTime + pauseTime);
             setPauseTime(0);
           } else setTotalTime(diffTime - totalPauseTime + addedTime);
-          if(!resetPause) setResetPause(true);
+          if (!resetPause) setResetPause(true);
         }
       }, 100);
     } else {
-      if(!reset || r2) {
-        if(pauseTime != 0) {
-          if(pauseTime > 0) setTotalPauseTime(totalPauseTime + pauseTime);
+      if (!reset || r2) {
+        if (pauseTime != 0) {
+          if (pauseTime > 0) setTotalPauseTime(totalPauseTime + pauseTime);
           setPauseTime(0);
         }
-        if(!resetPause) setResetPause(true);
+        if (!resetPause) setResetPause(true);
         setTotalTime(diffTime - totalPauseTime + addedTime);
-        if(reset) setR2(false);
+        if (reset) setR2(false);
         setReset(true);
       }
-      if(!running) setRunning(true);
-      if(updateAdded) {
+      if (!running) setRunning(true);
+      if (updateAdded) {
         setUpdateAdded(false);
         setTotalTime(diffTime - totalPauseTime + addedTime);
       }
@@ -144,8 +144,8 @@ export default function Order({ params }: {
   }, [startTime, currentTime, pausedOnTime, diffTime, pauseTime, totalPauseTime, totalTime, timer, running, reset, resetPause, r2, addedTime, updateAdded]);
 
   function startTimer() {
-    if(!timer) setTimer(true);
-    if(!running) setRunning(true);
+    if (!timer) setTimer(true);
+    if (!running) setRunning(true);
   }
   function pauseTimer() { setRunning(false) }
   function endTimer() { setTimer(false) }
@@ -166,18 +166,18 @@ export default function Order({ params }: {
 
   function addTime(time: number) {
     setUpdateAdded(true);
-    setAddedTime(Math.max(0, Math.min(24*3600*1000, time)));
+    setAddedTime(Math.max(0, Math.min(24 * 3600 * 1000, time)));
     setTotalTime(diffTime - totalPauseTime + addedTime);
   }
 
   return (
     <div className="mx-3 mt-6">
       <div className="flex flex-row justify-between p-3">
-        <button type="button" onClick={() => router.back()} >
-          <Image src="/back.svg" alt="Back" width="24" height="24"/>
+        <button type="button" onClick={() => router.push('/orders')} >
+          <Image src="/back.svg" alt="Back" width="24" height="24" />
         </button>
         <h1 className="text-black/50 text-md font-bold">{`Objednávka ${params.id}`}</h1>
-        <div className="w-6 h-6"/>
+        <div className="w-6 h-6" />
       </div>
 
       {!isAddOpen && !isCancelOpen ?
@@ -219,7 +219,7 @@ export default function Order({ params }: {
           <p className=" h-7 text-black text-[40px] font-normal">{formatHMS(new Date(totalTime).toISOString(), true)}</p>
         </div>
         <button type="button" onClick={() => startTimer()} >
-          <Image src="/start.svg" alt="Start" width="113" height="113"/>
+          <Image src="/start.svg" alt="Start" width="113" height="113" />
         </button>
         <div className="mt-[-6px] grid grid-cols-2 gap-10">
           <button type="button" onClick={() => pauseTimer()} >
@@ -236,13 +236,13 @@ export default function Order({ params }: {
 
         <button className="mt-8" type="button" onClick={() => setAddOpen(true)}>
           <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-2xl border border-neutral-800">
-            <Image src="/plus.svg" alt="Add" width="28" height="28"/>
+            <Image src="/plus.svg" alt="Add" width="28" height="28" />
             <div className="text-black font-normal">PRIDAŤ HODINY</div>
           </div>
         </button>
         <button className="mt-8" type="button" onClick={() => setCancelOpen(true)}>
           <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-2xl border border-neutral-800">
-            <Image src="/close.svg" alt="Add" width="28" height="28"/>
+            <Image src="/close.svg" alt="Add" width="28" height="28" />
             <div className=" text-black font-normal">Zrušiť Objednávku</div>
           </div>
         </button>
@@ -253,8 +253,8 @@ export default function Order({ params }: {
         </button>
       </div>
 
-      <CancelOrder isOpen={isCancelOpen} setOpen={setCancelOpen} id={params.id} cancelOrder={cancelOrder}/>
-      <AddTime isOpen={isAddOpen} setOpen={setAddOpen} id={params.id} time={addedTime} addTime={addTime}/>
+      <CancelOrder isOpen={isCancelOpen} setOpen={setCancelOpen} id={params.id} cancelOrder={cancelOrder} />
+      <AddTime isOpen={isAddOpen} setOpen={setAddOpen} id={params.id} time={addedTime} addTime={addTime} />
 
     </div>
   )
