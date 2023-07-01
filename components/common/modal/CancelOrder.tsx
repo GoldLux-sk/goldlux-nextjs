@@ -22,7 +22,7 @@ const CancelOrder: FunctionComponent<CancelOrderProps> = ({
       className="custom-modal"
       overlayClassName="modal-overlay"
     >
-      <div className="bg-white w-screen f-screen h-screen">
+      <div className="bg-white w-screen h-screen">
         <h1 className="text-center mt-16 text-black/50 text-md font-bold">{`Objednávka ${id}`}</h1>
         <div className="mx-5 h-[90vh] border border-black rounded-2xl relative">
           <div className="flex flex-row justify-between p-3">

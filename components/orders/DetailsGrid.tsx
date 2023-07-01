@@ -43,7 +43,7 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
         <div className={timeStyle}>{formatTime(order.estimated_start)}</div>
         <div className={timeStyle}>{formatTime(order.estimated_end)}</div>
 
-        <div className="col-span-2 font-semibold">Reálný čas:</div>
+        <div className="col-span-2 font-semibold">Reálny čas:</div>
         <div className={timeStyle}>{formatTime(order.real_start)}</div>
         <div className={timeStyle}>{formatTime(order.real_end)}</div>
 
