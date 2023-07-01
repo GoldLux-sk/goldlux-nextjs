@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { redirect } from "next/navigation";
 import OpenFilter from "@/components/orders/OpenFilter";
 import OrderCard from "@/components/orders/OrderCard";
+import { LogOut } from "lucide-react";
+import { getUser } from "@/utils/getOrder";
 
 async function getOrders() {
     const token = cookies().get("payload-token")
@@ -13,26 +15,6 @@ async function getOrders() {
     }
 
     const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `JWT ${token.value}`,
-        },
-        cache: "no-store",
-    }).then(res => res.json())
-
-    return res
-}
-
-async function getUser() {
-    const token = cookies().get("payload-token")
-
-    if (!token) {
-        redirect("/login")
-    }
-
-    const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/users/me`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -82,6 +64,7 @@ export default async function Orders() {
                 <div className="flex justify-center items-center w-full">
                     <h1 className="text-black/50 text-md font-bold">Aktuálne</h1>
                 </div>
+                <LogOutButton />
             </div>
             <div className="px-3">
 
@@ -116,10 +99,6 @@ export default async function Orders() {
                             <OrderCard id={order.id} title={`Objednávka ${index + 1}`} date={formatDate(order.estimated_start)} status={`Stav: ${order.status}`} />
                         </div>
                     ))}
-                </div>
-                <div className="fixed bottom-16">
-                    {/* @ts-expect-error Server Component */}
-                    <LogOutButton />
                 </div>
             </div>
         </div>

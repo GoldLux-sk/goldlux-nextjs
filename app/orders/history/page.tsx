@@ -97,10 +97,7 @@ export default async function Orders() {
             </div>
           ))}
         </div>
-        <div className="fixed bottom-16">
-          {/* @ts-expect-error Server Component */}
-          <LogOutButton />
-        </div>
+
       </div>
     </div>
   )
