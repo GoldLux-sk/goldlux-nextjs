@@ -7,6 +7,28 @@ import OrderCard from "@/components/orders/OrderCard";
 import { LogOut } from "lucide-react";
 import { getUser } from "@/utils/getOrder";
 
+type Customer = {
+    id: string
+    firstName: string
+    lastName: string
+    role: string
+    email: string
+}
+
+type Order = {
+    id: string
+    status: string
+    start_end_date: string
+    estimated_start: string
+    estimated_end: string
+    estimated_duration: number
+    real_start?: string
+    real_end?: string
+    real_duration?: number
+    manual_price?: number
+    customer: Customer
+}
+
 async function getOrders() {
     const token = cookies().get("payload-token")
 
@@ -14,7 +36,7 @@ async function getOrders() {
         redirect("/login")
     }
 
-    const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders`, {
+    const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders?sort=-estimated_start`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -27,20 +49,35 @@ async function getOrders() {
     return res
 }
 
+async function getCustomers() {
+    const token = cookies().get("payload-token")
+
+    if (!token) {
+        redirect("/login")
+    }
+
+    const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/users?where[role][equals]=customer`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `JWT ${token.value}`,
+        },
+        cache: "no-store",
+    }).then(res => res.json())
+
+    return res.docs
+}
+
 export default async function Orders() {
 
     const orders = await getOrders()
     const { user } = await getUser()
+    const customers = await getCustomers()
 
-    // zatial placeholder
-    let customers = [
-        { id: 0, name: "Zakaznik 1", select: true },
-        { id: 1, name: "Zakaznik 2", select: false },
-        { id: 2, name: "Zakaznik 3", select: false },
-        { id: 3, name: "Zakaznik 4", select: false },
-    ]
 
-    console.log(user.role);
+
+    console.log(customers);
 
     function formatDate(dateString: string) {
         const date = new Date(dateString);
@@ -69,16 +106,16 @@ export default async function Orders() {
             <div className="px-3">
 
                 <div className="flex flex-row justify-around">
-                    {(user.role === 'admin' || user.role === 'cleaner') && customers.map(customer => (
+                    {(user.role === 'admin' || user.role === 'cleaner') && customers.map((customer: Customer) => (
                         <button className="mx-1 flex flex-col" key={customer.id}>
                             <Image
                                 className="self-center"
-                                src={"/customer" + (customer.select ? "_select" : "") + ".svg"}
-                                alt={customer.select ? "Selected Customer" : "Customer"}
+                                src={"/customer.svg"}
+                                alt={"Customer"}
                                 width="36"
                                 height="36"
                             />
-                            <p className={`text-xs text-[${customer.select ? "#FF2D55" : "#575757"}]`}>{customer.name}</p>
+                            <p className={`text-xs text-["#575757"]`}>{customer.firstName} {customer.lastName}</p>
                         </button>
                     ))}
                 </div>
@@ -96,7 +133,7 @@ export default async function Orders() {
                             <div>
                                 <h3 className="text-xl mt-1 pl-3">{formatHour(order.estimated_start)}</h3>
                             </div>
-                            <OrderCard id={order.id} title={`Objednávka ${index + 1}`} date={formatDate(order.estimated_start)} status={`Stav: ${order.status}`} />
+                            <OrderCard id={order.id} title={`Objednávka ${index + 1}`} date={formatDate(order.start_end_date)} status={`Stav: ${order.status}`} />
                         </div>
                     ))}
                 </div>

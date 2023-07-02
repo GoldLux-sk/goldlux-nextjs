@@ -6,6 +6,7 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import Timer from "@/components/orders/Timer";
 import CancelSubmit from "@/components/orders/CancelSubmit";
+import { getUser } from "@/utils/getOrder"
 
 type Order = {
   id: string
@@ -42,6 +43,7 @@ export default async function Order({ params }: {
   params: { id: string }
 }) {
 
+  const { user } = await getUser()
   const order: Order = await getOrder(params.id)
 
   console.log(order)
@@ -52,8 +54,14 @@ export default async function Order({ params }: {
         <OrderNavbar orderId={order.id} />
         <CalendarDate startEndDate={order.start_end_date} />
         <DetailsGrid order={order} />
-        <Timer id={params.id} />
-        <CancelSubmit id={params.id} />
+        {
+          (user?.role === "admin" || user?.role === "cleaner") &&
+          <Timer id={params.id} />
+        }
+        {
+          (user?.role === "admin" || user?.role === "cleaner") &&
+          <CancelSubmit id={params.id} />
+        }
       </ModalStateProvider>
     </div>
   )
