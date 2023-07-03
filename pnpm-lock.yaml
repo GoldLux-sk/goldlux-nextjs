@@ -34,6 +34,9 @@ dependencies:
   postcss:
     specifier: 8.4.23
     version: 8.4.23
+  qs:
+    specifier: ^6.11.2
+    version: 6.11.2
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -57,6 +60,9 @@ dependencies:
     version: 5.0.4
 
 devDependencies:
+  '@types/qs':
+    specifier: ^6.9.7
+    version: 6.9.7
   '@types/react-modal':
     specifier: ^3.16.0
     version: 3.16.0
@@ -1023,6 +1029,10 @@ packages:
 
   /@types/prop-types@15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
+
+  /@types/qs@6.9.7:
+    resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
+    dev: true
 
   /@types/react-dom@18.2.4:
     resolution: {integrity: sha512-G2mHoTMTL4yoydITgOGwWdWMVd8sNgyEP85xVmMKAPUBwQWm9wBPQUmvbeF4V3WBY1P7mmL4BkjQ0SqUpf1snw==}

@@ -6,20 +6,7 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import Timer from "@/components/orders/Timer";
 import CancelSubmit from "@/components/orders/CancelSubmit";
-import { getUser } from "@/utils/getOrder"
-
-type Order = {
-  id: string
-  status: string
-  start_end_date: string
-  estimated_start: string
-  estimated_end: string
-  estimated_duration: number
-  real_start?: string
-  real_end?: string
-  real_duration?: number
-  manual_price?: number
-}
+import { getUser } from "@/utils/getUser"
 
 async function getOrder(id: string) {
   const token = cookies().get("payload-token")

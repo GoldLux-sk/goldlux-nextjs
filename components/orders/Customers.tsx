@@ -1,0 +1,39 @@
+import { getUser } from "@/utils/getUser";
+import { cookies } from "next/headers";
+import Image from "next/image";
+import { redirect } from "next/navigation";
+import CustomerButton from "./CustomerButton";
+
+async function getCustomers() {
+    const token = cookies().get("payload-token")
+
+    if (!token) {
+        redirect("/login")
+    }
+
+    const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/users?where[role][equals]=customer`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `JWT ${token.value}`,
+        },
+        cache: "no-store",
+    }).then(res => res.json())
+
+    return res.docs
+}
+
+export default async function Customers() {
+    const { user } = await getUser()
+    const customers = await getCustomers()
+
+
+    return (
+        <div className="flex flex-row justify-around">
+            {(user.role === 'admin' || user.role === 'cleaner') && customers.map((customer: Customer) => (
+                <CustomerButton key={customer.id} customer={customer} />
+            ))}
+        </div>
+    )
+}
