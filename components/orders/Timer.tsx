@@ -116,7 +116,7 @@ const Timer: React.FC<TimerProps> = ({id}) => {
   }
 
   function bgCol(): string {
-    return !running ? 'bg-amber-100' : timer ? 'bg-green-100' : 'bg-gray-100'
+    return !running ? 'bg-amber-100' : timer ? 'bg-green-100' : 'bg-gray-100';
   }
 
   function addTime(time: number) {
