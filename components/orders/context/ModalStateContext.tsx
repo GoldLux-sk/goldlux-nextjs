@@ -15,7 +15,7 @@ export const ModalStateProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
     const [isCancelOpen, setIsCancelOpen] = useState<boolean>(false);
 
-    Modal.setAppElement('#root');
+    Modal.setAppElement('body');
 
     return (
         <ModalStateContext.Provider value={{ isAddOpen, setIsAddOpen, isCancelOpen, setIsCancelOpen }}>

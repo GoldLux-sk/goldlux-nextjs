@@ -17,6 +17,10 @@ export default function CustomerButton({ customer }: { customer: Customer }) {
         }
     }
 
+    function textColor(): string {
+        return selected === customer.id ? "text-[#FF2D55]" : "text-[#575757]";
+    }
+
     return (
         <Link key={customer.id} href={selected === customer.id ? `/orders` : `/orders?customer=${customer.id}`}>
             <button onClick={handleSelect} className="mx-1 flex flex-col" >
@@ -27,7 +31,7 @@ export default function CustomerButton({ customer }: { customer: Customer }) {
                     width="36"
                     height="36"
                 />
-                <p className={`text-xs text-[${selected === customer.id ? "#FF2D55" : "#575757"}]`}>{customer.firstName} {customer.lastName}</p>
+                <p className={`text-xs ${textColor()}`}>{customer.firstName} {customer.lastName}</p>
             </button>
         </Link>
     )
