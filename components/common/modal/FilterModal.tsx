@@ -7,6 +7,7 @@ import '@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css';
 import { Calendar, DayValue, DayRange } from '@amir04lm26/react-modern-calendar-date-picker';
 import { useRouter, redirect } from 'next/navigation'
 import Link from "next/link";
+import { toast } from "react-hot-toast";
 
 type FilterModalProps = {
   isOpen: boolean,
@@ -62,7 +63,12 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
               Pomocou označenia dátumov od do sa vám zobrazia obejdnávky, podľa označených dátumov
             </div>
             {selectedDay.from && (
-              <Link onClick={() => setOpen(false)} className="px-5 py-2 bg-red-600 mt-9 text-white rounded-xl" href={`/orders?${selectedDay.from && selectedDay.to ? `from=${convertDate(selectedDay.from)}&to=${convertDate(selectedDay.to)}` : `from=${convertDate(selectedDay.from)}`}`}>
+              <Link onClick={
+                () => {
+                  toast.success('Filtre boli úspešne nastavené')
+                  setOpen(false)
+                }
+              } className="px-5 py-2 bg-red-600 mt-9 text-white rounded-xl" href={`/orders?${selectedDay.from && selectedDay.to ? `from=${convertDate(selectedDay.from)}&to=${convertDate(selectedDay.to)}` : `from=${convertDate(selectedDay.from)}`}`}>
                 Potvrdit datum
               </Link>
             )}

@@ -91,28 +91,6 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         }).then(res => res.json())
 
         return res
-    } else if (dateFrom?.length > 0 && dateTo?.length > 0 && customerId.length > 0) {
-        const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders?where[customer][equals]=${customerId}&where[start_end_date][gte]=${dateFrom}&where[start_end_date][lte]=${dateTo}&sort=-estimated_start`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `JWT ${token.value}`,
-            },
-        }).then(res => res.json())
-
-        return res
-    } else if (dateFrom?.length > 0 && customerId.length > 0) {
-        const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders?where[customer][equals]=${customerId}&where[start_end_date][gte]=${dateFrom}&sort=-estimated_start`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `JWT ${token.value}`,
-            },
-        }).then(res => res.json())
-
-        return res
     } else {
         const res = await fetch(`
         ${customerId.length > 0 ? `${process.env.PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=-estimated_start`
@@ -135,8 +113,6 @@ export default async function OrderComponent({ customerId, dateFrom, dateTo }: {
 
     const orders = await getOrders(customerId, dateFrom, dateTo)
 
-    console.log(orders)
-
     function formatDate(dateString: string) {
         const date = new Date(dateString);
         const day = date.getDate();
@@ -157,6 +133,9 @@ export default async function OrderComponent({ customerId, dateFrom, dateTo }: {
             {orders.errors && orders.errors.map((error: any, index: number) => (
                 <p key={index}>{error.message}</p>
             ))}
+            {dateFrom?.length > 0 && dateTo?.length > 0 && (
+                <h1 className='text-2xl mt-16 mb-5 font-semibold'>Od {formatDate(dateFrom)} do {formatDate(dateTo)}</h1>
+            )}
 
             {orders.docs.length < 1 && (
                 <div className='w-full h-full flex justify-center'>
@@ -169,7 +148,7 @@ export default async function OrderComponent({ customerId, dateFrom, dateTo }: {
                     <div>
                         <h3 className="text-xl mt-1 pl-3">{formatHour(order.estimated_start)}</h3>
                     </div>
-                    <OrderCard id={order.id} title={`Objednávka ${index + 1}`} date={formatDate(order.start_end_date)} status={`Stav: ${order.status}`} />
+                    <OrderCard order={order} id={order.id} title={`Objednávka ${index + 1}`} date={formatDate(order.start_end_date)} status={`Stav: ${order.status}`} />
                 </div>
             ))}
         </div>

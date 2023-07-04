@@ -2,6 +2,7 @@
 import Image from "next/image"
 import { useCustomerState } from "./context/CustomerStateContext"
 import Link from "next/link"
+import { toast } from "react-hot-toast"
 
 export default function CustomerButton({ customer }: { customer: Customer }) {
     const { selected, setSelected } = useCustomerState()
@@ -9,8 +10,10 @@ export default function CustomerButton({ customer }: { customer: Customer }) {
     function handleSelect() {
         if (selected === customer.id) {
             setSelected("")
+            toast.success(`Zobrazené objednávky pre všetkých zákazníkov`)
         } else {
             setSelected(customer.id)
+            toast.success(`Zobrazené objednávky pre ${customer.firstName} ${customer.lastName}`)
         }
     }
 

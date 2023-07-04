@@ -93,7 +93,7 @@ export default async function Orders() {
               <div>
                 <h3 className="text-xl mt-1 pl-3">{formatHour(order.estimated_start)}</h3>
               </div>
-              <OrderCard id={order.id} title={`Objednávka ${index + 1}`} date={formatDate(order.estimated_start)} status={`Stav: ${order.status}`} />
+              {/* <OrderCard order={} id={order.id} title={`Objednávka ${index + 1}`} date={formatDate(order.estimated_start)} status={`Stav: ${order.status}`} /> */}
             </div>
           ))}
         </div>

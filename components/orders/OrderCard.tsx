@@ -1,6 +1,6 @@
 'use client'
 
-import React, {FunctionComponent} from "react";
+import React, { FunctionComponent } from "react";
 import { redirect } from "next/navigation";
 
 type OrderCardProps = {
@@ -8,11 +8,13 @@ type OrderCardProps = {
   title: string,
   date: string,
   status: string
+  order: Order
 }
 
 const OrderCard: FunctionComponent<OrderCardProps> = ({
-  id, title, date, status
+  id, title, date, status, order
 }) => {
+
   return (
     <form action={() => redirect(`/order/${id}`)}>
       <button type="submit">

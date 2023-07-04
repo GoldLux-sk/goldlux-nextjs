@@ -3,6 +3,7 @@ import OpenFilter from "@/components/orders/OpenFilter";
 import Customers from "@/components/orders/Customers";
 import { CustomerStateProvider, useCustomerState } from "@/components/orders/context/CustomerStateContext";
 import OrderComponent from "@/components/orders/OrderComponent";
+import { Toaster } from "react-hot-toast";
 
 type Props = {
     searchParams?: {
@@ -22,6 +23,7 @@ export default async function Orders({ searchParams }: Props) {
 
     return (
         <CustomerStateProvider>
+            <Toaster />
             <div className="my-10 w-full relative">
                 <OpenFilter />
                 <div className="flex justify-center items-center w-full">
