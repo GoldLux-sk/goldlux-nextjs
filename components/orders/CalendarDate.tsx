@@ -22,7 +22,7 @@ const CalendarDate: React.FC<CalendarDateProps> = ({startEndDate}) => {
   }
 
   return (
-    !isAddOpen && !isCancelOpen ? (
+    !isAddOpen && !isCancelOpen && (
       <div className="mt-3 px-3 flex flex-col items-center">
         <Calendar
           calendarClassName="responsive-calendar"
@@ -32,7 +32,7 @@ const CalendarDate: React.FC<CalendarDateProps> = ({startEndDate}) => {
           colorPrimaryLight="#F4CFCD"
         />
       </div>
-    ) : null
+    )
   );
 };
 

@@ -58,20 +58,27 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
               colorPrimary="#FF3B30"
               colorPrimaryLight="#F4CFCD"
             />
-            <div className="mt-10 w-[247px] h-[17px] text-center text-zinc-800 text-[24px] font-semibold leading-snug">Vyberte si dátum</div>
-            <div className="mt-5 w-[247px] h-[53px] text-center text-zinc-500 text-[14px] font-semibold leading-snug">
-              Pomocou označenia dátumov od do sa vám zobrazia obejdnávky, podľa označených dátumov
-            </div>
-            {selectedDay.from && (
-              <Link onClick={
-                () => {
-                  toast.success('Filtre boli úspešne nastavené')
-                  setOpen(false)
-                }
-              } className="px-5 py-2 bg-red-600 mt-9 text-white rounded-xl" href={`/orders?${selectedDay.from && selectedDay.to ? `from=${convertDate(selectedDay.from)}&to=${convertDate(selectedDay.to)}` : `from=${convertDate(selectedDay.from)}`}`}>
-                Potvrdit datum
-              </Link>
-            )}
+            {selectedDay.from ? (
+              <div className="flex flex-col">
+                <Link onClick={() => { toast.success('Filtre boli úspešne nastavené'); setOpen(false);}}
+                      className="mt-10 px-6 py-3 bg-rose-500 rounded-2xl border border-zinc-800 text-white font-semibold text-[17px]"
+                      href={`/orders?from=${convertDate(selectedDay.from)}${selectedDay.from && selectedDay.to ? `&to=${convertDate(selectedDay.to)}` : ''}`}>
+                  Potvrdiť dátum
+                </Link>
+                <button type="button" onClick={() => setSelectedDay({ from: null, to: null })}
+                        className="mt-6 h-12 px-6 py-3 bg-rose-500 rounded-2xl border border-zinc-800 text-white font-semibold text-[17px]">
+                  Zrušiť dátum
+                </button>
+              </div>
+            ) : (
+              <div className="text-center font-semibold leading-snug">
+                <div className="mt-10 w-[247px] h-[17px] text-zinc-800 text-[24px]">Vyberte si dátum</div>
+                <div className="mt-5 w-[247px] h-[53px] text-zinc-500 text-[14px]">
+                  Pomocou označenia dátumov od do sa vám zobrazia obejdnávky, podľa označených dátumov
+                </div>
+              </div>
+            )
+            }
           </div>
         </div>
       </div>
