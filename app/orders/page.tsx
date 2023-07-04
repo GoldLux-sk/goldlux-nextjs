@@ -7,12 +7,18 @@ import OrderComponent from "@/components/orders/OrderComponent";
 type Props = {
     searchParams?: {
         customer?: string
+        from?: string
+        to?: string
     }
 }
 
 export default async function Orders({ searchParams }: Props) {
 
-    const cutomerId = searchParams?.customer || ""
+    const customerId = searchParams?.customer || ""
+
+    const { from, to } = searchParams || {}
+
+    console.log(from, to)
 
     return (
         <CustomerStateProvider>
@@ -27,7 +33,7 @@ export default async function Orders({ searchParams }: Props) {
                 {/* @ts-expect-error Server Component */}
                 <Customers />
                 {/* @ts-expect-error Server Component */}
-                <OrderComponent cutomerId={cutomerId} />
+                <OrderComponent customerId={customerId} dateFrom={from} dateTo={to} />
             </div>
         </CustomerStateProvider>
     )

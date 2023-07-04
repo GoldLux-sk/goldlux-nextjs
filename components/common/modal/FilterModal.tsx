@@ -1,11 +1,12 @@
 'use client'
 
-import React, {FunctionComponent, useState} from "react";
+import React, { FunctionComponent, useState } from "react";
 import Image from "next/image";
 import Modal from 'react-modal';
 import '@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css';
 import { Calendar, DayValue, DayRange } from '@amir04lm26/react-modern-calendar-date-picker';
 import { useRouter, redirect } from 'next/navigation'
+import Link from "next/link";
 
 type FilterModalProps = {
   isOpen: boolean,
@@ -23,6 +24,13 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
     to: null
   });
 
+  console.log(selectedDay)
+
+  function convertDate(date: DayValue) {
+    const rawDate = `${date?.year}-${date?.month}-${date?.day}`
+    return new Date(rawDate).toISOString()
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -34,12 +42,12 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
         <div className="mt-10 mx-5 h-[90vh] border border-black rounded-2xl relative">
           <div className="flex flex-row justify-between p-3">
             <button type="button" onClick={() => setOpen(false)} >
-              <Image src="/close.svg" alt="Close" width="24" height="24"/>
+              <Image src="/close.svg" alt="Close" width="24" height="24" />
             </button>
             <h1 className="text-black text-md font-bold">Filtre</h1>
-            <div className="w-6 h-6"/>
+            <div className="w-6 h-6" />
           </div>
-          <hr className="w-full h-px bg-black border-0"/>
+          <hr className="w-full h-px bg-black border-0" />
 
           <div className="mt-10 px-3 flex flex-col items-center">
             <Calendar
@@ -53,6 +61,11 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
             <div className="mt-5 w-[247px] h-[53px] text-center text-zinc-500 text-[14px] font-semibold leading-snug">
               Pomocou označenia dátumov od do sa vám zobrazia obejdnávky, podľa označených dátumov
             </div>
+            {selectedDay.from && (
+              <Link onClick={() => setOpen(false)} className="px-5 py-2 bg-red-600 mt-9 text-white rounded-xl" href={`/orders?${selectedDay.from && selectedDay.to ? `from=${convertDate(selectedDay.from)}&to=${convertDate(selectedDay.to)}` : `from=${convertDate(selectedDay.from)}`}`}>
+                Potvrdit datum
+              </Link>
+            )}
           </div>
         </div>
       </div>

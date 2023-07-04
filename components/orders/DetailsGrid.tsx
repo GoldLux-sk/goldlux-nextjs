@@ -1,23 +1,13 @@
 import React from "react";
 
-type Order = {
-    id: string
-    status: string
-    start_end_date: string
-    estimated_start: string
-    estimated_end: string
-    estimated_duration: number
-    real_start?: string
-    real_end?: string
-    real_duration?: number
-    manual_price?: number
-}
 
 type DetailsGridProps = {
     order: Order;
 };
 
 const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
+
+    console.log(order);
 
     function formatTime(dateString: string | undefined) {
         const date = new Date(dateString || '');
@@ -35,22 +25,24 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
     const timeStyle = "p-1 bg-gray-100 rounded-md justify-center inline-flex";
 
     return (
-      <div className="mt-5 mx-8 grid grid-cols-4 gap-4">
-        <div className="col-span-2 font-semibold">Stav:</div>
-        <div className="col-span-2 pl-2">{order.status}</div>
+        <div className="mt-5 mx-10 my-12 grid grid-cols-4 gap-4">
+            <div className="col-span-2 font-semibold">Zákaznik:</div>
+            <div className="col-span-2 pl-2 font-medium">{order.customer.firstName} {order.customer.lastName}</div>
+            <div className="col-span-2 font-semibold">Stav:</div>
+            <div className="col-span-2 pl-2">{order.status}</div>
 
-        <div className="col-span-2 font-semibold">Odhadovaný čas:</div>
-        <div className={timeStyle}>{formatTime(order.estimated_start)}</div>
-        <div className={timeStyle}>{formatTime(order.estimated_end)}</div>
+            <div className="col-span-2 font-semibold">Odhadovaný čas:</div>
+            <div className={timeStyle}>{formatTime(order.estimated_start)}</div>
+            <div className={timeStyle}>{formatTime(order.estimated_end)}</div>
 
-        <div className="col-span-2 font-semibold">Reálny čas:</div>
-        <div className={timeStyle}>{formatTime(order.real_start)}</div>
-        <div className={timeStyle}>{formatTime(order.real_end)}</div>
+            <div className="col-span-2 font-semibold">Reálny čas:</div>
+            <div className={timeStyle}>{formatTime(order.real_start)}</div>
+            <div className={timeStyle}>{formatTime(order.real_end)}</div>
 
-        <div className="col-span-2 font-semibold">Hodinovka:</div>
-        <div className="col-span-2 font-semibold pl-2">{order.manual_price || '?'}$/h</div>
-        {/* Add more fields as necessary */}
-      </div>
+            <div className="col-span-2 font-semibold">Hodinovka:</div>
+            <div className="col-span-2 font-semibold pl-2">{order.manual_price || '?'}$/h</div>
+            {/* Add more fields as necessary */}
+        </div>
     );
 };
 
