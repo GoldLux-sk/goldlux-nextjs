@@ -71,9 +71,7 @@ export default function Register() {
           {errors && <p role="alert" className="text-red-500 mt-10 text-center">{errors.password && "Heslo je povinné."}</p>}
           {errors && <p role="alert" className="text-red-500 mt-10 text-center">{errors.passwordRetry && "Zopakujte prosim heslo."}</p>}
           {error && <p role="alert" className="text-red-500 mt-10 text-center">{error}</p>}
-          <div className="flex mt-28 justify-center">
-            <input type="submit" value="Zaregistrovať sa" className="px-5 mt-10 h-11 w-44 border-2 transition-colors duration-300 hover:border-black cursor-pointer font-medium rounded-2xl" />
-          </div>
+          <input type="submit" value="Zaregistrovať sa" className="px-2 h-11 w-full border-2 transition-colors duration-300 hover:border-black cursor-pointer font-medium rounded-2xl" />
         </form>
       </div>
 

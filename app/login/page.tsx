@@ -61,9 +61,7 @@ export default function Home() {
           )}
           {error && <p role="alert" className="mt-10 text-center text-red-500">{error}</p>}
 
-          <div className="mt-28 flex flex-row justify-center">
-            <input type="submit" value="Prihlásiť sa" className="px-5 h-11 w-44 border-2 transition-colors duration-300 hover:border-black cursor-pointer font-medium rounded-2xl" />
-          </div>
+          <input type="submit" value="Prihlásiť sa" className="px-5 h-11 w-full mt-16 border-2 transition-colors duration-300 hover:border-black cursor-pointer font-medium rounded-2xl" />
         </form>
       </div>
 

@@ -128,27 +128,31 @@ export default async function OrderComponent({ customerId, dateFrom, dateTo }: {
         return `${hour}:${minutes}`;
     }
 
+    console.log(orders)
+
     return (
         <div className="mt-5 mb-11">
             {orders.errors && orders.errors.map((error: any, index: number) => (
-                <p key={index}>{error.message}</p>
+                <div key={index} className='flex items-center justify-center'>
+                    <h1 className='mt-20 text-xl font-semibold'>{error.message === "You are not allowed to perform this action." ? "Žiadne objednávky..." : error.message}</h1>
+                </div>
             ))}
             {dateFrom?.length > 0 && dateTo?.length > 0 && (
                 <h1 className='text-2xl mt-16 mb-5 font-semibold'>Od {formatDate(dateFrom)} do {formatDate(dateTo)}</h1>
             )}
 
-            {orders.docs.length < 1 && (
+            {orders && orders?.docs?.length < 1 && (
                 <div className='w-full h-full flex justify-center'>
                     <h1 className='text-xl mt-24 font-semibold'>Žiadne objednávky...</h1>
                 </div>
             )}
 
-            {orders.docs && orders.docs.map((order: Order, index: number) => (
-                <div key={order.id}>
+            {orders && orders?.docs && orders.docs.map((order: Order, index: number) => (
+                <div key={order.id} className=''>
                     <div>
                         <h3 className="text-xl mt-1 pl-3">{formatHour(order.estimated_start)}</h3>
                     </div>
-                    <OrderCard order={order} id={order.id} title={`Objednávka ${index + 1}`} date={formatDate(order.start_end_date)} status={`Stav: ${order.status}`} />
+                    <OrderCard id={order.id} title={`Objednávka ${index + 1}`} date={formatDate(order.start_end_date)} status={`Stav: ${order.status}`} />
                 </div>
             ))}
         </div>
