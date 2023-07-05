@@ -8,9 +8,8 @@ export default function LogOutButton() {
     const router = useRouter();
 
     const onSubmit = async () => {
-
         try {
-            const res = await fetch(`http://localhost:3000/api/users/logout`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users/logout`, {
                 method: "POST",
                 credentials: "include",
                 headers: {

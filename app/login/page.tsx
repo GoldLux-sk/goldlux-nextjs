@@ -16,7 +16,7 @@ export default function Home() {
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
-    const res = await fetch(`http://localhost:3000/api/users/login`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users/login`, {
       method: "POST",
       credentials: "include",
       headers: {

@@ -23,7 +23,7 @@ export default function Register() {
       return
     }
 
-    const res = await fetch(`http://localhost:3000/api/users`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users`, {
       method: "POST",
       credentials: "include",
       headers: {

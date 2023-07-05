@@ -15,7 +15,7 @@ async function getOrder(id: string) {
     redirect("/login")
   }
 
-  const order = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders/${id}`, {
+  const order = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
     method: "GET",
     credentials: "include",
     headers: {
