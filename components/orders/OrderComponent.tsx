@@ -17,9 +17,9 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         return date.toISOString();
     }
 
-    if (dateFrom?.length > 0 && dateTo?.length > 0) {
+    if (dateFrom?.length > 0) {
 
-        const dateFromToQuery = {
+        const dateQuery = dateTo?.length > 0 ? {
             and: [
                 {
                     start_end_date: {
@@ -32,30 +32,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
                     }
                 }
             ]
-        }
-
-        const stringifiedQuery = qs.stringify(
-            {
-                where: dateFromToQuery,
-            },
-            {
-                addQueryPrefix: true,
-            }
-        )
-
-        const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=start_end_date`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `JWT ${token.value}`,
-            },
-        }).then(res => res.json())
-
-        return res
-    } else if (dateFrom?.length > 0) {
-
-        const dateFromQuery = {
+        } : {
             start_end_date: {
                 greater_than_equal: dateFrom
             }
@@ -63,7 +40,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
 
         const stringifiedQuery = qs.stringify(
             {
-                where: dateFromQuery,
+                where: dateQuery,
             },
             {
                 addQueryPrefix: true,
