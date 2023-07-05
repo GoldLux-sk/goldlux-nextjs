@@ -1,11 +1,13 @@
 "use client"
 import Image from "next/image"
 import { useCustomerState } from "./context/CustomerStateContext"
+import { useSearchParams } from 'next/navigation'
 import Link from "next/link"
 import { toast } from "react-hot-toast"
 
 export default function CustomerButton({ customer }: { customer: Customer }) {
     const { selected, setSelected } = useCustomerState()
+    const searchParams = useSearchParams();
 
     function handleSelect() {
         if (selected === customer.id) {
@@ -21,8 +23,14 @@ export default function CustomerButton({ customer }: { customer: Customer }) {
         return selected === customer.id ? "text-[#FF2D55]" : "text-[#575757]";
     }
 
+    function hrefParams(customerSel: boolean) {
+        const from = searchParams.get("from");
+        const to = searchParams.get("to");
+        return `${customerSel ? '' : `?customer=${customer.id}`}${from ? `${customerSel ? '?' : '&'}from=${from}` : ''}${from && to ? `&to=${to}` : ''}`;
+    }
+
     return (
-        <Link key={customer.id} href={selected === customer.id ? `/orders` : `/orders?customer=${customer.id}`}>
+        <Link key={customer.id} href={`/orders${hrefParams(selected === customer.id)}`}>
             <button onClick={handleSelect} className="mx-1 flex flex-col" >
                 <Image
                     className="self-center"
