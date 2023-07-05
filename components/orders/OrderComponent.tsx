@@ -11,22 +11,11 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         redirect("/login")
     }
 
-    const customerQuery = {
-        customer: {
-            equals: customerId
-        }
+    function getTwoWeeksAgoDate() {
+        const date = new Date();
+        date.setDate(date.getDate() - 14);
+        return date.toISOString();
     }
-
-
-
-    const stringifiedQuery = qs.stringify(
-        {
-            where: customerQuery,
-        },
-        {
-            addQueryPrefix: true,
-        }
-    )
 
     if (dateFrom?.length > 0 && dateTo?.length > 0) {
 
@@ -80,7 +69,6 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
                 addQueryPrefix: true,
             }
         )
-
         const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=-estimated_start`, {
             method: "GET",
             credentials: "include",
@@ -92,9 +80,41 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
 
         return res
     } else {
+        const customerQuery = {
+            customer: {
+                equals: customerId
+            }
+        }
+
+        const stringifiedQuery = qs.stringify(
+            {
+                where: customerQuery,
+            },
+            {
+                addQueryPrefix: true,
+            }
+        )
+
+        const date = getTwoWeeksAgoDate()
+
+        const twoWeekOldQuery = {
+            start_end_date: {
+                greater_than_equal: date
+            }
+        }
+
+        const stringifiedTwoWeekOldQuery = qs.stringify(
+            {
+                where: twoWeekOldQuery,
+            },
+            {
+                addQueryPrefix: true,
+            }
+        )
+
         const res = await fetch(`
         ${customerId.length > 0 ? `${process.env.PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=-estimated_start`
-                : `${process.env.PAYLOAD_CMS_URL}/api/orders?sort=-estimated_start`
+                : `${process.env.PAYLOAD_CMS_URL}/api/orders${stringifiedTwoWeekOldQuery}&sort=-estimated_start`
             }`, {
             method: "GET",
             credentials: "include",
@@ -127,8 +147,6 @@ export default async function OrderComponent({ customerId, dateFrom, dateTo }: {
         const minutes = date.getMinutes().toString().padStart(2, '0');
         return `${hour}:${minutes}`;
     }
-
-    console.log(orders)
 
     return (
         <div className="mt-5 mb-11">
