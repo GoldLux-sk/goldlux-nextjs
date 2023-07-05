@@ -17,11 +17,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // await payload.init({
-  //   secret: process.env.PAYLOAD_SECRET || 'payload-is-awesome',
-  //   mongoURL: process.env.PAYLOAD_MONGO_URL || 'mongodb://127.0.0.1/goldlux-payloadcms',
-  //   local: true,
-  // })
 
   return (
     <html lang="en" className={roboto.className}>

@@ -19,8 +19,6 @@ export default async function Orders({ searchParams }: Props) {
 
     const { from, to } = searchParams || {}
 
-    console.log(from, to)
-
     return (
         <CustomerStateProvider>
             <Toaster />

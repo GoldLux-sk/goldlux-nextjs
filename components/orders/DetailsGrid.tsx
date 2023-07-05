@@ -7,8 +7,6 @@ type DetailsGridProps = {
 
 const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
 
-    console.log(order);
-
     function formatTime(dateString: string | undefined) {
         const date = new Date(dateString || '');
         const hours = date.getHours();

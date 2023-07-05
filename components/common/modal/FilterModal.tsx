@@ -25,8 +25,6 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
     to: null
   });
 
-  console.log(selectedDay)
-
   function convertDate(date: DayValue) {
     const rawDate = `${date?.year}-${date?.month}-${date?.day}`
     return new Date(rawDate).toISOString()
@@ -60,13 +58,13 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
             />
             {selectedDay.from ? (
               <div className="flex flex-col">
-                <Link onClick={() => { toast.success('Filtre boli úspešne nastavené'); setOpen(false);}}
-                      className="mt-10 px-6 py-3 bg-rose-500 rounded-2xl border border-zinc-800 text-white font-semibold text-[17px]"
-                      href={`/orders?from=${convertDate(selectedDay.from)}${selectedDay.from && selectedDay.to ? `&to=${convertDate(selectedDay.to)}` : ''}`}>
+                <Link onClick={() => { toast.success('Filtre boli úspešne nastavené'); setOpen(false); }}
+                  className="mt-10 px-6 py-3 bg-rose-500 rounded-2xl border border-zinc-800 text-white font-semibold text-[17px]"
+                  href={`/orders?from=${convertDate(selectedDay.from)}${selectedDay.from && selectedDay.to ? `&to=${convertDate(selectedDay.to)}` : ''}`}>
                   Potvrdiť dátum
                 </Link>
                 <button type="button" onClick={() => setSelectedDay({ from: null, to: null })}
-                        className="mt-6 h-12 px-6 py-3 bg-rose-500 rounded-2xl border border-zinc-800 text-white font-semibold text-[17px]">
+                  className="mt-6 h-12 px-6 py-3 bg-rose-500 rounded-2xl border border-zinc-800 text-white font-semibold text-[17px]">
                   Zrušiť dátum
                 </button>
               </div>

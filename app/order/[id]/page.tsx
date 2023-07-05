@@ -33,8 +33,6 @@ export default async function Order({ params }: {
   const { user } = await getUser()
   const order: Order = await getOrder(params.id)
 
-  console.log(order)
-
   return (
     <div className="overflow-hidden">
       <ModalStateProvider>

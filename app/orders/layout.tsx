@@ -8,11 +8,11 @@ export default function OrdersLayout({
 }: {
     children: React.ReactNode
 }) {
-    const session = getSession()
+    // const session = getSession()
 
-    if (!session.isLoggedIn) {
-        redirect("/")
-    }
+    // if (!session.isLoggedIn) {
+    //     redirect("/")
+    // }
 
     return (
 
