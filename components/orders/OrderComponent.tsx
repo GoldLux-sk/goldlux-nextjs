@@ -43,7 +43,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
             }
         )
 
-        const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=-estimated_start`, {
+        const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=start_end_date`, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -69,7 +69,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
                 addQueryPrefix: true,
             }
         )
-        const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=-estimated_start`, {
+        const res = await fetch(`${process.env.PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=start_end_date`, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -113,8 +113,8 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         )
 
         const res = await fetch(`
-        ${customerId.length > 0 ? `${process.env.PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=-estimated_start`
-                : `${process.env.PAYLOAD_CMS_URL}/api/orders${stringifiedTwoWeekOldQuery}&sort=-estimated_start`
+        ${customerId.length > 0 ? `${process.env.PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=start_end_date`
+                : `${process.env.PAYLOAD_CMS_URL}/api/orders${stringifiedTwoWeekOldQuery}&sort=start_end_date`
             }`, {
             method: "GET",
             credentials: "include",
