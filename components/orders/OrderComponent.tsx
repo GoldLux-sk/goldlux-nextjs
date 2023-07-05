@@ -17,92 +17,61 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         return date.toISOString();
     }
 
-    if (dateFrom?.length > 0) {
-
-        const dateQuery = dateTo?.length > 0 ? {
-            and: [
-                {
-                    start_end_date: {
-                        greater_than_equal: dateFrom
-                    }
-                },
-                {
-                    start_end_date: {
-                        less_than_equal: dateTo
-                    }
+    const dateQuery = dateFrom?.length > 0 ? dateTo?.length > 0 ? {
+        and: [
+            {
+                start_end_date: {
+                    greater_than_equal: dateFrom
                 }
-            ]
-        } : {
-            start_end_date: {
-                greater_than_equal: dateFrom
+            },
+            {
+                start_end_date: {
+                    less_than_equal: dateTo
+                }
             }
+        ]
+    } : {
+        start_end_date: {
+            greater_than_equal: dateFrom
         }
+    } : {};
 
-        const stringifiedQuery = qs.stringify(
-            {
-                where: dateQuery,
-            },
-            {
-                addQueryPrefix: true,
-            }
-        )
-        const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=start_end_date`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `JWT ${token.value}`,
-            },
-        }).then(res => res.json())
-
-        return res
-    } else {
-        const customerQuery = {
-            customer: {
-                equals: customerId
-            }
+    const customerQuery = {
+        customer: {
+            equals: customerId
         }
-
-        const stringifiedQuery = qs.stringify(
-            {
-                where: customerQuery,
-            },
-            {
-                addQueryPrefix: true,
-            }
-        )
-
-        const date = getTwoWeeksAgoDate()
-
-        const twoWeekOldQuery = {
-            start_end_date: {
-                greater_than_equal: date
-            }
-        }
-
-        const stringifiedTwoWeekOldQuery = qs.stringify(
-            {
-                where: twoWeekOldQuery,
-            },
-            {
-                addQueryPrefix: true,
-            }
-        )
-
-        const res = await fetch(`
-        ${customerId.length > 0 ? `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=start_end_date`
-                : `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders${stringifiedTwoWeekOldQuery}&sort=start_end_date`
-            }`, {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `JWT ${token.value}`,
-            },
-        }).then(res => res.json())
-
-        return res
     }
+
+    const twoWeekOldQuery = {
+        start_end_date: {
+            greater_than_equal: getTwoWeeksAgoDate()
+        }
+    }
+
+    const query = dateFrom?.length > 0 ?
+        (customerId?.length > 0 ? {
+            and: [dateQuery, customerQuery]
+        } : dateQuery)
+        : customerId?.length > 0 ? customerQuery : twoWeekOldQuery;
+
+    const stringifiedQuery = qs.stringify(
+        {
+            where: query,
+        },
+        {
+            addQueryPrefix: true,
+        }
+    )
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=start_end_date`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `JWT ${token.value}`,
+        },
+    }).then(res => res.json())
+
+    return res
 }
 
 export default async function OrderComponent({ customerId, dateFrom, dateTo }: { customerId: string, dateFrom: string, dateTo: string }) {
@@ -126,7 +95,7 @@ export default async function OrderComponent({ customerId, dateFrom, dateTo }: {
     }
 
     return (
-        <div className="mt-5 mb-11">
+        <div className="mt-5 mb-16">
             {orders.errors && orders.errors.map((error: any, index: number) => (
                 <div key={index} className='flex items-center justify-center'>
                     <h1 className='mt-20 text-xl font-semibold'>{error.message === "You are not allowed to perform this action." ? "Žiadne objednávky..." : error.message}</h1>
