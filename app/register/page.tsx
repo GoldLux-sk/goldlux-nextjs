@@ -23,7 +23,7 @@ export default function Register() {
       return
     }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users`, {
+    const res = await fetch(`https://goldlux-payloadcms.payloadcms.app/api/users`, {
       method: "POST",
       credentials: "include",
       headers: {

@@ -9,7 +9,7 @@ export default function LogOutButton() {
 
     const onSubmit = async () => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users/logout`, {
+            const res = await fetch(`https://goldlux-payloadcms.payloadcms.app/api/users/logout`, {
                 method: "POST",
                 credentials: "include",
                 headers: {

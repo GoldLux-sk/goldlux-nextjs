@@ -11,7 +11,7 @@ async function getCustomers() {
         redirect("/login")
     }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users?where[role][equals]=customer`, {
+    const res = await fetch(`https://goldlux-payloadcms.payloadcms.app/api/users?where[role][equals]=customer`, {
         method: "GET",
         credentials: "include",
         headers: {

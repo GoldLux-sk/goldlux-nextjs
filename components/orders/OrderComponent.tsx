@@ -46,7 +46,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
                 addQueryPrefix: true,
             }
         )
-        const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=start_end_date`, {
+        const res = await fetch(`https://goldlux-payloadcms.payloadcms.app/api/orders${stringifiedQuery}&sort=start_end_date`, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -90,8 +90,8 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         )
 
         const res = await fetch(`
-        ${customerId.length > 0 ? `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=start_end_date`
-                : `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders${stringifiedTwoWeekOldQuery}&sort=start_end_date`
+        ${customerId.length > 0 ? `https://goldlux-payloadcms.payloadcms.app/api/orders${stringifiedQuery}&sort=start_end_date`
+                : `https://goldlux-payloadcms.payloadcms.app/api/orders${stringifiedTwoWeekOldQuery}&sort=start_end_date`
             }`, {
             method: "GET",
             credentials: "include",

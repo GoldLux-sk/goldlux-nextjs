@@ -1,19 +1,16 @@
-import LogOutButton from "@/components/common/LogOutButton";
 import { cookies } from "next/headers";
 import Image from 'next/image';
 import { redirect } from "next/navigation";
 import OpenFilter from "@/components/orders/OpenFilter";
-import OrderCard from "@/components/orders/OrderCard";
 
 async function getOrders() {
   const token = cookies().get("payload-token")
-  console.log(token)
 
   if (!token) {
     redirect("/login")
   }
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders`, {
+  const res = await fetch(`https://goldlux-payloadcms.payloadcms.app/api/orders`, {
     method: "GET",
     credentials: "include",
     headers: {
@@ -37,8 +34,6 @@ export default async function Orders() {
     { id: 2, name: "Zakaznik 3", select: false },
     { id: 3, name: "Zakaznik 4", select: false },
   ]
-
-  console.log(orders);
 
   function formatDate(dateString: string) {
     const date = new Date(dateString);
