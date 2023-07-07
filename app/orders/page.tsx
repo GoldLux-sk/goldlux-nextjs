@@ -1,7 +1,7 @@
 import LogOutButton from "@/components/common/LogOutButton";
 import OpenFilter from "@/components/orders/OpenFilter";
 import Customers from "@/components/orders/Customers";
-import { CustomerStateProvider, useCustomerState } from "@/components/orders/context/CustomerStateContext";
+import { CustomerStateProvider } from "@/components/orders/context/CustomerStateContext";
 import OrderComponent from "@/components/orders/OrderComponent";
 import { Toaster } from "react-hot-toast";
 

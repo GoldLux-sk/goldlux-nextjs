@@ -44,7 +44,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
 
     const weekOldQuery = {
         start_end_date: {
-            greater_than_equal: getWeekAgoDate()
+            less_than_equal: getWeekAgoDate()
         }
     }
 
@@ -74,7 +74,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
     return res
 }
 
-export default async function OrderComponent({ customerId, dateFrom, dateTo }: { customerId: string, dateFrom: string, dateTo: string }) {
+export default async function OrderHistoryComponent({ customerId, dateFrom, dateTo }: { customerId: string, dateFrom: string, dateTo: string }) {
 
 
     const orders = await getOrders(customerId, dateFrom, dateTo)

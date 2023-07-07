@@ -8,6 +8,8 @@ import Timer from "@/components/orders/Timer";
 import CancelSubmit from "@/components/orders/CancelSubmit";
 import { getUser } from "@/utils/getUser"
 
+
+
 async function getOrder(id: string) {
   const token = cookies().get("payload-token")
 
@@ -15,13 +17,16 @@ async function getOrder(id: string) {
     redirect("/login")
   }
 
-  const order = await fetch(`https://goldlux-payloadcms.payloadcms.app/api/orders/${id}`, {
+  const order = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
     method: "GET",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
       Authorization: `JWT ${token.value}`,
     },
+    next: {
+      revalidate: 60,
+    }
   }).then(res => res.json())
 
   return order
@@ -33,6 +38,8 @@ export default async function Order({ params }: {
   const { user } = await getUser()
   const order: Order = await getOrder(params.id)
 
+  const token = cookies().get("payload-token")
+
   return (
     <div className="overflow-hidden">
       <ModalStateProvider>
@@ -41,7 +48,7 @@ export default async function Order({ params }: {
         <DetailsGrid order={order} />
         {
           (user?.role === "admin" || user?.role === "cleaner") &&
-          <Timer id={params.id} />
+          <Timer id={params.id} token={token?.value} />
         }
         {
           (user?.role === "admin" || user?.role === "cleaner") &&

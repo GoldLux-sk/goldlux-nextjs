@@ -16,7 +16,7 @@ export default function Home() {
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
-    const res = await fetch(`https://goldlux-payloadcms.payloadcms.app/api/users/login`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users/login`, {
       method: "POST",
       credentials: "include",
       headers: {

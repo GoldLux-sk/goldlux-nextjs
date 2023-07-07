@@ -8,7 +8,7 @@ export async function getUser() {
         redirect("/login")
     }
 
-    const res = await fetch(`https://goldlux-payloadcms.payloadcms.app/api/users/me`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users/me`, {
         method: "GET",
         credentials: "include",
         headers: {

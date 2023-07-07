@@ -1,6 +1,5 @@
 'use client'
 
-import { redirect } from "next/navigation"
 import { SlidersHorizontal } from "lucide-react";
 import React, { FunctionComponent, useState } from "react";
 import FilterModal from "@/components/common/modal/FilterModal";

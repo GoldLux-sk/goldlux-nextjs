@@ -1,16 +1,17 @@
 'use client'
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useModalState } from './context/ModalStateContext';
 import Image from "next/image";
 import AddTime from "@/components/common/modal/AddTime";
 
 type TimerProps = {
   id: string
+  token: string | undefined
 };
 
-const Timer: React.FC<TimerProps> = ({id}) => {
-  const {isAddOpen, setIsAddOpen} = useModalState();
+const Timer: React.FC<TimerProps> = ({ id, token }) => {
+  const { isAddOpen, setIsAddOpen } = useModalState();
 
   const [startTime, setStartTime] = useState<number>(0);
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -104,15 +105,45 @@ const Timer: React.FC<TimerProps> = ({id}) => {
     return () => clearInterval(interval);
   }, [startTime, currentTime, pausedOnTime, diffTime, pauseTime, totalPauseTime, totalTime, timer, running, reset, resetPause, r2, addedTime, updateAdded]);
 
-  function startTimer() {
+  async function startTimer() {
     if (!timer) setTimer(true);
     if (!running) setRunning(true);
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `JWT ${token}`,
+      },
+      body: JSON.stringify({
+        status: 'started',
+        real_start: new Date().toISOString(),
+      }),
+    })
+    const data = await res.json();
+    console.log(data);
   }
   function pauseTimer() {
-   if (running) setRunning(false);
+    if (running) setRunning(false);
   }
   function endTimer() {
-    if(timer) setTimer(false);
+    if (timer) setTimer(false);
+
+    const now = new Date()
+
+    const res = fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `JWT ${token}`,
+      },
+      body: JSON.stringify({
+        status: 'ended',
+        real_end: now.toISOString(),
+        real_duration_h: (now.getTime() - startTime) / 3600000,
+      })
+    }).then(res => res.json());
+    console.log(res);
   }
 
   function bgCol(): string {
