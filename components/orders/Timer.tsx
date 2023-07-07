@@ -126,12 +126,12 @@ const Timer: React.FC<TimerProps> = ({ id, token }) => {
   function pauseTimer() {
     if (running) setRunning(false);
   }
-  function endTimer() {
+  async function endTimer() {
     if (timer) setTimer(false);
 
     const now = new Date()
 
-    const res = fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
