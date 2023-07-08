@@ -12,23 +12,32 @@ import { toast } from "react-hot-toast";
 type FilterModalProps = {
   isOpen: boolean,
   setOpen: (_: boolean) => void,
-  customerId?: string,
 }
 
 const FilterModal: FunctionComponent<FilterModalProps> = ({
-  isOpen, setOpen, customerId
+  isOpen, setOpen
 }) => {
 
   const searchParams = useSearchParams();
 
   const [selectedDay, setSelectedDay] = useState<DayRange>({
-    from: null,
-    to: null
+    from: convertDayValue(searchParams.get("from")) || null,
+    to: convertDayValue(searchParams.get("to")) || null
   });
 
   function convertDate(date: DayValue) {
     const rawDate = `${date?.year}-${date?.month}-${date?.day}`
     return new Date(rawDate).toISOString()
+  }
+
+  function convertDayValue(date: Date | string | number | null): DayValue {
+    if(!date) return null;
+    date = new Date(date);
+    return {
+      year: date.getUTCFullYear(),
+      month: date.getUTCMonth() + 1,
+      day: date.getUTCDate(),
+    };
   }
 
   function hrefParams(from?: string, to?: string) {
@@ -65,14 +74,15 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
             {selectedDay.from ? (
               <div className="flex flex-col">
                 <Link onClick={() => { toast.success('Filtre boli úspešne nastavené'); setOpen(false); }}
-                  className="mt-10 px-6 py-3 bg-rose-500 rounded-2xl border border-zinc-800 text-white font-semibold text-[17px]"
+                  className="mt-10 px-6 py-3 text-center bg-rose-500 rounded-2xl border border-zinc-800 text-white font-semibold text-[17px]"
                   href={`/orders${hrefParams(convertDate(selectedDay.from), selectedDay.to ? convertDate(selectedDay.to) : undefined)}`}>
                   Potvrdiť dátum
                 </Link>
-                <button type="button" onClick={() => setSelectedDay({ from: null, to: null })}
-                  className="mt-6 h-12 px-6 py-3 bg-rose-500 rounded-2xl border border-zinc-800 text-white font-semibold text-[17px]">
+                <Link onClick={() => setSelectedDay({ from: null, to: null })}
+                  className="mt-6 h-12 px-6 py-3 text-center bg-rose-500 rounded-2xl border border-zinc-800 text-white font-semibold text-[17px]"
+                  href={`/orders${hrefParams()}`}>
                   Zrušiť dátum
-                </button>
+                </Link>
               </div>
             ) : (
               <div className="text-center font-semibold leading-snug">

@@ -9,6 +9,9 @@ export default function CustomerButton({ customer }: { customer: Customer }) {
     const { selected, setSelected } = useCustomerState()
     const searchParams = useSearchParams();
 
+    if(searchParams.get("customer") === customer.id) setSelected(customer.id);
+    else if(selected === customer.id) setSelected("");
+
     function handleSelect() {
         if (selected === customer.id) {
             setSelected("")
