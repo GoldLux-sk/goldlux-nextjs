@@ -28,8 +28,6 @@ export default function Home() {
       }),
     }).then(res => res.json())
 
-    console.log(res)
-
     if (res.errors) {
       setError("Nesprávne prihlasovacie údaje.")
     }

@@ -17,7 +17,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         return date.toISOString();
     }
 
-    if(dateFrom?.length > 0) dateFrom = new Date(new Date(dateFrom).getTime() - 86399000).toISOString() // dateFrom - (1d - 1s)
+    if (dateFrom?.length > 0) dateFrom = new Date(new Date(dateFrom).getTime() - 86399000).toISOString() // dateFrom - (1d - 1s)
 
     const dateQuery = dateFrom?.length > 0 ? dateTo?.length > 0 ? {
         and: [
@@ -71,6 +71,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
             "Content-Type": "application/json",
             Authorization: `JWT ${token.value}`,
         },
+        cache: "no-store",
     }).then(res => res.json())
 
     return res

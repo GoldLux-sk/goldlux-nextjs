@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useModalState } from './context/ModalStateContext';
 import Image from "next/image";
 import { useRouter } from 'next/navigation'
@@ -8,10 +8,11 @@ import CancelOrder from "@/components/common/modal/CancelOrder";
 
 type CancelSubmit = {
   id: string
+  token: string | undefined
 };
 
-const CancelSubmit: React.FC<CancelSubmit> = ({id}) => {
-  const {isCancelOpen, setIsCancelOpen} = useModalState();
+const CancelSubmit: React.FC<CancelSubmit> = ({ id, token }) => {
+  const { isCancelOpen, setIsCancelOpen } = useModalState();
   const router = useRouter();
 
   //TODO
@@ -20,7 +21,19 @@ const CancelSubmit: React.FC<CancelSubmit> = ({id}) => {
   }
 
   // TODO
-  function cancelOrder() {
+  async function cancelOrder() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${token}`,
+      },
+      body: JSON.stringify({
+        status: "cancelled",
+      }),
+    }).then(res => res.json());
+
+    console.log(res);
     router.push("/orders");
   }
 

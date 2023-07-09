@@ -24,9 +24,7 @@ async function getOrder(id: string) {
       "Content-Type": "application/json",
       Authorization: `JWT ${token.value}`,
     },
-    next: {
-      revalidate: 60,
-    }
+    cache: "no-store",
   }).then(res => res.json())
 
   return order
@@ -48,11 +46,11 @@ export default async function Order({ params }: {
         <DetailsGrid order={order} />
         {
           (user?.role === "admin" || user?.role === "cleaner") &&
-          <Timer id={params.id} token={token?.value} />
+          <Timer id={params.id} token={token?.value} status={order.status} />
         }
         {
-          (user?.role === "admin" || user?.role === "cleaner") &&
-          <CancelSubmit id={params.id} />
+          (user?.role === "admin" || user?.role === "cleaner") && order.status !== "cancelled" && order.status !== "ended" &&
+          <CancelSubmit id={params.id} token={token?.value} />
         }
       </ModalStateProvider>
     </div>
