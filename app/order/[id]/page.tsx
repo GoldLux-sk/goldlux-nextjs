@@ -44,10 +44,7 @@ export default async function Order({ params }: {
         <OrderNavbar orderId={order.id} />
         <CalendarDate startEndDate={order.start_end_date} />
         <DetailsGrid order={order} />
-        {
-          (user?.role === "admin" || user?.role === "cleaner") &&
-          <Timer id={params.id} token={token?.value} status={order.status} />
-        }
+        <Timer id={params.id} token={token?.value} role={user?.role} status={order.status} />
         {
           (user?.role === "admin" || user?.role === "cleaner") && order.status !== "cancelled" && order.status !== "ended" &&
           <CancelSubmit id={params.id} token={token?.value} />

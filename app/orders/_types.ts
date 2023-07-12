@@ -17,5 +17,6 @@ type Order = {
     real_end?: string
     real_duration?: number
     manual_price?: number
+    timer_value?: number
     customer: Customer
 }

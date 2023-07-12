@@ -39,6 +39,9 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
     const customerQuery = {
         customer: {
             equals: customerId
+        },
+        start_end_date: {
+            less_than_equal: getWeekAgoDate()
         }
     }
 

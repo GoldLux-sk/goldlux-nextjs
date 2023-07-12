@@ -1,16 +1,17 @@
 "use client"
 import Image from "next/image"
 import { useCustomerState } from "./context/CustomerStateContext"
-import { useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import Link from "next/link"
 import { toast } from "react-hot-toast"
 
 export default function CustomerButton({ customer }: { customer: Customer }) {
     const { selected, setSelected } = useCustomerState()
     const searchParams = useSearchParams();
+    const pathname = usePathname();
 
-    if(searchParams.get("customer") === customer.id) setSelected(customer.id);
-    else if(selected === customer.id) setSelected("");
+    if (searchParams.get("customer") === customer.id) setSelected(customer.id);
+    else if (selected === customer.id) setSelected("");
 
     function handleSelect() {
         if (selected === customer.id) {
@@ -29,11 +30,12 @@ export default function CustomerButton({ customer }: { customer: Customer }) {
     function hrefParams(customerSel: boolean) {
         const from = searchParams.get("from");
         const to = searchParams.get("to");
+
         return `${customerSel ? '' : `?customer=${customer.id}`}${from ? `${customerSel ? '?' : '&'}from=${from}` : ''}${from && to ? `&to=${to}` : ''}`;
     }
 
     return (
-        <Link key={customer.id} href={`/orders${hrefParams(selected === customer.id)}`}>
+        <Link key={customer.id} href={`${pathname}/${hrefParams(selected === customer.id)}`}>
             <button onClick={handleSelect} className="mx-1 flex flex-col" >
                 <Image
                     className="self-center"

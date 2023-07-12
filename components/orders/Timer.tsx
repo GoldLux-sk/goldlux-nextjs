@@ -10,9 +10,10 @@ type TimerProps = {
   id: string
   token: string | undefined
   status: string
+  role: string | undefined
 };
 
-const Timer: React.FC<TimerProps> = ({ id, token, status }) => {
+const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
   const { isAddOpen, setIsAddOpen } = useModalState();
 
   const [startTime, setStartTime] = useState<number>(0);
@@ -166,38 +167,51 @@ const Timer: React.FC<TimerProps> = ({ id, token, status }) => {
   return (
     <div className="mt-3 flex flex-col justify-center items-center">
       <Toaster />
-      <div className={`flex flex-col items-center w-[90vw] h-14 ${bgCol()} rounded-2xl border border-neutral-700`}>
-        {status === 'cancelled' ? (
-          <p className=" h-7 text-black text-[40px] font-normal">- - : - - : - -</p>
-        ) : (
-          <p className=" h-7 text-black text-[40px] font-normal">{formatTime(new Date(totalTime).toISOString())}</p>
-        )}
-      </div>
-      {status !== 'cancelled' && status !== 'ended' && (
-        <div className='mt-3 flex flex-col justify-center items-center'>
-          <button type="button" onClick={() => startTimer()} >
-            <Image src="/start.svg" alt="Start" width="113" height="113" />
-          </button>
-          <div className="mt-[-6px] grid grid-cols-2 gap-10">
-            <button type="button" onClick={() => pauseTimer()} >
-              <div className="flex flex-col justify-center items-center w-[132px] h-[63px] bg-white rounded-2xl border border-neutral-800">
-                <p className="text-center text-black text-[24px] font-normal">STOP</p>
-              </div>
-            </button>
-            <button type="button" onClick={() => endTimer()} >
-              <div className="flex flex-col justify-center items-center w-[132px] h-[63px] bg-white rounded-2xl border border-neutral-800">
-                <p className="text-center text-black text-[24px] font-normal">KONIEC</p>
-              </div>
-            </button>
-          </div>
+      {role === 'admin' || role === 'cleaner' ? (
+        <div>
 
-          <button className="mt-8" type="button" onClick={() => setIsAddOpen(true)}>
-            <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-2xl border border-neutral-800">
-              <Image src="/plus.svg" alt="Add" width="28" height="28" />
-              <div className="text-black font-normal">PRIDAŤ HODINY</div>
+          <div className={`flex flex-col items-center w-[90vw] h-14 ${bgCol()} rounded-2xl border border-neutral-700`}>
+            {status === 'cancelled' ? (
+              <p className=" h-7 text-black text-[40px] font-normal">- - : - - : - -</p>
+            ) : (
+              <p className=" h-7 text-black text-[40px] font-normal">{formatTime(new Date(totalTime).toISOString())}</p>
+            )}
+          </div>
+          {status !== 'cancelled' && status !== 'ended' && (
+            <div className='mt-3 flex flex-col justify-center items-center'>
+              <button type="button" onClick={() => startTimer()} >
+                <Image src="/start.svg" alt="Start" width="113" height="113" />
+              </button>
+              <div className="mt-[-6px] grid grid-cols-2 gap-10">
+                <button type="button" onClick={() => pauseTimer()} >
+                  <div className="flex flex-col justify-center items-center w-[132px] h-[63px] bg-white rounded-2xl border border-neutral-800">
+                    <p className="text-center text-black text-[24px] font-normal">STOP</p>
+                  </div>
+                </button>
+                <button type="button" onClick={() => endTimer()} >
+                  <div className="flex flex-col justify-center items-center w-[132px] h-[63px] bg-white rounded-2xl border border-neutral-800">
+                    <p className="text-center text-black text-[24px] font-normal">KONIEC</p>
+                  </div>
+                </button>
+              </div>
+
+              <button className="mt-8" type="button" onClick={() => setIsAddOpen(true)}>
+                <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-2xl border border-neutral-800">
+                  <Image src="/plus.svg" alt="Add" width="28" height="28" />
+                  <div className="text-black font-normal">PRIDAŤ HODINY</div>
+                </div>
+              </button>
+              <AddTime isOpen={isAddOpen} setOpen={setIsAddOpen} id={id} time={addedTime} addTime={addTime} />
             </div>
-          </button>
-          <AddTime isOpen={isAddOpen} setOpen={setIsAddOpen} id={id} time={addedTime} addTime={addTime} />
+          )}
+        </div>
+      ) : (
+        <div className={`flex flex-col items-center w-[90vw] h-14 ${bgCol()} rounded-2xl border border-neutral-700`}>
+          {status === 'cancelled' ? (
+            <p className=" h-7 text-black text-[40px] font-normal">- - : - - : - -</p>
+          ) : (
+            <p className=" h-7 text-black text-[40px] font-normal">{formatTime(new Date(totalTime).toISOString())}</p>
+          )}
         </div>
       )}
     </div>
