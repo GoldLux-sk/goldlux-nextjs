@@ -36,28 +36,19 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         start_end_date: {
             greater_than_equal: dateFrom
         }
-    } : {};
+    } : {
+        start_end_date: {
+            greater_than_equal: getWeekAgoDate()
+        }
+    }
 
     const customerQuery = {
         customer: {
             equals: customerId
-        },
-        start_end_date: {
-            greater_than_equal: getWeekAgoDate()
         }
     }
 
-    const weekOldQuery = {
-        start_end_date: {
-            greater_than_equal: getWeekAgoDate()
-        }
-    }
-
-    const query = dateFrom?.length > 0 ?
-        (customerId?.length > 0 ? {
-            and: [dateQuery, customerQuery]
-        } : dateQuery)
-        : customerId?.length > 0 ? customerQuery : weekOldQuery;
+    const query = customerId?.length > 0 ? { and: [dateQuery, customerQuery] } : dateQuery;
 
     const stringifiedQuery = qs.stringify(
         {
