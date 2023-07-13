@@ -73,7 +73,7 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
     }
 
     loadTimerState();
-  }, [id, token, currentTime, startTime]);
+  }, [id, token]);
 
   // Effect hook to update timer state
   useEffect(() => {
