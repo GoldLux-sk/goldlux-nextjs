@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useModalState } from './context/ModalStateContext';
 import Image from "next/image";
 import AddTime from "@/components/common/modal/AddTime";
@@ -43,6 +43,37 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
 
     return `${days > 0 ? days + 'd ' : ''}${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
+
+
+  useEffect(() => {
+    async function loadTimerState() {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
+        headers: {
+          Authorization: `JWT ${token}`,
+        },
+      });
+      const data = await res.json();
+
+      if (data.timer_state) {
+        setStartTime(data.timer_state.startTime);
+        setCurrentTime(data.timer_state.currentTime);
+        setPausedOnTime(data.timer_state.pausedOnTime);
+        setDiffTime(data.timer_state.diffTime);
+        setPauseTime(data.timer_state.pauseTime);
+        setTotalPauseTime(data.timer_state.totalPauseTime);
+        setTotalTime(data.timer_state.totalTime);
+        setTimer(data.timer_state.timer);
+        setRunning(data.timer_state.running);
+        setReset(data.timer_state.reset);
+        setResetPause(data.timer_state.resetPause);
+        setR2(data.timer_state.r2);
+        setAddedTime(data.timer_state.addedTime);
+        setUpdateAdded(data.timer_state.updateAdded);
+      }
+    }
+
+    loadTimerState();
+  }, [id, token, currentTime, startTime]);
 
   // Effect hook to update timer state
   useEffect(() => {
@@ -119,7 +150,26 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
       body: JSON.stringify({
         status: 'started',
         real_start: new Date(startTime).toISOString(),
+        timer_state: {
+          startTime,
+          currentTime,
+          pausedOnTime,
+          diffTime,
+          pauseTime,
+          totalPauseTime,
+          totalTime,
+          timer,
+          running: true,
+          reset,
+          resetPause,
+          r2,
+          addedTime,
+          updateAdded,
+        },
       }),
+      next: {
+        revalidate: 5,
+      }
     })
     const data = await res.json();
 
@@ -127,13 +177,40 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
     console.log(data);
   }
 
-  // Function to pause the timer
-  function pauseTimer() {
+  async function pauseTimer() {
     if (running) setRunning(false);
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `JWT ${token}`,
+      },
+      body: JSON.stringify({
+        timer_state: {
+          startTime,
+          currentTime,
+          pausedOnTime,
+          diffTime,
+          pauseTime,
+          totalPauseTime,
+          totalTime,
+          timer,
+          running: false,
+          reset,
+          resetPause,
+          r2,
+          addedTime,
+          updateAdded,
+        },
+      }),
+    })
+    const data = await res.json();
+
     toast.success('Časovač bol pozastavený');
+    console.log(data);
   }
 
-  // Function to end the timer
   async function endTimer() {
     if (timer) setTimer(false);
 
@@ -147,14 +224,32 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
       },
       body: JSON.stringify({
         status: 'ended',
-        real_end: now.toISOString(),
-        real_duration_h: (now.getTime() - startTime) / 3600000,
-      })
-    }).then(res => res.json());
+        real_end: new Date(now.getTime() + addedTime).toISOString(),
+        real_duration_h: (now.getTime() + addedTime - startTime) / 3600000,
+        timer_state: {
+          startTime,
+          currentTime,
+          pausedOnTime,
+          diffTime,
+          pauseTime,
+          totalPauseTime,
+          totalTime,
+          timer,
+          running: false,
+          reset,
+          resetPause,
+          r2,
+          addedTime,
+          updateAdded,
+        },
+      }),
+    })
+    const data = await res.json();
 
     toast.success('Objednávka bola úspešne ukončena');
-    console.log(res);
+    console.log(data);
   }
+
 
   // Function to set background color based on timer state
   function bgCol(): string {
@@ -205,7 +300,7 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
                   <div className="text-black font-normal">PRIDAŤ HODINY</div>
                 </div>
               </button>
-              <AddTime isOpen={isAddOpen} setOpen={setIsAddOpen} id={id} time={addedTime} addTime={addTime} />
+              <AddTime isOpen={isAddOpen} setOpen={setIsAddOpen} id={id} time={addedTime} addTime={addTime} setTotalTime={setTotalTime} setStartTime={setStartTime} token={token} />
             </div>
           )}
         </div>
