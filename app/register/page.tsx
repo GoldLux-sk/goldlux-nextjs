@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Toaster, toast } from "react-hot-toast";
+import { Eye, EyeOff } from "lucide-react";
 
 type Inputs = {
   email: string,
@@ -13,6 +14,7 @@ type Inputs = {
 
 export default function Register() {
   const [error, setError] = useState<string>("")
+  const [showPass, setShowPass] = useState<[boolean, boolean]>([false, false])
   const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
@@ -64,12 +66,19 @@ export default function Register() {
           <label htmlFor="name" className="font-light">Email</label>
           <input {...register("email", { required: true })} type="email" name="email" required placeholder="email@text.com" className="border-2 border-black rounded-2xl h-12 px-3 mb-2" />
           <label htmlFor="password" className="font-light">Heslo</label>
-          <input {...register("password", { required: true })} type="password" name="password" placeholder="Heslo" className="border-2 border-black rounded-2xl h-12 px-3 mb-2" />
+          <input {...register("password", { required: true })} type={showPass[0] ? 'text' : 'password'} name="password" placeholder="Heslo" className="border-2 border-black rounded-2xl h-12 px-3 mb-2" />
+          {showPass[0] ?
+            <EyeOff onClick={() => setShowPass([false, showPass[1]])} className="w-6 h-6 -mb-6 relative left-[calc(100%-38px)] bottom-[2.7rem]" /> :
+            <Eye onClick={() => setShowPass([true, showPass[1]])} className="w-6 h-6 -mb-6 relative left-[calc(100%-38px)] bottom-[2.7rem]" />
+          }
           <label htmlFor="passwordRetry" className="font-light">Zopakujte Vaše Heslo</label>
-          <input {...register("passwordRetry", { required: true })} type="password" name="passwordRetry" placeholder="Znova heslo" className="border-2 border-black rounded-2xl h-12 px-3" />
+          <input {...register("passwordRetry", { required: true })} type={showPass[1] ? 'text' : 'password'} name="passwordRetry" placeholder="Znova heslo" className="border-2 border-black rounded-2xl h-12 px-3" />
+          {showPass[1] ?
+            <EyeOff onClick={() => setShowPass([showPass[0], false])} className="w-6 h-6 -mb-6 relative left-[calc(100%-38px)] bottom-[2.2rem]" /> :
+            <Eye onClick={() => setShowPass([showPass[0], true])} className="w-6 h-6 -mb-6 relative left-[calc(100%-38px)] bottom-[2.2rem]" />
+          }
 
-          {errors && <p role="alert" className="text-red-500 mt-10 text-center">{errors.password && "Heslo je povinné."}</p>}
-          {errors && <p role="alert" className="text-red-500 mt-10 text-center">{errors.passwordRetry && "Zopakujte prosim heslo."}</p>}
+          {errors && <p role="alert" className="text-red-500 mt-10 text-center">{errors.password ? "Heslo je povinné." : errors.passwordRetry && "Zopakujte prosim heslo."}</p>}
           {error && <p role="alert" className="text-red-500 mt-10 text-center">{error}</p>}
           <input type="submit" value="Zaregistrovať sa" className="px-2 h-11 w-full border-2 transition-colors duration-300 hover:border-black cursor-pointer font-medium rounded-2xl" />
         </form>

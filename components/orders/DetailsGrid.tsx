@@ -27,7 +27,7 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
             <div className="col-span-2 font-semibold">Zákaznik:</div>
             <div className="col-span-2 pl-2 font-medium">{order.customer.firstName} {order.customer.lastName}</div>
             <div className="col-span-2 font-semibold">Stav:</div>
-            <div className="text-xl col-span-2 px-3 py-3 border border-black rounded-md justify-center inline-flex">{order.status}</div>
+            <div className="text-xl col-span-2 px-3 py-2 border border-black rounded-lg justify-center inline-flex">{order.status}</div>
 
             <div className="col-span-2 font-semibold">Odhadovaný čas:</div>
             <div className={timeStyle}>{formatTime(order.estimated_start)}</div>
