@@ -31,6 +31,7 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
   const [addedTime, setAddedTime] = useState<number>(0);
   const [updateAdded, setUpdateAdded] = useState<boolean>(false);
 
+  // Function to format time in HH:mm:ss format
   function formatTime(dateString: string) {
     const date = new Date(dateString);
     const hours = date.getUTCHours();
@@ -43,10 +44,12 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
     return `${days > 0 ? days + 'd ' : ''}${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
 
+  // Effect hook to update timer state
   useEffect(() => {
     let interval: NodeJS.Timer;
     if (timer) {
       if (reset) {
+        // Reset all state variables
         setReset(false);
         setR2(false);
         setStartTime(new Date().getTime());
@@ -99,15 +102,10 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
       // @ts-ignore
       clearInterval(interval);
     }
-    /*
-    console.log("TT:  " + totalTime);
-    console.log("PT:  " + pauseTime);
-    console.log("TPT: " + totalPauseTime);
-    console.log(" ");
-    */
     return () => clearInterval(interval);
   }, [startTime, currentTime, pausedOnTime, diffTime, pauseTime, totalPauseTime, totalTime, timer, running, reset, resetPause, r2, addedTime, updateAdded]);
 
+  // Function to start the timer
   async function startTimer() {
     if (!timer) setTimer(true);
     if (!running) setRunning(true);
@@ -128,10 +126,14 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
     toast.success('Objednávka bola spustená');
     console.log(data);
   }
+
+  // Function to pause the timer
   function pauseTimer() {
     if (running) setRunning(false);
     toast.success('Časovač bol pozastavený');
   }
+
+  // Function to end the timer
   async function endTimer() {
     if (timer) setTimer(false);
 
@@ -154,10 +156,12 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
     console.log(res);
   }
 
+  // Function to set background color based on timer state
   function bgCol(): string {
     return !running ? 'bg-amber-100' : timer ? 'bg-green-100' : 'bg-gray-100';
   }
 
+  // Function to add time to the timer
   function addTime(time: number) {
     setUpdateAdded(true);
     setAddedTime(Math.max(0, Math.min(24 * 3600 * 1000, time)));
