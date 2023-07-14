@@ -33,13 +33,17 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
             <div className={timeStyle}>{formatTime(order.estimated_start)}</div>
             <div className={timeStyle}>{formatTime(order.estimated_end)}</div>
 
-            <div className="col-span-2 font-semibold">Reálny čas:</div>
-            <div className={timeStyle}>
-                {order.status === 'cancelled' ? '-- : --' : formatTime(order.real_start)}
-            </div>
-            <div className={timeStyle}>
-                {order.status === 'cancelled' ? '-- : --' : formatTime(order.real_end)}
-            </div>
+            {order.status !== 'template' && (
+                <>
+                    <div className="col-span-2 font-semibold">Reálny čas:</div>
+                    <div className={timeStyle}>
+                        {order.status === 'cancelled' ? '-- : --' : formatTime(order.real_start)}
+                    </div>
+                    <div className={timeStyle}>
+                        {order.status === 'cancelled' ? '-- : --' : formatTime(order.real_end)}
+                    </div>
+                </>
+            )}
 
             {/* Idem podla noveho dizajnu ;) */}
             {/* <div className="col-span-2 font-semibold">Hodinovka:</div>

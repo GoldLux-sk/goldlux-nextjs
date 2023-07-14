@@ -5,7 +5,7 @@ import Image from "next/image";
 import Modal from 'react-modal';
 import '@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css';
 import { Calendar, DayValue, DayRange } from '@amir04lm26/react-modern-calendar-date-picker';
-import { useRouter, redirect, useSearchParams } from 'next/navigation'
+import { useRouter, redirect, useSearchParams, usePathname } from 'next/navigation'
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 
@@ -19,7 +19,7 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
 }) => {
 
   const searchParams = useSearchParams();
-
+  const pathname = usePathname();
   const [selectedDay, setSelectedDay] = useState<DayRange>({
     from: convertDayValue(searchParams.get("from")) || null,
     to: convertDayValue(searchParams.get("to")) || null
@@ -31,7 +31,7 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
   }
 
   function convertDayValue(date: Date | string | number | null): DayValue {
-    if(!date) return null;
+    if (!date) return null;
     date = new Date(date);
     return {
       year: date.getUTCFullYear(),
@@ -75,12 +75,12 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
               <div className="flex flex-col">
                 <Link onClick={() => { toast.success('Filtre boli úspešne nastavené'); setOpen(false); }}
                   className="mt-10 px-6 py-3 text-center bg-rose-500 rounded-2xl border border-zinc-800 text-white font-semibold text-[17px]"
-                  href={`/orders${hrefParams(convertDate(selectedDay.from), selectedDay.to ? convertDate(selectedDay.to) : undefined)}`}>
+                  href={`${pathname}${hrefParams(convertDate(selectedDay.from), selectedDay.to ? convertDate(selectedDay.to) : undefined)}`}>
                   Potvrdiť dátum
                 </Link>
                 <Link onClick={() => setSelectedDay({ from: null, to: null })}
                   className="mt-6 h-12 px-6 py-3 text-center bg-rose-500 rounded-2xl border border-zinc-800 text-white font-semibold text-[17px]"
-                  href={`/orders${hrefParams()}`}>
+                  href={`${pathname}${hrefParams()}`}>
                   Zrušiť dátum
                 </Link>
               </div>

@@ -7,6 +7,7 @@ type Customer = {
 }
 
 type Order = {
+    [key: string]: string | boolean | number | Customer | undefined
     id: string
     status: string
     start_end_date: string
@@ -18,5 +19,7 @@ type Order = {
     real_duration?: number
     manual_price?: number
     timer_value?: number
+    start_date: string
+    end_date: string
     customer: Customer
 }

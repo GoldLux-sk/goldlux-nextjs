@@ -4,6 +4,7 @@ import Customers from "@/components/orders/Customers";
 import { CustomerStateProvider } from "@/components/orders/context/CustomerStateContext";
 import OrderComponent from "@/components/orders/OrderComponent";
 import { Toaster } from "react-hot-toast";
+import { Suspense } from "react";
 
 type Props = {
     searchParams?: {
@@ -32,8 +33,10 @@ export default async function Orders({ searchParams }: Props) {
             <div className="px-3">
                 {/* @ts-expect-error Server Component */}
                 <Customers />
-                {/* @ts-expect-error Server Component */}
-                <OrderComponent customerId={customerId} dateFrom={from} dateTo={to} />
+                <Suspense fallback={<div>Loading...</div>}>
+                    {/* @ts-expect-error Server Component */}
+                    <OrderComponent customerId={customerId} dateFrom={from} dateTo={to} />
+                </Suspense>
             </div>
         </CustomerStateProvider>
     )

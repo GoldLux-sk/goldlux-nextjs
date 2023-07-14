@@ -36,7 +36,7 @@ export default function CustomerButton({ customer }: { customer: Customer }) {
 
     return (
         <Link key={customer.id} href={`${pathname}/${hrefParams(selected === customer.id)}`}>
-            <button onClick={handleSelect} className="mx-1 flex flex-col" >
+            <button onClick={handleSelect} className="flex px-5 flex-col p-2" >
                 <Image
                     className="self-center"
                     src={"/customer" + (selected === customer.id ? "_select" : "") + ".svg"}
@@ -44,7 +44,7 @@ export default function CustomerButton({ customer }: { customer: Customer }) {
                     width="36"
                     height="36"
                 />
-                <p className={`text-xs ${textColor()}`}>{customer.firstName} {customer.lastName}</p>
+                <p className={`text-xs italic ${textColor()}`}>{customer.firstName} {customer.lastName}</p>
             </button>
         </Link>
     )

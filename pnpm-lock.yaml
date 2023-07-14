@@ -4,6 +4,9 @@ dependencies:
   '@amir04lm26/react-modern-calendar-date-picker':
     specifier: ^1.0.1
     version: 1.0.1(react-dom@18.2.0)(react@18.2.0)
+  '@types/lodash':
+    specifier: ^4.14.195
+    version: 4.14.195
   '@types/node':
     specifier: 20.1.2
     version: 20.1.2
@@ -22,6 +25,9 @@ dependencies:
   eslint-config-next:
     specifier: 13.4.1
     version: 13.4.1(eslint@8.40.0)(typescript@5.0.4)
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   lucide-react:
     specifier: ^0.244.0
     version: 0.244.0(react@18.2.0)

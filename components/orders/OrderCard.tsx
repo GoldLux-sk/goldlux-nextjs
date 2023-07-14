@@ -5,21 +5,35 @@ import Link from "next/link";
 
 type OrderCardProps = {
   id: string,
-  title: string,
   date: string,
-  status: string
+  status: string,
+  startTime: string
 }
 
 const OrderCard: FunctionComponent<OrderCardProps> = ({
-  id, title, date, status,
+  id, date, startTime, status
 }) => {
 
   return (
     <Link href={`/order/${id}`}>
-      <div className="text-left w-[93vw] border rounded-xl px-3 my-5 bg-white shadow hover:bg-gray-100">
-        <h3 className="text-lg font-bold mt-1">{title}</h3>
-        <p className="text-lg font-bold">{date}</p>
-        <p className="text-lg font-bold mb-1">{status}</p>
+      <div className="text-left w-[93vw] border border-black/50 rounded-xl py-6 px-5 my-5 bg-white shadow hover:bg-gray-100 duration-150">
+        <h3 className="text-xl font-bold mb-5">
+          Objednávka: {' '}
+          <span className="font-normal italic text-black/50 text-sm">{id}</span>
+        </h3>
+        <p className="text-md font-bold mt-5 relative flex items-center">
+          Odhadovaný čas:
+          <span className="absolute left-40  border border-gray-400 p-2 rounded-lg">{startTime}</span>
+        </p>
+        <p className="text-md font-bold mt-8 relative flex items-center">
+          Dátum upratovania:
+          <span className="absolute left-40 border border-gray-400 p-2 rounded-lg">{date}</span>
+        </p>
+        <p className="text-md font-bold mt-8 relative flex items-center">
+          Stav:
+          <span className="absolute left-40 border border-gray-400 p-2 rounded-lg">{status}</span>
+        </p>
+
       </div>
     </Link>
   )

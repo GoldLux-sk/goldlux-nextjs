@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useModalState } from './context/ModalStateContext';
 import Image from "next/image";
 import AddTime from "@/components/common/modal/AddTime";
@@ -172,9 +172,9 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
       }
     })
     const data = await res.json();
+    console.log(data);
 
     toast.success('Objednávka bola spustená');
-    console.log(data);
   }
 
   async function pauseTimer() {

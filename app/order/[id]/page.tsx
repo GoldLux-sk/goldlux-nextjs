@@ -42,13 +42,18 @@ export default async function Order({ params }: {
     <div className="overflow-hidden">
       <ModalStateProvider>
         <OrderNavbar orderId={order.id} />
-        <CalendarDate startEndDate={order.start_end_date} />
+        {/* TODO: ak je to template bude mat zaciatocny aj konecny datum */}
+        <CalendarDate startEndDate={order.status === 'template' ? order.start_date : order.start_end_date} />
         <DetailsGrid order={order} />
-        <Timer id={params.id} token={token?.value} role={user?.role} status={order.status} />
-        {
-          (user?.role === "admin" || user?.role === "cleaner") && order.status !== "cancelled" && order.status !== "ended" &&
-          <CancelSubmit id={params.id} token={token?.value} />
-        }
+        {order.status !== 'template' && (
+          <>
+            <Timer id={params.id} token={token?.value} role={user?.role} status={order.status} />
+            {
+              (user?.role === "admin" || user?.role === "cleaner") && order.status !== "cancelled" && order.status !== "ended" &&
+              <CancelSubmit id={params.id} token={token?.value} />
+            }
+          </>
+        )}
       </ModalStateProvider>
     </div>
   )

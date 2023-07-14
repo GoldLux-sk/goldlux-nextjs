@@ -27,12 +27,12 @@ export default async function Customers() {
     const { user } = await getUser()
     const customers = await getCustomers()
 
-
     return (
-        <div className="flex flex-row justify-around">
+        <div className="flex flex-row justify-start overflow-x-auto whitespace-nowrap p-2">
             {(user.role === 'admin' || user.role === 'cleaner') && customers.map((customer: Customer) => (
                 <CustomerButton key={customer.id} customer={customer} />
             ))}
         </div>
     )
 }
+
