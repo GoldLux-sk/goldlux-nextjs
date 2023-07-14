@@ -6,16 +6,12 @@ import CustomerButton from "./CustomerButton";
 async function getCustomers() {
     const token = cookies().get("payload-token")
 
-    if (!token) {
-        redirect("/login")
-    }
-
     const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users?where[role][equals]=customer`, {
         method: "GET",
         credentials: "include",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `JWT ${token.value}`,
+            Authorization: `JWT ${token?.value}`,
         },
         cache: "no-store",
     }).then(res => res.json())
@@ -29,7 +25,7 @@ export default async function Customers() {
 
     return (
         <div className="flex flex-row justify-start overflow-x-auto whitespace-nowrap p-2">
-            {(user.role === 'admin' || user.role === 'cleaner') && customers.map((customer: Customer) => (
+            {user && (user?.role === 'admin' || user?.role === 'cleaner') && customers.map((customer: Customer) => (
                 <CustomerButton key={customer.id} customer={customer} />
             ))}
         </div>

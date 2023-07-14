@@ -7,9 +7,6 @@ import qs from 'qs'
 async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
     const token = cookies().get("payload-token")
 
-    if (!token) {
-        redirect("/login")
-    }
 
     function getWeekAgoDate() {
         const date = new Date();
@@ -78,7 +75,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         credentials: "include",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `JWT ${token.value}`,
+            Authorization: `JWT ${token?.value}`,
         },
         cache: "no-store",
         next: {
@@ -107,7 +104,7 @@ export default async function OrderComponent({ customerId, dateFrom, dateTo }: {
     }
 
     // Generate recurring dates for template orders and flatten the array
-    const allOrders = orders.docs.flatMap((order: Order, index: number) => {
+    const allOrders = orders?.docs?.flatMap((order: Order, index: number) => {
         if (order.status === 'template') {
             const dates = getRecurringDates(order.start_date, order.end_date, {
                 monday: order.monday,
@@ -129,7 +126,7 @@ export default async function OrderComponent({ customerId, dateFrom, dateTo }: {
 
     // Filter orders based on date range and remove orders older than a week
     const oneWeekAgo = new Date().getTime() - 7 * 24 * 60 * 60 * 1000; // One week ago in milliseconds
-    const filteredOrders = allOrders.filter((order: Order) => {
+    const filteredOrders = allOrders?.filter((order: Order) => {
         const orderDate = new Date(order.start_end_date).getTime();
         const fromDate = dateFrom ? new Date(dateFrom).getTime() : null;
         const toDate = dateTo ? new Date(dateTo).getTime() : null;
@@ -137,7 +134,7 @@ export default async function OrderComponent({ customerId, dateFrom, dateTo }: {
     });
 
     // Sort the orders by date and estimated_start hour
-    filteredOrders.sort((a: Order, b: Order) => {
+    filteredOrders?.sort((a: Order, b: Order) => {
         const dateDiff = new Date(a.start_end_date).getTime() - new Date(b.start_end_date).getTime();
         if (dateDiff !== 0) {
             return dateDiff;
