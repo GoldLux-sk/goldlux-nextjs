@@ -7,14 +7,14 @@ import qs from 'qs'
 async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
     const token = cookies().get("payload-token")
 
-
+    console.log("Token:", token?.value)
     function getWeekAgoDate() {
         const date = new Date();
         date.setDate(date.getDate() - 7);
         return date.toISOString();
     }
 
-    if (dateFrom?.length > 0) dateFrom = new Date(new Date(dateFrom).getTime() - 86399000).toISOString() // dateFrom - (1d - 1s)
+    // if (dateFrom?.length > 0) dateFrom = new Date(new Date(dateFrom).getTime() - 86399000).toISOString() // dateFrom - (1d - 1s)
 
     const dateQuery = dateFrom?.length > 0 ? {
         or: [
