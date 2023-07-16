@@ -36,7 +36,7 @@ export default function CustomerButton({ customer }: { customer: Customer }) {
 
     return (
         <Link key={customer.id} href={`${pathname}/${hrefParams(selected === customer.id)}`}>
-            <button onClick={handleSelect} className="flex px-5 flex-col p-2" >
+            <button onClick={handleSelect} className="flex px-3 flex-col p-2" >
                 <Image
                     className="self-center"
                     src={"/customer" + (selected === customer.id ? "_select" : "") + ".svg"}

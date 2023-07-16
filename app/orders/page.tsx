@@ -23,7 +23,7 @@ export default async function Orders({ searchParams }: Props) {
     return (
         <CustomerStateProvider>
             <Toaster />
-            <div className="my-10 w-full relative">
+            <div className="mt-10 mb-5 pb-3 w-full relative border border-x-0 border-t-0 border-stone-300">
                 <OpenFilter />
                 <div className="flex justify-center items-center w-full">
                     <h1 className="text-black/50 text-md font-bold">Aktuálne</h1>
