@@ -20,10 +20,10 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
         return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
     }
 
-    const timeStyle = "p-1 bg-gray-100 rounded-md justify-center inline-flex";
+    const timeStyle = "p-1 border border-black rounded-md justify-center inline-flex"; //bg-gray-100
 
     return (
-        <div className="mt-5 mx-10 my-12 grid grid-cols-4 gap-4">
+        <div className="mt-5 mx-10 my-12 grid grid-cols-4 gap-4 items-center">
             <div className="col-span-2 font-semibold">Zákaznik:</div>
             <div className="col-span-2 pl-2 font-medium">{order.customer.firstName} {order.customer.lastName}</div>
             <div className="col-span-2 font-semibold">Stav:</div>

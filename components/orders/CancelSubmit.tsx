@@ -5,6 +5,7 @@ import { useModalState } from './context/ModalStateContext';
 import Image from "next/image";
 import { useRouter } from 'next/navigation'
 import CancelOrder from "@/components/common/modal/CancelOrder";
+import { XSquare, CheckSquare } from "lucide-react";
 
 type CancelSubmit = {
   id: string
@@ -39,15 +40,16 @@ const CancelSubmit: React.FC<CancelSubmit> = ({ id, token }) => {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <button className="mt-8" type="button" onClick={() => setIsCancelOpen(true)}>
-        <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-2xl border border-neutral-800">
-          <Image src="/close.svg" alt="Add" width="28" height="28" />
-          <div className=" text-black font-normal">Zrušiť Objednávku</div>
+      <button className="mt-6" type="button" onClick={() => setIsCancelOpen(true)}>
+        <div className="flex justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-lg border border-neutral-800">
+          <div className="text-black font-normal">Zrušiť Objednávku</div>
+          <XSquare size={32} strokeWidth={1} />
         </div>
       </button>
-      <button className="mt-8 mb-6" type="button" onClick={() => submitOrder()}>
-        <div className="flex flex-col justify-center items-center w-[132px] h-[63px] bg-white rounded-2xl border border-neutral-800">
+      <button className="mt-6 mb-8" type="button" onClick={() => submitOrder()}>
+        <div className="flex justify-center items-center gap-3 p-2 pl-3 bg-white rounded-lg border border-neutral-800">
           <p className="text-center text-black text-[24px] font-normal">HOTOVO</p>
+          <CheckSquare size={32} strokeWidth={1} />
         </div>
       </button>
 

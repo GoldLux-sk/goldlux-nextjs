@@ -5,6 +5,7 @@ import { useModalState } from './context/ModalStateContext';
 import Image from "next/image";
 import AddTime from "@/components/common/modal/AddTime";
 import { Toaster, toast } from 'react-hot-toast';
+import { Play, Pause, Square, PlusSquare } from "lucide-react";
 
 type TimerProps = {
   id: string
@@ -278,26 +279,30 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
           </div>
           {status !== 'cancelled' && status !== 'ended' && (
             <div className='mt-3 flex flex-col justify-center items-center'>
-              <button type="button" onClick={() => startTimer()} >
-                <Image src="/start.svg" alt="Start" width="113" height="113" />
-              </button>
-              <div className="mt-[-6px] grid grid-cols-2 gap-10">
+              <div className="flex gap-3">
+                <button type="button" onClick={() => startTimer()} >
+                  <div className="flex justify-center items-center p-2 bg-white rounded-lg border border-neutral-800">
+                    <Play size={32} strokeWidth={1} />
+                  </div>
+                </button>
                 <button type="button" onClick={() => pauseTimer()} >
-                  <div className="flex flex-col justify-center items-center w-[132px] h-[63px] bg-white rounded-2xl border border-neutral-800">
-                    <p className="text-center text-black text-[24px] font-normal">STOP</p>
+                  <div className="flex justify-center items-center gap-2 p-2 bg-white rounded-lg border border-neutral-800">
+                    <p className="text-center text-black text-[20px] font-normal">STOP</p>
+                    <Pause size={32} strokeWidth={1} />
                   </div>
                 </button>
                 <button type="button" onClick={() => endTimer()} >
-                  <div className="flex flex-col justify-center items-center w-[132px] h-[63px] bg-white rounded-2xl border border-neutral-800">
-                    <p className="text-center text-black text-[24px] font-normal">KONIEC</p>
+                  <div className="flex justify-center items-center gap-2 p-2 bg-white rounded-lg border border-neutral-800">
+                    <p className="text-center text-black text-[20px] font-normal">KONIEC</p>
+                    <Square size={32} strokeWidth={1} />
                   </div>
                 </button>
               </div>
 
               <button className="mt-8" type="button" onClick={() => setIsAddOpen(true)}>
-                <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-2xl border border-neutral-800">
-                  <Image src="/plus.svg" alt="Add" width="28" height="28" />
+                <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-lg border border-neutral-800">
                   <div className="text-black font-normal">PRIDAŤ HODINY</div>
+                  <PlusSquare size={32} strokeWidth={1} />
                 </div>
               </button>
               <AddTime isOpen={isAddOpen} setOpen={setIsAddOpen} id={id} time={addedTime} addTime={addTime} setTotalTime={setTotalTime} setStartTime={setStartTime} token={token} />

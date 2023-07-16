@@ -16,9 +16,9 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
 
     // if (dateFrom?.length > 0) dateFrom = new Date(new Date(dateFrom).getTime() - 86399000).toISOString() // dateFrom - (1d - 1s)
 
-    const dateQuery = dateFrom?.length > 0 ? {
+    const dateQuery = {
         or: [
-            {
+            dateFrom?.length > 0 ? {
                 and: [
                     {
                         status: {
@@ -26,22 +26,15 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
                         }
                     },
                     {
-                        start_end_date: {
+                        start_end_date: dateTo?.length > 0 ? {
                             greater_than_equal: dateFrom,
-                            less_than_equal: dateTo || new Date().toISOString() // If dateTo is not provided, use the current date
+                            less_than_equal: dateTo // || new Date().toISOString() // If dateTo is not provided, use the current date
+                        } : {
+                            greater_than_equal: dateFrom
                         }
                     }
                 ]
-            },
-            {
-                status: {
-                    equals: 'template'
-                }
-            }
-        ]
-    } : {
-        or: [
-            {
+            } : {
                 start_end_date: {
                     greater_than_equal: getWeekAgoDate()
                 }
