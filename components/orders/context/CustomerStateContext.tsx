@@ -1,5 +1,6 @@
 'use client'
 import React, { createContext, useState, useContext } from 'react';
+import { useSearchParams } from 'next/navigation'
 import Modal from 'react-modal';
 
 type CustomerStateContextProps = {
@@ -10,7 +11,7 @@ type CustomerStateContextProps = {
 const CustomerStateContext = createContext<CustomerStateContextProps | undefined>(undefined);
 
 export const CustomerStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [selected, setSelected] = useState<string>('');
+    const [selected, setSelected] = useState<string>(useSearchParams().get("customer") || '');
 
     Modal.setAppElement('body');
 

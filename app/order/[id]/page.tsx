@@ -1,6 +1,6 @@
 import CalendarDate from "@/components/orders/CalendarDate"
 import DetailsGrid from "@/components/orders/DetailsGrid"
-import OrderNavbar from "@/components/orders/Navbar"
+import OrderNavbar from "@/components/orders/OrderNavbar"
 import { ModalStateProvider } from "@/components/orders/context/ModalStateContext"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"

@@ -41,8 +41,12 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
   }
 
   function hrefParams(from?: string, to?: string) {
-    const customer = searchParams.get("customer");
-    return `${customer ? `?customer=${customer}` : ''}${from ? `${customer ? '&' : '?'}from=${from}` : ''}${from && to ? `&to=${to}` : ''}`;
+    const params = { 'customer': searchParams.get("customer"), 'from': from, 'to': to }
+    let s = '';
+    for(const [key, value] of Object.entries(params)) {
+      if(value && value.length > 0) s = s.concat(`${s.length > 0 ? '&' : '?'}${key}=${value}`);
+    }
+    return s;
   }
 
   return (
@@ -52,8 +56,8 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
       contentLabel="Cancel Order"
       className="custom-modal"
     >
-      <div className="bg-white w-screen">
-        <div className="mt-10 mx-5 h-[90vh] border border-black rounded-2xl relative">
+      <div className="bg-white w-screen pt-10">
+        <div className="mx-5 h-[90vh] border border-black rounded-2xl relative">
           <div className="flex flex-row justify-between p-3">
             <button type="button" onClick={() => setOpen(false)} >
               <Image src="/close.svg" alt="Close" width="24" height="24" />
