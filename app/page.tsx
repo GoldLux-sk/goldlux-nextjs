@@ -14,8 +14,8 @@ export default function Home() {
       <Image
         src="/logo.svg"
         alt="GoldLux Logo"
-        width={180}
-        height={87}
+        width={260}
+        height={55}
         priority
       />
     </main>
