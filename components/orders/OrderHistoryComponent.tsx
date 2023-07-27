@@ -44,7 +44,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
                     },
                     {
                         status: {
-                            equals: 'cancelled'
+                            equals: 'ended'
                         }
                     }
                 ]
@@ -132,7 +132,7 @@ export default async function OrderHistoryComponent({ customerId, dateFrom, date
         const orderDate = new Date(order.start_end_date).getTime();
         const fromDate = dateFrom ? new Date(dateFrom).getTime() : null;
         const toDate = dateTo ? new Date(dateTo).getTime() : null;
-        return (!fromDate || orderDate >= fromDate) && (!toDate || orderDate <= toDate) && (orderDate <= oneWeekAgo || order.status === 'cancelled');
+        return (!fromDate || orderDate >= fromDate) && (!toDate || orderDate <= toDate) && (orderDate <= oneWeekAgo || order.status === 'ended');
     });
 
     // Sort the orders by date and estimated_start hour

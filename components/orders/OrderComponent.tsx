@@ -57,7 +57,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         and: [
             {
                 status: {
-                    not_equals: 'cancelled'
+                    not_equals: 'ended'
                 }
             },
             customerId?.length > 0 ? { and: [dateQuery, customerQuery] } : dateQuery
