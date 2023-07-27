@@ -36,9 +36,18 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
                     }
                 ]
             } : {
-                start_end_date: {
-                    less_than_equal: getWeekAgoDate()
-                }
+                or: [
+                    {
+                        start_end_date: {
+                            less_than_equal: getWeekAgoDate()
+                        }
+                    },
+                    {
+                        status: {
+                            equals: 'cancelled'
+                        }
+                    }
+                ]
             },
             {
                 status: {
@@ -51,9 +60,6 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
     const customerQuery = {
         customer: {
             equals: customerId
-        },
-        start_end_date: {
-            less_than_equal: getWeekAgoDate()
         }
     }
 
@@ -73,11 +79,11 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         ]
     }
 
-    const query = dateFrom?.length > 0 ?
-        (customerId?.length > 0 ? {
-            and: [dateQuery, customerQuery]
-        } : dateQuery)
-        : customerId?.length > 0 ? customerQuery : weekOldQuery;
+    const query = //dateFrom?.length > 0 ?
+        customerId?.length > 0 ? { and: [dateQuery, customerQuery] } : dateQuery
+        //: customerId?.length > 0 ? customerQuery : weekOldQuery;
+
+    console.log(JSON.stringify(query, null, 4));
 
     const stringifiedQuery = qs.stringify(
         {
@@ -146,7 +152,7 @@ export default async function OrderHistoryComponent({ customerId, dateFrom, date
         const orderDate = new Date(order.start_end_date).getTime();
         const fromDate = dateFrom ? new Date(dateFrom).getTime() : null;
         const toDate = dateTo ? new Date(dateTo).getTime() : null;
-        return (!fromDate || orderDate >= fromDate) && (!toDate || orderDate <= toDate) && orderDate <= oneWeekAgo;
+        return (!fromDate || orderDate >= fromDate) && (!toDate || orderDate <= toDate) && (orderDate <= oneWeekAgo || order.status === 'cancelled');
     });
 
     // Sort the orders by date and estimated_start hour
