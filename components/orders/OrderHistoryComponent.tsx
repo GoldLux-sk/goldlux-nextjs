@@ -79,11 +79,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         ]
     }
 
-    const query = //dateFrom?.length > 0 ?
-        customerId?.length > 0 ? { and: [dateQuery, customerQuery] } : dateQuery
-        //: customerId?.length > 0 ? customerQuery : weekOldQuery;
-
-    console.log(JSON.stringify(query, null, 4));
+    const query = customerId?.length > 0 ? { and: [dateQuery, customerQuery] } : dateQuery
 
     const stringifiedQuery = qs.stringify(
         {
