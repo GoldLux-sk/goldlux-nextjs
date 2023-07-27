@@ -63,22 +63,6 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         }
     }
 
-    const weekOldQuery = {
-        or: [
-            {
-                start_end_date: {
-                    less_than_equal: getWeekAgoDate()
-                }
-            },
-            {
-                status: {
-                    equals: 'template'
-                }
-            }
-
-        ]
-    }
-
     const query = customerId?.length > 0 ? { and: [dateQuery, customerQuery] } : dateQuery
 
     const stringifiedQuery = qs.stringify(
