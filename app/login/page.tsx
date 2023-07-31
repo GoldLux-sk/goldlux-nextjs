@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Eye, EyeOff } from 'lucide-react';
+import { motion } from "framer-motion";
 
 type Inputs = {
   email: string,
@@ -42,7 +43,11 @@ export default function Home() {
 
 
   return (
-    <div className="h-screen w-full flex flex-col items-center">
+    <motion.div
+      initial={{ opacity: 0, }}
+      animate={{ opacity: 1, }}
+      exit={{ opacity: 0, }}
+      className="h-screen w-full flex flex-col items-center">
       <div className="flex items-center justify-center mt-10">
         <h1 className="text-lg font-semibold opacity-50">Prihlasovanie</h1>
       </div>
@@ -58,8 +63,8 @@ export default function Home() {
           <label htmlFor="password" className="font-light">Heslo</label>
           <input {...register("password", { required: true })} type={showPass ? 'text' : 'password'} name="password" placeholder="Heslo" className="border-2 border-black rounded-2xl h-12 px-3 mb-2" />
           {showPass ?
-            <EyeOff onClick={() => setShowPass(false)} className="w-6 h-6 -mb-6 relative left-[calc(100%-38px)] bottom-[2.7rem]" /> :
-            <Eye onClick={() => setShowPass(true)} className="w-6 h-6 -mb-6 relative left-[calc(100%-38px)] bottom-[2.7rem]" />
+            <EyeOff onClick={() => setShowPass(false)} className="w-6 h-6 -mb-6 relative left-[calc(100%-38px)] bottom-[2.7rem] cursor-pointer" /> :
+            <Eye onClick={() => setShowPass(true)} className="w-6 h-6 -mb-6 relative left-[calc(100%-38px)] bottom-[2.7rem] cursor-pointer" />
           }
 
           {(errors.password?.type === 'required' || errors.email?.type === 'required') && (
@@ -72,6 +77,6 @@ export default function Home() {
       </div>
 
       <Link href="/register" className="mt-20 underline opacity-50">Alebo, ak ste nový užívateľ, zaregistrujte sa </Link>
-    </div>
+    </motion.div>
   )
 }

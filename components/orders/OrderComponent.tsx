@@ -1,13 +1,16 @@
-import React, { Suspense } from 'react'
 import OrderCard from './OrderCard'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import qs from 'qs'
 
+
 async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
     const token = cookies().get("payload-token")
 
-    console.log("Token:", token?.value)
+    if (!token) {
+        redirect("/login")
+    }
+
     function getWeekAgoDate() {
         const date = new Date();
         date.setDate(date.getDate() - 7);
@@ -80,8 +83,6 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
 }
 
 export default async function OrderComponent({ customerId, dateFrom, dateTo }: { customerId: string, dateFrom: string, dateTo: string }) {
-
-
     const orders = await getOrders(customerId, dateFrom, dateTo)
 
     function getRecurringDates(start: string, end: string, days: any) {
