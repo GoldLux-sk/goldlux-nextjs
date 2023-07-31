@@ -10,9 +10,6 @@ export default function CustomerButton({ customer }: { customer: Customer }) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
 
-    if (searchParams.get("customer") === customer.id) setSelected(customer.id);
-    else if (selected === customer.id) setSelected("");
-
     function handleSelect() {
         if (selected === customer.id) {
             setSelected("")
@@ -28,10 +25,12 @@ export default function CustomerButton({ customer }: { customer: Customer }) {
     }
 
     function hrefParams(customerSel: boolean) {
-        const from = searchParams.get("from");
-        const to = searchParams.get("to");
-
-        return `${customerSel ? '' : `?customer=${customer.id}`}${from ? `${customerSel ? '?' : '&'}from=${from}` : ''}${from && to ? `&to=${to}` : ''}`;
+        const params = { 'customer': customerSel ? null : customer.id, 'from': searchParams.get("from"), 'to': searchParams.get("to") }
+        let s = '';
+        for(const [key, value] of Object.entries(params)) {
+            if(value && value.length > 0) s = s.concat(`${s.length > 0 ? '&' : '?'}${key}=${value}`);
+        }
+        return s;
     }
 
     return (

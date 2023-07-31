@@ -56,7 +56,16 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
         }
     }
 
-    const query = customerId?.length > 0 ? { and: [dateQuery, customerQuery] } : dateQuery;
+    const query = {
+        and: [
+            {
+                status: {
+                    not_equals: 'ended'
+                }
+            },
+            customerId?.length > 0 ? { and: [dateQuery, customerQuery] } : dateQuery
+        ]
+    };
 
     const stringifiedQuery = qs.stringify(
         {
