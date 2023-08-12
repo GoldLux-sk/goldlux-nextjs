@@ -27,7 +27,7 @@ const CalendarDate: React.FC<CalendarDateProps> = ({ startEndDate }) => {
         calendarClassName="responsive-calendar"
         value={selectedDay}
         onChange={setSelectedDay}
-        colorPrimary="#FF3B30"
+        colorPrimary="#FF5A60C4"
         colorPrimaryLight="#F4CFCD"
       />
     </div>
