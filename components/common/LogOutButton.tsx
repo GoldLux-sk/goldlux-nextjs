@@ -1,31 +1,37 @@
-"use client"
+"use client";
 
 import { LogOut } from "lucide-react";
+// import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function LogOutButton() {
+  const router = useRouter();
 
-    const router = useRouter();
-
-    const onSubmit = async () => {
-        try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users/logout`, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }).then(res => res.json())
-
-            console.log(res)
-        } catch (error) {
-            console.log(error)
+  const onSubmit = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
+      ).then((res) => res.json());
 
-        router.push("/login")
+      console.log(res);
+    } catch (error) {
+      console.log(error);
     }
 
-    return (
-        <LogOut onClick={onSubmit} className="cursor-pointer absolute right-5 top-5 w-6 h-6" />
-    )
+    router.push("/login");
+  };
+
+  return (
+    <LogOut
+      onClick={onSubmit}
+      className="cursor-pointer absolute right-5 top-5 w-6 h-6"
+    />
+  );
 }

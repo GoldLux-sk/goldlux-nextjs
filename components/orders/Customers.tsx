@@ -4,31 +4,38 @@ import { redirect } from "next/navigation";
 import CustomerButton from "./CustomerButton";
 
 async function getCustomers() {
-    const token = cookies().get("payload-token")
-
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users?where[role][equals]=customer`, {
+  try {
+    const token = cookies().get("payload-token");
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users?where[role][equals]=customer`,
+      {
         method: "GET",
         credentials: "include",
         headers: {
-            "Content-Type": "application/json",
-            Authorization: `JWT ${token?.value}`,
+          "Content-Type": "application/json",
+          Authorization: `JWT ${token?.value}`,
         },
         cache: "no-store",
-    }).then(res => res.json())
+      }
+    ).then((res) => res.json());
 
-    return res.docs
+    return res.docs;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export default async function Customers() {
-    const { user } = await getUser()
-    const customers = await getCustomers()
+  const { user } = await getUser();
+  const customers = await getCustomers();
 
-    return (
-        <div className="flex flex-row justify-between overflow-x-auto whitespace-nowrap p-2">
-            {user && (user?.role === 'admin' || user?.role === 'cleaner') && customers.map((customer: Customer) => (
-                <CustomerButton key={customer.id} customer={customer} />
-            ))}
-        </div>
-    )
+  return (
+    <div className="flex flex-row justify-between overflow-x-auto whitespace-nowrap p-2">
+      {user &&
+        (user?.role === "admin" || user?.role === "cleaner") &&
+        customers.map((customer: Customer) => (
+          <CustomerButton key={customer.id} customer={customer} />
+        ))}
+    </div>
+  );
 }
-

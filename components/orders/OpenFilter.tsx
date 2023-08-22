@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import { SlidersHorizontal } from "lucide-react";
+// import { SlidersHorizontal } from "lucide-react";
 import React, { FunctionComponent, useState } from "react";
 import FilterModal from "@/components/common/modal/FilterModal";
+import { SlidersHorizontal } from "lucide-react";
 
 const OpenFilter: FunctionComponent = () => {
-
   const [isFilterOpen, setFilterOpen] = useState<boolean>(false);
 
   return (
@@ -15,7 +15,7 @@ const OpenFilter: FunctionComponent = () => {
       </button>
       <FilterModal isOpen={isFilterOpen} setOpen={setFilterOpen} />
     </div>
-  )
-}
+  );
+};
 
-export default OpenFilter
+export default OpenFilter;
