@@ -13,7 +13,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
   function getWeekAgoDate() {
     const date = new Date();
     date.setDate(date.getDate() - 7);
-    return date.toISOString();
+    return date.toLocaleDateString();
   }
 
   // if (dateFrom?.length > 0) dateFrom = new Date(new Date(dateFrom).getTime() - 86399000).toISOString() // dateFrom - (1d - 1s)
@@ -117,9 +117,7 @@ export default async function OrderComponent({
     const endDate = new Date(end);
     const dates = [];
     for (let day = startDate; day <= endDate; day.setDate(day.getDate() + 1)) {
-      if (
-        days[day.toLocaleString("en-us", { weekday: "long" }).toLowerCase()]
-      ) {
+      if (days[day.toLocaleDateString().toLowerCase()]) {
         dates.push(new Date(day));
       }
     }
@@ -140,7 +138,7 @@ export default async function OrderComponent({
       });
       return dates.map((date) => ({
         ...order,
-        start_end_date: date.toISOString(),
+        start_end_date: date.toLocaleDateString(),
       }));
     } else {
       return order;

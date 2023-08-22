@@ -32,7 +32,7 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
 
   function convertDate(date: DayValue) {
     const rawDate = `${date?.year}-${date?.month}-${date?.day}`;
-    return new Date(rawDate).toISOString();
+    return new Date(rawDate).toLocaleDateString();
   }
 
   function convertDayValue(date: Date | string | number | null): DayValue {

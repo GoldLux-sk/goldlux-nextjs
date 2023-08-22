@@ -171,7 +171,7 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
         },
         body: JSON.stringify({
           status: "started",
-          real_start: new Date(startTime).toISOString(),
+          real_start: new Date(startTime).toLocaleDateString(),
           timer_state: {
             startTime,
             currentTime,
@@ -252,7 +252,7 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
         },
         body: JSON.stringify({
           status: "ended",
-          real_end: new Date(now.getTime() + addedTime).toISOString(),
+          real_end: new Date(now.getTime() + addedTime).toLocaleDateString(),
           real_duration_h: (now.getTime() + addedTime - startTime) / 3600000,
           timer_state: {
             startTime,
@@ -305,7 +305,7 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
               </p>
             ) : (
               <p className=" h-7 text-black text-[40px] font-normal">
-                {formatTime(new Date(totalTime).toISOString())}
+                {formatTime(new Date(totalTime).toLocaleDateString())}
               </p>
             )}
           </div>
@@ -368,7 +368,7 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
             </p>
           ) : (
             <p className=" h-7 text-black text-[40px] font-normal">
-              {formatTime(new Date(totalTime).toISOString())}
+              {formatTime(new Date(totalTime).toLocaleDateString())}
             </p>
           )}
         </div>

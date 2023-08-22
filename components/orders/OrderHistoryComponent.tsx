@@ -18,7 +18,7 @@ async function getOrders(
   function getWeekAgoDate() {
     const date = new Date();
     date.setDate(date.getDate() - 7);
-    return date.toISOString();
+    return date.toLocaleDateString();
   }
 
   const dateQuery = {
@@ -116,9 +116,7 @@ export default async function OrderHistoryComponent({
     const endDate = new Date(end);
     const dates = [];
     for (let day = startDate; day <= endDate; day.setDate(day.getDate() + 1)) {
-      if (
-        days[day.toLocaleString("en-us", { weekday: "long" }).toLowerCase()]
-      ) {
+      if (days[day.toLocaleDateString().toLowerCase()]) {
         dates.push(new Date(day));
       }
     }
@@ -141,7 +139,7 @@ export default async function OrderHistoryComponent({
       }).filter((date) => date.getTime() <= oneWeekAgo); // Only include dates older than one week
       return dates.map((date) => ({
         ...order,
-        start_end_date: date.toISOString(),
+        start_end_date: date.toLocaleDateString(),
       }));
     } else {
       return order;

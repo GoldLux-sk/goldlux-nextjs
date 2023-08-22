@@ -1,15 +1,20 @@
-'use client'
-import '@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css';
-import { Calendar, DayValue } from '@amir04lm26/react-modern-calendar-date-picker';
-import { useState } from 'react';
-import { useModalState } from './context/ModalStateContext';
+"use client";
+import "@amir04lm26/react-modern-calendar-date-picker/lib/DatePicker.css";
+import {
+  Calendar,
+  DayValue,
+} from "@amir04lm26/react-modern-calendar-date-picker";
+import { useState } from "react";
+import { useModalState } from "./context/ModalStateContext";
 
 type CalendarDateProps = {
   startEndDate: string;
 };
 
 const CalendarDate: React.FC<CalendarDateProps> = ({ startEndDate }) => {
-  const [selectedDay, setSelectedDay] = useState<DayValue>(dateToObj(startEndDate));
+  const [selectedDay, setSelectedDay] = useState<DayValue>(
+    dateToObj(startEndDate)
+  );
 
   const { isAddOpen, isCancelOpen } = useModalState();
 
@@ -21,7 +26,7 @@ const CalendarDate: React.FC<CalendarDateProps> = ({ startEndDate }) => {
     return { year, month, day };
   }
 
-  return (!isAddOpen && !isCancelOpen) ? (
+  return !isAddOpen && !isCancelOpen ? (
     <div className="mt-3 px-3 flex flex-col items-center">
       <Calendar
         calendarClassName="responsive-calendar"
