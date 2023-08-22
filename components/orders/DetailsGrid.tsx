@@ -1,6 +1,3 @@
-import React from "react";
-
-
 type DetailsGridProps = {
     order: Order;
 };
