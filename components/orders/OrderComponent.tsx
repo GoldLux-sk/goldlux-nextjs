@@ -220,9 +220,9 @@ export default async function OrderComponent({
               <OrderCard
                 id={order.id}
                 customer={order.customer}
-                date={formatDate(order.start_end_date)}
+                date={formatDate(order.start_end_date.toLocaleString())}
                 status={order.status}
-                startTime={formatHour(order.estimated_start)}
+                startTime={formatHour(order.estimated_start.toLocaleString())}
               />
             </div>
           ))}
