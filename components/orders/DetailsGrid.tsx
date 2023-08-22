@@ -57,10 +57,6 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
           </div>
         </>
       )}
-
-      {/* Idem podla noveho dizajnu ;) */}
-      {/* <div className="col-span-2 font-semibold">Hodinovka:</div>
-            <div className="col-span-2 font-semibold pl-2">{order.manual_price || '?'}$/h</div> */}
     </div>
   );
 };

@@ -175,16 +175,18 @@ export default async function OrderComponent({
 
   function formatDate(dateString: string | Date) {
     const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1; // Months are zero-based
-    const year = date.getFullYear();
+    date.setDate(date.getDate() + 1); // Add one day to the date
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1; // Months are zero-based
+    const year = date.getUTCFullYear();
     return `${day}. ${month}. ${year}`;
   }
 
   function formatHour(dateString: string) {
     const date = new Date(dateString);
-    const hour = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
+    date.setHours(date.getHours() + 2); // Add one hour to the time
+    const hour = date.getUTCHours().toLocaleString().padStart(2, "0");
+    const minutes = date.getUTCMinutes().toLocaleString().padStart(2, "0");
     return `${hour}:${minutes}`;
   }
 
