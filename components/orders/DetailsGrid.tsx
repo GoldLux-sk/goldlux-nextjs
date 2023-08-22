@@ -5,8 +5,8 @@ type DetailsGridProps = {
 const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
   function formatTime(dateString: string | undefined) {
     const date = new Date(dateString || "");
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
+    const hours = date.getUTCHours() + 2;
+    const minutes = date.getUTCMinutes();
 
     if (isNaN(hours) || isNaN(minutes)) {
       return "-- : --";
