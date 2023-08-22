@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { useModalState } from './context/ModalStateContext';
+import React, { useEffect, useState } from "react";
+import { useModalState } from "./context/ModalStateContext";
 import Image from "next/image";
 import AddTime from "@/components/common/modal/AddTime";
-import { Toaster, toast } from 'react-hot-toast';
+import { Toaster, toast } from "react-hot-toast";
 import { Play, Pause, Square, PlusSquare } from "lucide-react";
 
 type TimerProps = {
-  id: string
-  token: string | undefined
-  status: string
-  role: string | undefined
+  id: string;
+  token: string | undefined;
+  status: string;
+  role: string | undefined;
 };
 
 const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
@@ -40,19 +40,25 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
     const seconds = date.getUTCSeconds();
     const days = parseInt(date.getTime() / 86400000 + ""); // ms / (1000 * 3600 * 24)
 
-    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) return '--:--:--';
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) return "--:--:--";
 
-    return `${days > 0 ? days + 'd ' : ''}${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    return `${days > 0 ? days + "d " : ""}${hours
+      .toString()
+      .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
   }
-
 
   useEffect(() => {
     async function loadTimerState() {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
-        headers: {
-          Authorization: `JWT ${token}`,
-        },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`,
+        {
+          headers: {
+            Authorization: `JWT ${token}`,
+          },
+        }
+      );
       const data = await res.json();
 
       if (data.timer_state) {
@@ -78,7 +84,7 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
 
   // Effect hook to update timer state
   useEffect(() => {
-    let interval: NodeJS.Timer;
+    let interval: number;
     if (timer) {
       if (reset) {
         // Reset all state variables
@@ -93,7 +99,7 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
         setTotalTime(addedTime);
         setRunning(true);
       }
-      interval = setInterval(function () {
+      interval = window.setInterval(function () {
         setCurrentTime(new Date().getTime());
         setDiffTime(currentTime - startTime);
 
@@ -103,10 +109,8 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
             setPausedOnTime(new Date().getTime());
             setPauseTime(0);
             setResetPause(false);
-          }
-          else setPauseTime(currentTime - pausedOnTime);
-        }
-        else {
+          } else setPauseTime(currentTime - pausedOnTime);
+        } else {
           if (r2) setR2(false);
           if (pauseTime != 0) {
             if (pauseTime > 0) setTotalPauseTime(totalPauseTime + pauseTime);
@@ -135,126 +139,149 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [startTime, currentTime, pausedOnTime, diffTime, pauseTime, totalPauseTime, totalTime, timer, running, reset, resetPause, r2, addedTime, updateAdded]);
+  }, [
+    startTime,
+    currentTime,
+    pausedOnTime,
+    diffTime,
+    pauseTime,
+    totalPauseTime,
+    totalTime,
+    timer,
+    running,
+    reset,
+    resetPause,
+    r2,
+    addedTime,
+    updateAdded,
+  ]);
 
   // Function to start the timer
   async function startTimer() {
     if (!timer) setTimer(true);
     if (!running) setRunning(true);
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `JWT ${token}`,
-      },
-      body: JSON.stringify({
-        status: 'started',
-        real_start: new Date(startTime).toISOString(),
-        timer_state: {
-          startTime,
-          currentTime,
-          pausedOnTime,
-          diffTime,
-          pauseTime,
-          totalPauseTime,
-          totalTime,
-          timer,
-          running: true,
-          reset,
-          resetPause,
-          r2,
-          addedTime,
-          updateAdded,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${token}`,
         },
-      }),
-      next: {
-        revalidate: 5,
+        body: JSON.stringify({
+          status: "started",
+          real_start: new Date(startTime).toISOString(),
+          timer_state: {
+            startTime,
+            currentTime,
+            pausedOnTime,
+            diffTime,
+            pauseTime,
+            totalPauseTime,
+            totalTime,
+            timer,
+            running: true,
+            reset,
+            resetPause,
+            r2,
+            addedTime,
+            updateAdded,
+          },
+        }),
+        next: {
+          revalidate: 5,
+        },
       }
-    })
+    );
     const data = await res.json();
     console.log(data);
 
-    toast.success('Objednávka bola spustená');
+    toast.success("Objednávka bola spustená");
   }
 
   async function pauseTimer() {
     if (running) setRunning(false);
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `JWT ${token}`,
-      },
-      body: JSON.stringify({
-        timer_state: {
-          startTime,
-          currentTime,
-          pausedOnTime,
-          diffTime,
-          pauseTime,
-          totalPauseTime,
-          totalTime,
-          timer,
-          running: false,
-          reset,
-          resetPause,
-          r2,
-          addedTime,
-          updateAdded,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${token}`,
         },
-      }),
-    })
+        body: JSON.stringify({
+          timer_state: {
+            startTime,
+            currentTime,
+            pausedOnTime,
+            diffTime,
+            pauseTime,
+            totalPauseTime,
+            totalTime,
+            timer,
+            running: false,
+            reset,
+            resetPause,
+            r2,
+            addedTime,
+            updateAdded,
+          },
+        }),
+      }
+    );
     const data = await res.json();
 
-    toast.success('Časovač bol pozastavený');
+    toast.success("Časovač bol pozastavený");
     console.log(data);
   }
 
   async function endTimer() {
     if (timer) setTimer(false);
 
-    const now = new Date()
+    const now = new Date();
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `JWT ${token}`,
-      },
-      body: JSON.stringify({
-        status: 'ended',
-        real_end: new Date(now.getTime() + addedTime).toISOString(),
-        real_duration_h: (now.getTime() + addedTime - startTime) / 3600000,
-        timer_state: {
-          startTime,
-          currentTime,
-          pausedOnTime,
-          diffTime,
-          pauseTime,
-          totalPauseTime,
-          totalTime,
-          timer,
-          running: false,
-          reset,
-          resetPause,
-          r2,
-          addedTime,
-          updateAdded,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${token}`,
         },
-      }),
-    })
+        body: JSON.stringify({
+          status: "ended",
+          real_end: new Date(now.getTime() + addedTime).toISOString(),
+          real_duration_h: (now.getTime() + addedTime - startTime) / 3600000,
+          timer_state: {
+            startTime,
+            currentTime,
+            pausedOnTime,
+            diffTime,
+            pauseTime,
+            totalPauseTime,
+            totalTime,
+            timer,
+            running: false,
+            reset,
+            resetPause,
+            r2,
+            addedTime,
+            updateAdded,
+          },
+        }),
+      }
+    );
     const data = await res.json();
 
-    toast.success('Objednávka bola úspešne ukončena');
+    toast.success("Objednávka bola úspešne ukončena");
     console.log(data);
   }
 
-
   // Function to set background color based on timer state
   function bgCol(): string {
-    return !running ? 'bg-amber-100' : timer ? 'bg-green-100' : 'bg-gray-100';
+    return !running ? "bg-amber-100" : timer ? "bg-green-100" : "bg-gray-100";
   }
 
   // Function to add time to the timer
@@ -267,54 +294,82 @@ const Timer: React.FC<TimerProps> = ({ id, token, status, role }) => {
   return (
     <div className="mt-3 flex flex-col justify-center items-center">
       <Toaster />
-      {role === 'admin' || role === 'cleaner' ? (
+      {role === "admin" || role === "cleaner" ? (
         <div>
-
-          <div className={`flex flex-col items-center w-[90vw] h-14 ${bgCol()} rounded-2xl border border-neutral-700`}>
-            {status === 'cancelled' ? (
-              <p className=" h-7 text-black text-[40px] font-normal">- - : - - : - -</p>
+          <div
+            className={`flex flex-col items-center w-[90vw] h-14 ${bgCol()} rounded-2xl border border-neutral-700`}
+          >
+            {status === "cancelled" ? (
+              <p className=" h-7 text-black text-[40px] font-normal">
+                - - : - - : - -
+              </p>
             ) : (
-              <p className=" h-7 text-black text-[40px] font-normal">{formatTime(new Date(totalTime).toISOString())}</p>
+              <p className=" h-7 text-black text-[40px] font-normal">
+                {formatTime(new Date(totalTime).toISOString())}
+              </p>
             )}
           </div>
-          {status !== 'cancelled' && status !== 'ended' && (
-            <div className='mt-3 flex flex-col justify-center items-center'>
+          {status !== "cancelled" && status !== "ended" && (
+            <div className="mt-3 flex flex-col justify-center items-center">
               <div className="flex gap-3">
-                <button type="button" onClick={() => startTimer()} >
+                <button type="button" onClick={() => startTimer()}>
                   <div className="flex justify-center items-center p-2 bg-white rounded-lg border border-neutral-800">
                     <Play size={32} strokeWidth={1} />
                   </div>
                 </button>
-                <button type="button" onClick={() => pauseTimer()} >
+                <button type="button" onClick={() => pauseTimer()}>
                   <div className="flex justify-center items-center gap-2 p-2 bg-white rounded-lg border border-neutral-800">
-                    <p className="text-center text-black text-[20px] font-normal">STOP</p>
+                    <p className="text-center text-black text-[20px] font-normal">
+                      STOP
+                    </p>
                     <Pause size={32} strokeWidth={1} />
                   </div>
                 </button>
-                <button type="button" onClick={() => endTimer()} >
+                <button type="button" onClick={() => endTimer()}>
                   <div className="flex justify-center items-center gap-2 p-2 bg-white rounded-lg border border-neutral-800">
-                    <p className="text-center text-black text-[20px] font-normal">KONIEC</p>
+                    <p className="text-center text-black text-[20px] font-normal">
+                      KONIEC
+                    </p>
                     <Square size={32} strokeWidth={1} />
                   </div>
                 </button>
               </div>
 
-              <button className="mt-8" type="button" onClick={() => setIsAddOpen(true)}>
+              <button
+                className="mt-8"
+                type="button"
+                onClick={() => setIsAddOpen(true)}
+              >
                 <div className="flex flex-row justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-lg border border-neutral-800">
                   <div className="text-black font-normal">PRIDAŤ HODINY</div>
                   <PlusSquare size={32} strokeWidth={1} />
                 </div>
               </button>
-              <AddTime isOpen={isAddOpen} setOpen={setIsAddOpen} id={id} time={addedTime} addTime={addTime} setTotalTime={setTotalTime} setStartTime={setStartTime} token={token} />
+              <AddTime
+                isOpen={isAddOpen}
+                setOpen={setIsAddOpen}
+                id={id}
+                time={addedTime}
+                addTime={addTime}
+                setTotalTime={setTotalTime}
+                setStartTime={setStartTime}
+                token={token}
+              />
             </div>
           )}
         </div>
       ) : (
-        <div className={`flex flex-col items-center w-[90vw] h-14 ${bgCol()} rounded-2xl border border-neutral-700`}>
-          {status === 'cancelled' ? (
-            <p className=" h-7 text-black text-[40px] font-normal">- - : - - : - -</p>
+        <div
+          className={`flex flex-col items-center w-[90vw] h-14 ${bgCol()} rounded-2xl border border-neutral-700`}
+        >
+          {status === "cancelled" ? (
+            <p className=" h-7 text-black text-[40px] font-normal">
+              - - : - - : - -
+            </p>
           ) : (
-            <p className=" h-7 text-black text-[40px] font-normal">{formatTime(new Date(totalTime).toISOString())}</p>
+            <p className=" h-7 text-black text-[40px] font-normal">
+              {formatTime(new Date(totalTime).toISOString())}
+            </p>
           )}
         </div>
       )}

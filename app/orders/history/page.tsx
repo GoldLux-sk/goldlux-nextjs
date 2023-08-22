@@ -7,17 +7,16 @@ import OrderHistoryComponent from "@/components/orders/OrderHistoryComponent";
 
 type Props = {
   searchParams?: {
-    customer?: string
-    from?: string
-    to?: string
-  }
-}
+    customer?: string;
+    from?: string;
+    to?: string;
+  };
+};
 
 export default async function Orders({ searchParams }: Props) {
+  const customerId = searchParams?.customer || "";
 
-  const customerId = searchParams?.customer || ""
-
-  const { from, to } = searchParams || {}
+  const { from, to } = searchParams || {};
 
   return (
     <CustomerStateProvider>
@@ -30,11 +29,13 @@ export default async function Orders({ searchParams }: Props) {
         <LogOutButton />
       </div>
       <div className="px-3">
-        {/* @ts-expect-error Server Component */}
         <Customers />
-        {/* @ts-expect-error Server Component */}
-        <OrderHistoryComponent customerId={customerId} dateFrom={from} dateTo={to} />
+        <OrderHistoryComponent
+          customerId={customerId}
+          dateFrom={from}
+          dateTo={to}
+        />
       </div>
     </CustomerStateProvider>
-  )
+  );
 }

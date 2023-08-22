@@ -4,7 +4,11 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import qs from "qs";
 
-async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
+async function getOrders(
+  customerId: string,
+  dateFrom?: string,
+  dateTo?: string
+) {
   const token = cookies().get("payload-token");
 
   if (!token) {
@@ -19,7 +23,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
 
   const dateQuery = {
     or: [
-      dateFrom?.length > 0
+      dateFrom && dateFrom?.length > 0
         ? {
             and: [
               {
@@ -29,7 +33,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
               },
               {
                 start_end_date:
-                  dateTo?.length > 0
+                  dateTo && dateTo?.length > 0
                     ? {
                         greater_than_equal: dateFrom,
                         less_than_equal: dateTo, // || new Date().toISOString() // If dateTo is not provided, use the current date
@@ -100,8 +104,8 @@ export default async function OrderHistoryComponent({
   dateTo,
 }: {
   customerId: string;
-  dateFrom: string;
-  dateTo: string;
+  dateFrom?: string;
+  dateTo?: string;
 }) {
   const orders = await getOrders(customerId, dateFrom, dateTo);
 
@@ -197,7 +201,7 @@ export default async function OrderHistoryComponent({
             </h1>
           </div>
         ))}
-      {dateFrom?.length > 0 && dateTo?.length > 0 && (
+      {dateFrom && dateFrom?.length > 0 && dateTo && dateTo?.length > 0 && (
         <h1 className="text-2xl mt-16 mb-5 font-medium">
           Od {formatDate(dateFrom)} do {formatDate(dateTo)}
         </h1>
