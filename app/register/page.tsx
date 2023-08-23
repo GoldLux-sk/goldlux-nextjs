@@ -44,8 +44,6 @@ export default function Register() {
       }
     ).then((res) => res.json());
 
-    console.log(res);
-
     if (res.errors) {
       setError(res.errors[0].data[0].message);
     }

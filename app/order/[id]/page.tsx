@@ -10,7 +10,6 @@ import { getUser } from "@/utils/getUser";
 
 async function getOrder(id: string) {
   const token = cookies().get("payload-token");
-
   if (!token) {
     redirect("/login");
   }
@@ -56,6 +55,7 @@ export default async function Order({ params }: { params: { id: string } }) {
               token={token?.value}
               role={user?.role}
               status={order.status}
+              order={order}
             />
             {(user?.role === "admin" || user?.role === "cleaner") &&
               order.status !== "cancelled" &&

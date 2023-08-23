@@ -109,8 +109,6 @@ export default async function OrderHistoryComponent({
 }) {
   const orders = await getOrders(customerId, dateFrom, dateTo);
 
-  console.log(orders);
-
   function getRecurringDates(start: string, end: string, days: any) {
     const startDate = new Date(start);
     const endDate = new Date(end);
