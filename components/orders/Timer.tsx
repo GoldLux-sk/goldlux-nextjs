@@ -5,6 +5,7 @@ import { Play, Pause, Square, PlusSquare } from "lucide-react";
 import { toast } from "sonner";
 import { revalidatePath } from "next/cache";
 import DatePicker from "@amir04lm26/react-modern-calendar-date-picker";
+import ActivityDuration from "./ActivityDuration";
 
 type TimerProps = {
   id: string;
@@ -82,16 +83,22 @@ export default async function Timer({
 
     // convert elapsed time to hh:mm:ss format
     const hours = Math.floor(elapsed / 1000 / 60 / 60);
+    const minutes = Math.floor((elapsed / 1000 / 60) % 60);
+    const seconds = Math.floor((elapsed / 1000) % 60);
 
-    const minutes = Math.floor((elapsed / 1000 / 60 / 60 - hours) * 60);
-
-    const seconds = Math.floor(
-      ((elapsed / 1000 / 60 / 60 - hours) * 60 - minutes) * 60
+    return (
+      <div>
+        {order.real_start === null ? (
+          <div>- - : - - : - -</div>
+        ) : (
+          <div className="slashed-zero tabular-nums font-xl">
+            {hours.toLocaleString().padStart(2, "0")}
+            {minutes.toLocaleString().padStart(2, "0")}
+            {seconds.toLocaleString().padStart(2, "0")}
+          </div>
+        )}
+      </div>
     );
-
-    return `${hours.toLocaleString().padStart(2, "0")}:${minutes
-      .toLocaleString()
-      .padStart(2, "0")} : ${seconds.toLocaleString().padStart(2, "0")}`;
   }
 
   async function startTimer() {
@@ -163,13 +170,15 @@ export default async function Timer({
                 - - : - - : - -
               </p>
             ) : (
-              <div className="text-black text-[40px] font-normal">
-                {order.real_end !== null
-                  ? calculateElapsedTime(
-                      order.real_start?.toLocaleString(),
-                      order.real_end?.toLocaleString()
-                    )
-                  : showElapsedTime()}
+              <div className="text-black text-[40px] slashed-zero tabular-nums font-normal">
+                {order.real_end !== null ? (
+                  calculateElapsedTime(
+                    order.real_start?.toLocaleString(),
+                    order.real_end?.toLocaleString()
+                  )
+                ) : (
+                  <ActivityDuration startAt={order.real_start} />
+                )}
               </div>
             )}
           </div>
