@@ -16,11 +16,6 @@ const CancelSubmit: React.FC<CancelSubmit> = ({ id, token }) => {
   const { isCancelOpen, setIsCancelOpen } = useModalState();
   const router = useRouter();
 
-  //TODO
-  async function submitOrder() {
-    router.push("/orders");
-  }
-
   // TODO
   async function cancelOrder() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`, {
@@ -39,19 +34,14 @@ const CancelSubmit: React.FC<CancelSubmit> = ({ id, token }) => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <button className="mt-6" type="button" onClick={() => setIsCancelOpen(true)}>
-        <div className="flex justify-center items-center gap-2 w-[200px] h-12 bg-white rounded-lg border border-neutral-800">
-          <div className="text-black font-normal">Zrušiť Objednávku</div>
+    <div className="flex flex-col justify-center items-center mt-20">
+      <button type="button" onClick={() => setIsCancelOpen(true)}>
+        <div className="flex justify-center items-center gap-2 px-7 py-2 bg-white rounded-xl border-2 border-black ">
+          <div className="text-black font-medium">Zrušiť Objednávku</div>
           <XSquare size={32} strokeWidth={1} />
         </div>
       </button>
-      <button className="mt-6 mb-8" type="button" onClick={() => submitOrder()}>
-        <div className="flex justify-center items-center gap-3 p-2 pl-3 bg-white rounded-lg border border-neutral-800">
-          <p className="text-center text-black text-[24px] font-normal">HOTOVO</p>
-          <CheckSquare size={32} strokeWidth={1} />
-        </div>
-      </button>
+
 
       <CancelOrder isOpen={isCancelOpen} setOpen={setIsCancelOpen} id={id} cancelOrder={cancelOrder} />
     </div>

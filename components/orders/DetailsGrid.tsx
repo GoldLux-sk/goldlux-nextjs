@@ -1,3 +1,5 @@
+import { CalendarDays, CheckCircle, Clock, UserCircle } from "lucide-react";
+
 type DetailsGridProps = {
   order: Order;
 };
@@ -18,42 +20,61 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
       .padStart(2, "0")}`;
   }
 
+  function formatDate(dateString: string | Date) {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + 1); // Add one day to the date
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1; // Months are zero-based
+    const year = date.getUTCFullYear();
+    return `${day}. ${month}. ${year}`;
+  }
+
   const timeStyle =
-    "p-1 border border-black rounded-md justify-center inline-flex"; //bg-gray-100
+    "col-span-2 justify-start inline-flex font-semibold pl-3"; //bg-gray-100
 
   return (
-    <div className="mt-5 mx-10 my-12 grid grid-cols-4 gap-4 items-center">
-      <div className="col-span-2 font-semibold">Zákaznik:</div>
-      <div className="col-span-2 pl-2 font-medium">
+    <div className="mt-20 mx-7 my-12 grid grid-cols-4 gap-5 items-center justify-between">
+      <div className="flex items-center gap-2 col-span-2 font-medium">
+        <UserCircle className="w-7 h-7 stroke-1" />
+        Zakaznik
+      </div>
+      <div className="col-span-2 pl-3 font-semibold">
         {order.customer.firstName} {order.customer.lastName}
       </div>
-      <div className="col-span-2 font-semibold">Stav:</div>
-      <div className="text-xl col-span-2 px-3 py-2 border border-black rounded-lg justify-center inline-flex">
-        {order.status}
+      <div className="flex items-center gap-2 col-span-2 font-medium">
+        <CalendarDays className="w-7 h-7 stroke-1" />
+        Dátum
+      </div>
+      <div className="col-span-2 pl-3 font-semibold">
+        {formatDate(order.estimated_start.toLocaleString())}
       </div>
 
-      <div className="col-span-2 font-semibold">Odhadovaný čas:</div>
-      <div className={timeStyle}>
-        {formatTime(order.estimated_start.toLocaleString())}
+      <div className="flex items-center gap-2 col-span-2 w-full font-medium">
+        <Clock className="w-7 h-7 stroke-1" />
+        Čas:
       </div>
       <div className={timeStyle}>
+        {formatTime(order.estimated_start.toLocaleString())} - {' '}
         {formatTime(order.estimated_end.toLocaleString())}
       </div>
 
       {order.status !== "template" && (
         <>
-          <div className="col-span-2 font-semibold">Reálny čas:</div>
-          <div className={timeStyle}>
-            {order.status === "cancelled"
-              ? "-- : --"
-              : formatTime(
-                  order.real_start && order.real_start.toLocaleString()
-                )}
+          <div className="flex items-center gap-2 col-span-2 w-full font-medium">
+            <CheckCircle className="w-7 h-7 stroke-1" />
+            Reálny čas:
           </div>
           <div className={timeStyle}>
             {order.status === "cancelled"
               ? "-- : --"
+              : formatTime(
+                order.real_start && order.real_start.toLocaleString()
+              )} - {' '}
+            {order.status === "cancelled"
+              ? "-- : --"
               : formatTime(order.real_end && order.real_end.toLocaleString())}
+          </div>
+          <div className={timeStyle}>
           </div>
         </>
       )}

@@ -1,11 +1,11 @@
-import { useModalState } from "./context/ModalStateContext";
-import Image from "next/image";
-import AddTime from "@/components/common/modal/AddTime";
-import { Play, Pause, Square, PlusSquare } from "lucide-react";
-import { toast } from "sonner";
-import { revalidatePath } from "next/cache";
-import DatePicker from "@amir04lm26/react-modern-calendar-date-picker";
-import ActivityDuration from "./ActivityDuration";
+import { useModalState } from './context/ModalStateContext';
+import Image from 'next/image';
+import AddTime from '@/components/common/modal/AddTime';
+import { Play, Pause, Square, PlusSquare } from 'lucide-react';
+import { toast } from 'sonner';
+import { revalidatePath } from 'next/cache';
+import DatePicker from '@amir04lm26/react-modern-calendar-date-picker';
+import ActivityDuration from './ActivityDuration';
 
 type TimerProps = {
   id: string;
@@ -56,27 +56,30 @@ export default async function Timer({
     real_start: string | undefined,
     real_end: string | undefined
   ) {
-    const start = new Date(real_start || "");
-    const end = new Date(real_end || "");
+    const start = new Date(real_start || '');
+    const end = new Date(real_end || '');
 
     const elapsed = end.getTime() - start.getTime();
 
     // convert elapsed time to hh:mm:ss format
     const hours = Math.floor(elapsed / 1000 / 60 / 60);
+    const minutes = Math.floor((elapsed / 1000 / 60) % 60);
+    const seconds = Math.floor((elapsed / 1000) % 60);
 
-    const minutes = Math.floor((elapsed / 1000 / 60 / 60 - hours) * 60);
 
-    const seconds = Math.floor(
-      ((elapsed / 1000 / 60 / 60 - hours) * 60 - minutes) * 60
-    );
-
-    return `${hours.toLocaleString().padStart(2, "0")}:${minutes
-      .toLocaleString()
-      .padStart(2, "0")} : ${seconds.toLocaleString().padStart(2, "0")}`;
+    return (
+      <div className="h-full w-full flex justify-center items-center slashed-zero tabular-nums">
+        <p className='text-5xl'>
+          {hours.toLocaleString().padStart(2, '0')}:
+          {minutes.toLocaleString().padStart(2, '0')}:
+          {seconds.toLocaleString().padStart(2, '0')}
+        </p>
+      </div>
+    )
   }
 
   function showElapsedTime() {
-    const start = new Date(order.real_start || "");
+    const start = new Date(order.real_start || '');
     const now = new Date();
 
     const elapsed = now.getTime() - start.getTime();
@@ -88,35 +91,33 @@ export default async function Timer({
 
     return (
       <div>
-        {order.real_start === null ? (
-          <div>- - : - - : - -</div>
-        ) : (
-          <div className="slashed-zero tabular-nums font-xl">
-            {hours.toLocaleString().padStart(2, "0")}
-            {minutes.toLocaleString().padStart(2, "0")}
-            {seconds.toLocaleString().padStart(2, "0")}
-          </div>
-        )}
+        <div className="h-full w-full flex justify-center items-center slashed-zero tabular-nums">
+          <p className='text-5xl'>
+            {hours.toLocaleString().padStart(2, '0')}
+            {minutes.toLocaleString().padStart(2, '0')}
+            {seconds.toLocaleString().padStart(2, '0')}
+          </p>
+        </div>
       </div>
     );
   }
 
   async function startTimer() {
-    "use server";
+    'use server';
 
-    const now = new Date().toISOString();
+    const now = new Date()
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`,
       {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `JWT ${token}`,
         },
         body: JSON.stringify({
           real_start: now,
-          status: "started",
+          status: 'started',
         }),
       }
     ).then((res) => res.json());
@@ -129,22 +130,24 @@ export default async function Timer({
 
     return res;
   }
+
+
   async function endTimer() {
-    "use server";
+    'use server';
 
     const now = new Date().toISOString();
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders/${id}`,
       {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `JWT ${token}`,
         },
         body: JSON.stringify({
           real_end: now,
-          status: "ended",
+          status: 'ended',
         }),
       }
     ).then((res) => res.json());
@@ -160,29 +163,44 @@ export default async function Timer({
 
   return (
     <div className="mt-3 flex flex-col justify-center items-center">
-      {role === "admin" || role === "cleaner" ? (
+      {role === 'admin' || role === 'cleaner' ? (
         <div>
           <div
-            className={`flex flex-col items-center w-[90vw] h-14 rounded-2xl border border-gray-400`}
+            className={`flex items-center justify-centers w-full gap-5`}
           >
-            {status === "cancelled" ? (
-              <p className=" h-7 text-black text-[40px] font-normal">
+            {status === 'cancelled' ? (
+              <p className=" h-7 text-black text-4xl font-normal">
                 - - : - - : - -
               </p>
             ) : (
-              <div className="text-black text-[40px] slashed-zero tabular-nums font-normal">
+              <div className="">
                 {order.real_end !== null ? (
                   calculateElapsedTime(
                     order.real_start?.toLocaleString(),
                     order.real_end?.toLocaleString()
                   )
                 ) : (
-                  <ActivityDuration startAt={order.real_start} />
+                  <ActivityDuration
+                    startAt={order.real_start}
+                  />
                 )}
               </div>
             )}
+            {status !== 'cancelled' && status !== 'ended' && (
+              <form
+                className="flex gap-5 justify-center items-center"
+                action={status === 'started' ? endTimer : startTimer}
+              >
+                <button
+                  type="submit"
+                  className="bg-black text-white py-3 px-7 rounded-xl text-xl"
+                >
+                  {status === 'planned' ? 'Start' : 'Stop'}
+                </button>
+              </form>
+            )}
           </div>
-          {status === "ended" && (
+          {status === 'ended' && (
             <div className="w-full flex items-center justify-center mt-5 gap-5">
               <p className="text-xl">Cena:</p>
               <p className="text-xl font-medium">
@@ -190,25 +208,12 @@ export default async function Timer({
               </p>
             </div>
           )}
-          {status !== "cancelled" && status !== "ended" && (
-            <div className="mt-3 flex flex-col justify-center items-center">
-              <form action={status === "started" ? endTimer : startTimer}>
-                <button
-                  type="submit"
-                  className="bg-black text-white py-3 px-7 rounded-xl text-xl"
-                >
-                  {status === "started" ? "Stop" : "Start"}
-                </button>
-              </form>
-              {/* <AddTime updateTime={updateTime} /> */}
-            </div>
-          )}
         </div>
       ) : (
         <div
           className={`flex flex-col items-center w-[90vw] h-14 rounded-2xl border border-neutral-700`}
         >
-          {status === "cancelled" ? (
+          {status === 'cancelled' ? (
             <p className=" h-7 text-black text-[40px] font-normal">
               - - : - - : - -
             </p>

@@ -38,15 +38,7 @@ export default async function Order({ params }: { params: { id: string } }) {
   return (
     <div className="overflow-hidden">
       <ModalStateProvider>
-        <OrderNavbar orderId={order.id} />
-        {/* TODO: ak je to template bude mat zaciatocny aj konecny datum */}
-        <CalendarDate
-          startEndDate={
-            order.status === "template"
-              ? order.start_date
-              : order.start_end_date
-          }
-        />
+        <OrderNavbar status={order.status} />
         <DetailsGrid order={order} />
         {order.status !== "template" && (
           <>

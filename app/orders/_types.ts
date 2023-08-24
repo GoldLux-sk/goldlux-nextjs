@@ -16,6 +16,7 @@ type Order = {
     estimated_duration: number
     real_start?: string
     real_end?: string
+    elapsed_time?: number
     real_duration?: number
     manual_price?: number
     timer_value?: number

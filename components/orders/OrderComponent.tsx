@@ -22,30 +22,30 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
       or: [
         dateFrom?.length > 0
           ? {
-              and: [
-                {
-                  status: {
-                    not_equals: "template",
-                  },
+            and: [
+              {
+                status: {
+                  not_equals: "template",
                 },
-                {
-                  start_end_date:
-                    dateTo?.length > 0
-                      ? {
-                          greater_than_equal: dateFrom,
-                          less_than_equal: dateTo, // || new Date().toISOString() // If dateTo is not provided, use the current date
-                        }
-                      : {
-                          greater_than_equal: dateFrom,
-                        },
-                },
-              ],
-            }
-          : {
-              start_end_date: {
-                greater_than_equal: getWeekAgoDate(),
               },
+              {
+                start_end_date:
+                  dateTo?.length > 0
+                    ? {
+                      greater_than_equal: dateFrom,
+                      less_than_equal: dateTo, // || new Date().toISOString() // If dateTo is not provided, use the current date
+                    }
+                    : {
+                      greater_than_equal: dateFrom,
+                    },
+              },
+            ],
+          }
+          : {
+            start_end_date: {
+              greater_than_equal: getWeekAgoDate(),
             },
+          },
         {
           status: {
             equals: "template",
@@ -91,7 +91,9 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
           "Content-Type": "application/json",
           Authorization: `JWT ${token?.value}`,
         },
-        cache: "no-store",
+        next: {
+          revalidate: 2,
+        }
       }
     ).then((res) => res.json());
 

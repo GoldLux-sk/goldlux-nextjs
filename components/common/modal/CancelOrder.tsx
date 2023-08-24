@@ -1,6 +1,6 @@
 'use client'
 
-import React, {FunctionComponent} from "react";
+import React, { FunctionComponent } from "react";
 import Image from "next/image";
 import Modal from 'react-modal';
 
@@ -22,28 +22,22 @@ const CancelOrder: FunctionComponent<CancelOrderProps> = ({
       className="custom-modal"
       overlayClassName="modal-overlay"
     >
-      <div className="bg-white w-screen h-screen">
-        <h1 className="text-center mt-16 text-black/50 text-md font-bold">{`Objednávka ${id}`}</h1>
-        <div className="mx-5 h-[90vh] border border-black rounded-2xl relative">
+      <div className="w-screen h-screen relative">
+        <div className="mx-5 h-screen border-grat rounded-2xl flex items-center justify-center flex-col">
           <div className="flex flex-row justify-between p-3">
-            <button type="button" onClick={() => setOpen(false)}>
-              <Image src="/close.svg" alt="Close" width="24" height="24"/>
-            </button>
-            <h1 className="text-black text-md font-bold">Zrušiť objednávku?</h1>
-            <div className="w-6 h-6"/>
+            <h1 className="text-black text-3xl font-medium">Naozaj chcete zrušiť objednávku?</h1>
           </div>
-          <hr className="w-full h-px bg-black border-0"/>
 
-          <div className="mt-10 flex flex-col items-center">
-            <div className="grid grid-cols-2 gap-5">
+          <div className="mt-10 flex flex-col items-center w-full">
+            <div className="grid grid-cols-2 gap-5 w-full">
               <button type="button" onClick={() => setOpen(false)}>
-                <div className="w-[40vw] h-12 px-5 py-[13px] bg-rose-500 rounded-2xl border border-zinc-800 justify-center items-center gap-2.5">
-                  <div className="text-center text-white text-[17px] font-semibold leading-snug">Naspäť</div>
+                <div className="px-10 py-4 bg-white border-black rounded-3xl border-2 justify-center items-center gap-2.5">
+                  <div className="text-center text-black text-[17px] font-medium leading-snug">Naspäť</div>
                 </div>
               </button>
-              <button type="button" onClick={() => {setOpen(false); cancelOrder();}}>
-                <div className="w-full h-12 px-5 py-[13px] bg-rose-500 rounded-2xl border border-zinc-800 justify-center items-center gap-2.5">
-                  <div className="text-center text-white text-[17px] font-semibold leading-snug">Zrušiť</div>
+              <button type="button" onClick={() => { setOpen(false); cancelOrder(); }}>
+                <div className="px-10 py-4 bg-black rounded-3xl border justify-center items-center gap-2.5">
+                  <div className="text-center text-white text-[17px] font-medium leading-snug">Zrušiť</div>
                 </div>
               </button>
             </div>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 type Inputs = {
@@ -14,6 +14,7 @@ type Inputs = {
 export default function Home() {
   const [error, setError] = useState<string>("");
   const [showPass, setShowPass] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const {
@@ -22,6 +23,7 @@ export default function Home() {
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setLoading(true);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/users/login`,
       {
@@ -128,11 +130,11 @@ export default function Home() {
 
                 {(errors.password?.type === "required" ||
                   errors.email?.type === "required") && (
-                  <p role="alert" className="mt-10 text-center text-red-500">
-                    Najprv, vyplnte políčka, touto cestou sa budete vedieť
-                    prihlásiť do aplikácie.
-                  </p>
-                )}
+                    <p role="alert" className="mt-10 text-center text-red-500">
+                      Najprv, vyplnte políčka, touto cestou sa budete vedieť
+                      prihlásiť do aplikácie.
+                    </p>
+                  )}
                 {error && (
                   <p role="alert" className="mt-10 text-center text-red-500">
                     {error}
@@ -141,10 +143,10 @@ export default function Home() {
 
                 <div className="col-span-full mt-5">
                   <button
-                    className="items-center justify-center w-full px-6 py-2.5 text-center text-white duration-200 bg-black border-2 border-black rounded-full nline-flex hover:bg-transparent hover:border-black hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black"
+                    className="items-center justify-center w-full h-12 px-6 py-2.5 text-center text-white duration-200 bg-black border-2 border-black rounded-full nline-flex hover:bg-transparent hover:border-black hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black"
                     type="submit"
                   >
-                    Prihlásiť sa
+                    {loading ? <Loader2 className="h-6 animate-spin text-white w-full" /> : "Prihlásiť sa"}
                   </button>
                 </div>
               </div>
