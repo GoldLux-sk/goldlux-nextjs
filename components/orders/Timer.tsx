@@ -166,7 +166,7 @@ export default async function Timer({
       {role === 'admin' || role === 'cleaner' ? (
         <div>
           <div
-            className={`flex items-center justify-centers w-full gap-5`}
+            className={`flex items-center justify-centers w-full gap-5 mt-20`}
           >
             {status === 'cancelled' ? (
               <p className=" h-7 text-black text-4xl font-normal">
@@ -180,9 +180,11 @@ export default async function Timer({
                     order.real_end?.toLocaleString()
                   )
                 ) : (
-                  <ActivityDuration
-                    startAt={order.real_start}
-                  />
+                  <div className='underline underline-offset-8'>
+                    <ActivityDuration
+                      startAt={order.real_start}
+                    />
+                  </div>
                 )}
               </div>
             )}
@@ -193,35 +195,40 @@ export default async function Timer({
               >
                 <button
                   type="submit"
-                  className="bg-black text-white py-3 px-7 rounded-xl text-xl"
+                  className="bg-black text-white py-3 px-7 rounded-2xl text-xl"
                 >
                   {status === 'planned' ? 'Start' : 'Stop'}
                 </button>
               </form>
             )}
           </div>
-          {status === 'ended' && (
-            <div className="w-full flex items-center justify-center mt-5 gap-5">
-              <p className="text-xl">Cena:</p>
-              <p className="text-xl font-medium">
-                {order.manual_price?.toFixed(2)}€
-              </p>
-            </div>
-          )}
         </div>
       ) : (
-        <div
-          className={`flex flex-col items-center w-[90vw] h-14 rounded-2xl border border-neutral-700`}
-        >
-          {status === 'cancelled' ? (
-            <p className=" h-7 text-black text-[40px] font-normal">
-              - - : - - : - -
-            </p>
-          ) : (
-            <p className=" h-7 text-black text-[40px] font-normal">
-              {/* {calculateElapsedTime(order.real_end?.toLocaleString())} */}
-            </p>
-          )}
+        <div>
+          <div
+            className={`flex flex-col items-center justify-center w-[90vw] h-16 rounded-2xl border border-gray-400 mt-20`}
+          >
+            {status === 'cancelled' ? (
+              <p className=" h-7 text-black text-[40px] font-normal">
+                - - : - - : - -
+              </p>
+            ) : (
+              <div className="">
+                {order.real_end !== null ? (
+                  calculateElapsedTime(
+                    order.real_start?.toLocaleString(),
+                    order.real_end?.toLocaleString()
+                  )
+                ) : (
+                  <div className=''>
+                    <ActivityDuration
+                      startAt={order.real_start}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>

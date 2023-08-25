@@ -1,4 +1,4 @@
-import { CalendarDays, CheckCircle, Clock, UserCircle } from "lucide-react";
+import { CalendarDays, CheckCircle, Clock, EuroIcon, UserCircle } from "lucide-react";
 
 type DetailsGridProps = {
   order: Order;
@@ -30,26 +30,32 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
   }
 
   const timeStyle =
-    "col-span-2 justify-start inline-flex font-semibold pl-3"; //bg-gray-100
+    "col-span-2 justify-start inline-flex font-medium pl-3"; //bg-gray-100
 
   return (
-    <div className="mt-20 mx-7 my-12 grid grid-cols-4 gap-5 items-center justify-between">
-      <div className="flex items-center gap-2 col-span-2 font-medium">
+    <div className="mt-20 mx-7 my-12 grid grid-cols-4 gap-5 items-center justify-between border border-gray-400 px-4 py-3 rounded-xl shadow-xl">
+      <div className="flex items-center gap-2 col-span-2 font-normal">
         <UserCircle className="w-7 h-7 stroke-1" />
-        Zakaznik
+        Zakaznik:
       </div>
-      <div className="col-span-2 pl-3 font-semibold">
+      <div className="col-span-2 pl-3 font-medium">
         {order.customer.firstName} {order.customer.lastName}
       </div>
-      <div className="flex items-center gap-2 col-span-2 font-medium">
+      <div className="flex items-center gap-2 col-span-2 font-normal">
         <CalendarDays className="w-7 h-7 stroke-1" />
-        Dátum
+        Dátum:
       </div>
-      <div className="col-span-2 pl-3 font-semibold">
+      <div className="col-span-2 pl-3 font-medium">
         {formatDate(order.estimated_start.toLocaleString())}
+        <br />
+        {order.status === "template" && (
+          <div>
+            do {formatDate(order.end_date.toLocaleString())}
+          </div>
+        )}
       </div>
 
-      <div className="flex items-center gap-2 col-span-2 w-full font-medium">
+      <div className="flex items-center gap-2 col-span-2 w-full font-normal">
         <Clock className="w-7 h-7 stroke-1" />
         Čas:
       </div>
@@ -60,7 +66,7 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
 
       {order.status !== "template" && (
         <>
-          <div className="flex items-center gap-2 col-span-2 w-full font-medium">
+          <div className="flex items-center gap-2 col-span-2 w-full font-normal">
             <CheckCircle className="w-7 h-7 stroke-1" />
             Reálny čas:
           </div>
@@ -69,13 +75,26 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
               ? "-- : --"
               : formatTime(
                 order.real_start && order.real_start.toLocaleString()
-              )} - {' '}
+              )} <strong className="px-1">|</strong> {' '}
             {order.status === "cancelled"
               ? "-- : --"
               : formatTime(order.real_end && order.real_end.toLocaleString())}
           </div>
-          <div className={timeStyle}>
-          </div>
+        </>
+      )}
+      {order.status === 'ended' && (
+        <>
+          {order.manual_price && (
+            <>
+              <div className="flex items-center gap-2 col-span-2 w-full font-normal">
+                <EuroIcon className="w-7 h-7 stroke-1" />
+                <p className="col-span-2 justify-start inline-flex font-normal">Cena:</p>
+              </div>
+              <div className="col-span-2 pl-3 font-medium underline underline-offset-2">
+                {order.manual_price.toFixed(2)}€
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

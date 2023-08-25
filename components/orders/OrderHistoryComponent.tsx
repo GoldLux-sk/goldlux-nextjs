@@ -6,8 +6,8 @@ import qs from "qs";
 
 async function getOrders(
   customerId: string,
-  dateFrom?: string,
-  dateTo?: string
+  dateFrom: string,
+  dateTo: string
 ) {
   const token = cookies().get("payload-token");
 
@@ -20,11 +20,11 @@ async function getOrders(
     date.setDate(date.getDate() - 7);
     return date.toLocaleDateString();
   }
-
-  const dateQuery = {
-    or: [
-      dateFrom && dateFrom?.length > 0
-        ? {
+  try {
+    const dateQuery = {
+      or: [
+        dateFrom?.length > 0
+          ? {
             and: [
               {
                 status: {
@@ -33,18 +33,18 @@ async function getOrders(
               },
               {
                 start_end_date:
-                  dateTo && dateTo?.length > 0
+                  dateTo?.length > 0
                     ? {
-                        greater_than_equal: dateFrom,
-                        less_than_equal: dateTo, // || new Date().toISOString() // If dateTo is not provided, use the current date
-                      }
+                      greater_than_equal: dateFrom,
+                      less_than_equal: dateTo,
+                    }
                     : {
-                        greater_than_equal: dateFrom,
-                      },
+                      greater_than_equal: dateFrom,
+                    },
               },
             ],
           }
-        : {
+          : {
             or: [
               {
                 start_end_date: {
@@ -58,44 +58,47 @@ async function getOrders(
               },
             ],
           },
-      {
-        status: {
-          equals: "template",
+        {
+          status: {
+            equals: "template",
+          },
         },
+      ],
+    };
+
+    const customerQuery = {
+      customer: {
+        equals: customerId,
       },
-    ],
-  };
+    };
 
-  const customerQuery = {
-    customer: {
-      equals: customerId,
-    },
-  };
+    const query =
+      customerId?.length > 0 ? { and: [dateQuery, customerQuery] } : dateQuery;
 
-  const query =
-    customerId?.length > 0 ? { and: [dateQuery, customerQuery] } : dateQuery;
-
-  const stringifiedQuery = qs.stringify(
-    {
-      where: query,
-    },
-    {
-      addQueryPrefix: true,
-    }
-  );
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=start_end_date`,
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `JWT ${token.value}`,
+    const stringifiedQuery = qs.stringify(
+      {
+        where: query,
       },
-    }
-  ).then((res) => res.json());
+      {
+        addQueryPrefix: true,
+      }
+    );
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=start_end_date`,
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${token.value}`,
+        },
+      }
+    ).then((res) => res.json());
 
-  return res;
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 export default async function OrderHistoryComponent({
@@ -104,8 +107,8 @@ export default async function OrderHistoryComponent({
   dateTo,
 }: {
   customerId: string;
-  dateFrom?: string;
-  dateTo?: string;
+  dateFrom: string;
+  dateTo: string;
 }) {
   const orders = await getOrders(customerId, dateFrom, dateTo);
 
@@ -114,7 +117,10 @@ export default async function OrderHistoryComponent({
     const endDate = new Date(end);
     const dates = [];
     for (let day = startDate; day <= endDate; day.setDate(day.getDate() + 1)) {
-      if (days[day.toLocaleDateString().toLowerCase()]) {
+      const dayName = new Intl.DateTimeFormat("en-US", {
+        weekday: "long",
+      }).format(day).toLowerCase();
+      if (days[dayName]) {
         dates.push(new Date(day));
       }
     }
@@ -197,9 +203,10 @@ export default async function OrderHistoryComponent({
             </h1>
           </div>
         ))}
-      {dateFrom && dateFrom?.length > 0 && dateTo && dateTo?.length > 0 && (
+      {dateFrom?.length > 1 && (
         <h1 className="text-2xl mt-16 mb-5 font-medium">
-          Od {formatDate(dateFrom)} do {formatDate(dateTo)}
+          Od {formatDate(dateFrom)}{" "}
+          {dateTo?.length > 1 && `do ${formatDate(dateTo)}`}
         </h1>
       )}
 

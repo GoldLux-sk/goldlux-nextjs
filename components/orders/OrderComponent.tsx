@@ -16,7 +16,6 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
     return date.toLocaleDateString();
   }
 
-  // if (dateFrom?.length > 0) dateFrom = new Date(new Date(dateFrom).getTime() - 86399000).toISOString() // dateFrom - (1d - 1s)
   try {
     const dateQuery = {
       or: [
@@ -83,7 +82,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
     );
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}`,
+      `${process.env.NEXT_PUBLIC_PAYLOAD_CMS_URL}/api/orders${stringifiedQuery}&sort=start_end_date`,
       {
         method: "GET",
         credentials: "include",
@@ -117,9 +116,13 @@ export default async function OrderComponent({
   function getRecurringDates(start: string, end: string, days: any) {
     const startDate = new Date(start);
     const endDate = new Date(end);
-    const dates = [];
+    console.log(days);
+    let dates = [];
     for (let day = startDate; day <= endDate; day.setDate(day.getDate() + 1)) {
-      if (days[day.toLocaleDateString().toLowerCase()]) {
+      const dayName = new Intl.DateTimeFormat("en-US", {
+        weekday: "long",
+      }).format(day).toLowerCase();
+      if (days[dayName]) {
         dates.push(new Date(day));
       }
     }
@@ -138,14 +141,16 @@ export default async function OrderComponent({
         saturday: order.saturday,
         sunday: order.sunday,
       });
-      return dates.map((date) => ({
-        ...order,
-        start_end_date: date.toLocaleDateString(),
-      }));
+      return dates.map((date) => {
+        const newOrder = { ...order };
+        newOrder.start_end_date = date.toLocaleDateString();
+        return newOrder;
+      });
     } else {
       return order;
     }
   });
+
 
   // Filter orders based on date range and remove orders older than a week
   const oneWeekAgo = new Date().getTime() - 7 * 24 * 60 * 60 * 1000; // One week ago in milliseconds

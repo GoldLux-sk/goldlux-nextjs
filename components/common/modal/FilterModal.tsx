@@ -39,9 +39,9 @@ const FilterModal: FunctionComponent<FilterModalProps> = ({
     if (!date) return null;
     date = new Date(date);
     return {
-      year: date.getUTCFullYear(),
-      month: date.getUTCMonth() + 1,
-      day: date.getUTCDate(),
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
     };
   }
 
