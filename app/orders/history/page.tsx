@@ -32,8 +32,8 @@ export default async function Orders({ searchParams }: Props) {
         <Customers />
         <OrderHistoryComponent
           customerId={customerId}
-          dateFrom={from}
-          dateTo={to}
+          dateFrom={from || ""}
+          dateTo={to || ""}
         />
       </div>
     </CustomerStateProvider>

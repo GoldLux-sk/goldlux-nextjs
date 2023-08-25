@@ -7,7 +7,7 @@ import qs from "qs";
 async function getOrders(
   customerId: string,
   dateFrom: string,
-  dateTo: string
+  dateTo: string,
 ) {
   const token = cookies().get("payload-token");
 
