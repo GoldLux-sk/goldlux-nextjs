@@ -8,6 +8,8 @@ import Timer from "@/components/orders/Timer";
 import CancelSubmit from "@/components/orders/CancelSubmit";
 import { getUser } from "@/utils/getUser";
 
+export const dynamic = 'force-dynamic'
+
 async function getOrder(id: string) {
   const token = cookies().get("payload-token");
   if (!token) {

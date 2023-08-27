@@ -90,9 +90,7 @@ async function getOrders(customerId: string, dateFrom: string, dateTo: string) {
           "Content-Type": "application/json",
           Authorization: `JWT ${token?.value}`,
         },
-        next: {
-          revalidate: 2,
-        }
+        cache: "no-store",
       }
     ).then((res) => res.json());
 
@@ -116,8 +114,7 @@ export default async function OrderComponent({
   function getRecurringDates(start: string, end: string, days: any) {
     const startDate = new Date(start);
     const endDate = new Date(end);
-    console.log(days);
-    let dates = [];
+    const dates = [];
     for (let day = startDate; day <= endDate; day.setDate(day.getDate() + 1)) {
       const dayName = new Intl.DateTimeFormat("en-US", {
         weekday: "long",
@@ -182,10 +179,9 @@ export default async function OrderComponent({
 
   function formatDate(dateString: string | Date) {
     const date = new Date(dateString);
-    date.setDate(date.getDate() + 1); // Add one day to the date
-    const day = date.getUTCDate();
-    const month = date.getUTCMonth() + 1; // Months are zero-based
-    const year = date.getUTCFullYear();
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are zero-based
+    const year = date.getFullYear();
     return `${day}. ${month}. ${year}`;
   }
 

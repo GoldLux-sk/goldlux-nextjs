@@ -40,6 +40,7 @@ export default function Home() {
     ).then((res) => res.json());
 
     if (res.errors) {
+      setLoading(false);
       setError("Nesprávne prihlasovacie údaje.");
     }
     if (res.message === "Auth Passed") {

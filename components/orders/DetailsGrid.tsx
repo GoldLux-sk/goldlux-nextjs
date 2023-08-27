@@ -33,7 +33,7 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
     "col-span-2 justify-start inline-flex font-medium pl-3"; //bg-gray-100
 
   return (
-    <div className="mt-20 mx-7 my-12 grid grid-cols-4 gap-5 items-center justify-between border border-gray-400 px-4 py-3 rounded-xl shadow-xl">
+    <div className="mt-20 mx-7 my-12 grid grid-cols-4 gap-5 items-center justify-between border border-gray-300 px-4 py-4 rounded-2xl shadow-xl">
       <div className="flex items-center gap-2 col-span-2 font-normal">
         <UserCircle className="w-7 h-7 stroke-1" />
         Zakaznik:
