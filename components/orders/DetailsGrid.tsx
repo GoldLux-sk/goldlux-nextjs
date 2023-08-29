@@ -23,9 +23,9 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
   function formatDate(dateString: string | Date) {
     const date = new Date(dateString);
     date.setDate(date.getDate() + 1); // Add one day to the date
-    const day = date.getUTCDate();
-    const month = date.getUTCMonth() + 1; // Months are zero-based
-    const year = date.getUTCFullYear();
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are zero-based
+    const year = date.getFullYear();
     return `${day}. ${month}. ${year}`;
   }
 
@@ -46,11 +46,16 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
         Dátum:
       </div>
       <div className="col-span-2 pl-3 font-medium">
-        {formatDate(order.estimated_start.toLocaleString())}
-        <br />
-        {order.status === "template" && (
+        {order.status === "template" ? (
           <div>
-            do {formatDate(order.end_date.toLocaleString())}
+            od {formatDate(order.start_date.toLocaleString())}
+            <div>
+              do {formatDate(order.end_date.toLocaleString())}
+            </div>
+          </div>
+        ) : (
+          <div>
+            {formatDate(order.start_end_date.toLocaleString())}
           </div>
         )}
       </div>

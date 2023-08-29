@@ -20,7 +20,7 @@ export default function OrderNavbar({ status }: { status: string }) {
                                 : "bg-green-600/20 text-green-700"
                         }}`}
                 >
-                    {status === 'template' ? <p className="normal-case">Opakujúca sa</p> : status}
+                    {status}
                 </p>
             </div>
         </div>

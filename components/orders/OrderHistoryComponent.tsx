@@ -178,7 +178,7 @@ export default async function OrderHistoryComponent({
 
   function formatDate(dateString: string | Date) {
     const date = new Date(dateString);
-    const day = date.getDate();
+    const day = date.getDate() + 1; // V produkcii je to o jeden den viac
     const month = date.getMonth() + 1; // Months are zero-based
     const year = date.getFullYear();
     return `${day}. ${month}. ${year}`;
