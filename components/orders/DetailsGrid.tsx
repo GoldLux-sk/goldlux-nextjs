@@ -20,13 +20,28 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
       .padStart(2, "0")}`;
   }
 
-  function formatDate(dateString: string | Date) {
-    const date = new Date(dateString);
-    date.setDate(date.getDate() + 1); // Add one day to the date
-    const day = date.getDate();
-    const month = date.getMonth() + 1; // Months are zero-based
-    const year = date.getFullYear();
-    return `${day}. ${month}. ${year}`;
+  function formatDate(dateString: string | Date, status?: string) {
+    if (status) {
+      if (status === 'template') {
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Months are zero-based
+        const year = date.getFullYear();
+        return `${day}. ${month}. ${year}`;
+      } else {
+        const date = new Date(dateString);
+        const day = date.getDate() + 1; // V produkcii je to o jeden den viac
+        const month = date.getMonth() + 1; // Months are zero-based
+        const year = date.getFullYear();
+        return `${day}. ${month}. ${year}`;
+      }
+    } else {
+      const date = new Date(dateString);
+      const day = date.getDate() + 1; // V produkcii je to o jeden den viac
+      const month = date.getMonth() + 1; // Months are zero-based
+      const year = date.getFullYear();
+      return `${day}. ${month}. ${year}`;
+    }
   }
 
   const timeStyle =
@@ -48,9 +63,9 @@ const DetailsGrid: React.FC<DetailsGridProps> = ({ order }) => {
       <div className="col-span-2 pl-3 font-medium">
         {order.status === "template" ? (
           <div>
-            od {formatDate(order.start_date.toLocaleString())}
+            od{formatDate(order.start_date.toLocaleString(), order.status)}
             <div>
-              do {formatDate(order.end_date.toLocaleString())}
+              do {formatDate(order.end_date.toLocaleString(), order.status)}
             </div>
           </div>
         ) : (

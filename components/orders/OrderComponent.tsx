@@ -1,3 +1,4 @@
+import { template } from "lodash";
 import OrderCard from "./OrderCard";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -177,12 +178,28 @@ export default async function OrderComponent({
     }
   });
 
-  function formatDate(dateString: string | Date) {
-    const date = new Date(dateString);
-    const day = date.getDate() + 1; // V produkcii je to o jeden den viac
-    const month = date.getMonth() + 1; // Months are zero-based
-    const year = date.getFullYear();
-    return `${day}. ${month}. ${year}`;
+  function formatDate(dateString: string | Date, status?: string) {
+    if (status) {
+      if (status === 'template') {
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Months are zero-based
+        const year = date.getFullYear();
+        return `${day}. ${month}. ${year}`;
+      } else {
+        const date = new Date(dateString);
+        const day = date.getDate() + 1; // V produkcii je to o jeden den viac
+        const month = date.getMonth() + 1; // Months are zero-based
+        const year = date.getFullYear();
+        return `${day}. ${month}. ${year}`;
+      }
+    } else {
+      const date = new Date(dateString);
+      const day = date.getDate() + 1; // V produkcii je to o jeden den viac
+      const month = date.getMonth() + 1; // Months are zero-based
+      const year = date.getFullYear();
+      return `${day}. ${month}. ${year}`;
+    }
   }
 
   function formatHour(dateString: string) {
@@ -225,7 +242,7 @@ export default async function OrderComponent({
               <OrderCard
                 id={order.id}
                 customer={order.customer}
-                date={formatDate(order.start_end_date.toLocaleString())}
+                date={formatDate(order.start_end_date.toLocaleString(), order.status)}
                 status={order.status}
                 startTime={formatHour(order.estimated_start.toLocaleString())}
               />
